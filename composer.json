@@ -13,12 +13,12 @@
         },
         {
             "name": "GintonicWeb Contributors",
-            "homepage": "http://github.com/gintonicweb/gintonic/graphs/contributors"
+            "homepage": "http://github.com/gintonicweb/GintonicCMS/graphs/contributors"
         }
     ],
     "support": {
-        "issues": "https://github.com/gintonicweb/gintonic/issues",
-        "source": "https://github.com/gintonicweb/gintonic"
+        "issues": "https://github.com/gintonicweb/GintonicCMS/issues",
+        "source": "https://github.com/gintonicweb/GintonicCMS"
     },
     "require": {
         "php": ">=5.4",
