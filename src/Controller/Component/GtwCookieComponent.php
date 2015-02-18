@@ -1,25 +1,21 @@
 <?php
-/**
- * Gintonic Web
- * @author    Philippe Lafrance
- * @link      http://gintonicweb.com
- */
 
 namespace GintonicCMS\Controller\Component;
 
 use Cake\Controller\Component;
-
+use Cake\Core\Configure;
+use Cake\Core\Configure\Engine\PhpConfig;
 
 class GtwCookieComponent extends Component {
     
-    var $components = array('Cookie','Auth');
+    public $components = array('Cookie','Auth');
     
     public function initialize(array $config) {
         parent::initialize($config);
-        $this->Cookie->key = \Cake\Core\Configure::read('GtwCookie.key');
-        $this->Cookie->name = \Cake\Core\Configure::read('GtwCookie.name');
+        $this->Cookie->key = Configure::read('GtwCookie.key');
+        $this->Cookie->name = Configure::read('GtwCookie.name');
         $this->Cookie->httpOnly = true;
-//        $this->Controller = $controller;
+        //$this->Controller = $controller;
     }
     
     public function autoAuth(){
@@ -27,8 +23,9 @@ class GtwCookieComponent extends Component {
             return;
         }
         $user = $this->Cookie->read('remember_me');
-        if(!$this->Auth->login($user['User'])){
-            $this->Controller->redirect(array('plugin' => 'GintonicCMS', 'controller' => 'users', 'action' => 'signout' ));
+        if(empty($this->Auth->user())){
+            //$this->Controller->redirect(array('plugin' => 'GtwUsers', 'controller' => 'users', 'action' => 'signout' ));
+            $this->Controller->redirect(array('controller' => 'users', 'action' => 'signout'));
         }
         return $this->Controller->redirect($this->Auth->redirectUrl());
     }

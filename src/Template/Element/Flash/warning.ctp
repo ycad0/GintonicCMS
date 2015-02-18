@@ -1,3 +1,1 @@
-<div class="message error col-xs-12">
-    <?= h($message) ?>
-</div>
+<div class="message error text-danger"><?= h($message) ?></div>

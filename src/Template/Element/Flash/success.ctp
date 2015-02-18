@@ -1,3 +1,1 @@
-<div class="message success col-xs-12">
-    <?= h($message) ?>
-</div>
+<div class="message success text-success"><?= h($message) ?></div>

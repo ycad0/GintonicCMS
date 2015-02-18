@@ -3,32 +3,42 @@
 namespace GintonicCMS\Controller;
 
 use App\Controller\AppController as BaseController;
-use Cake\Event\Event;
 
-class AppController extends BaseController {
+class AppController extends BaseController
+{
+    public $helpers = ['GintonicCMS.GtwRequire','Paginator'];
+    public $paginate = ['maxLimit' => 5];
     
-    public function initialize() {
-//        $this->loadHelper('Form', [
-//            'templates' => 'app_form',
-//        ]);
-        
+    function initialize() {
+        parent::initialize();
         $this->loadComponent('Flash');
-        $this->loadComponent('Auth', [
-            'authorize' => 'Controller', //added this line
-            'authenticate' => [
-                'Form' => [
-                    'fields' => [
-                        'username' => 'email',
-                        'password' => 'password'
-                    ]
-                ]
-            ],
-            'unauthorizedRedirect' => [
-                'controller' => 'Users',
-                'action' => 'login'
-            ]
-        ]);
-        
+        $this->loadComponent('GtwCookie');
+        $this->loadComponent('Auth');
+
+        // Allow the display action so our pages controller
+        // continues to work.
+        $this->Auth->allow(['display']);
     }
+    
+    function isAuthorized($user){
+        if(!empty($user)){
+            if($user['role'] == 'admin'){
+                $this->layout = 'admin';
+            }
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    function __checklogin(){
+        $user = $this->Auth->user();
+        $this->layout = 'default';
+        if(!empty($user)){
+            if($user['role'] == 'admin'){
+                $this->layout = 'admin';
+            }
+        }
+    }
+    
 }
-?>

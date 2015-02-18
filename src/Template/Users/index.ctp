@@ -1,75 +1,79 @@
-<?php 
-/**
- * Gintonic Web
- * @author    Philippe Lafrance
- * @link      http://gintonicweb.com
- */
-
-$this->Helpers->load('GtwRequire.GtwRequire');
-
+<?php
+$this->assign('pagetitle', __('Users') . '<small>' . __('User Management') . '</small>');
+$this->Html->addCrumb(__('User Management'), ['controller' => 'users', 'action' => 'index']);
+$this->Html->addCrumb(__('Users'));
+$this->start('top_links');
+echo $this->Html->link('<i class="fa fa-plus">&nbsp;</i> Add User', ['action' => 'add'], ['class' => 'btn btn-primary', 'escape' => false]);
+$this->end();
+$this->Helpers()->load('GintonicCMS.GtwRequire');
 //$this->GtwRequire->req("ui/datatables");
-$this->GtwRequire->req("ui/calendar"); 
-$this->GtwRequire->req('ui/wysiwyg');
+//$this->GtwRequire->req("ui/calendar"); 
+//$this->GtwRequire->req('ui/wysiwyg');
 ?>
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<div class="row">
-			<div class="col-md-8"><h3 style='margin-top:0px'>Users</h3></div>
-			<div class="col-md-4 text-right"><?php echo $this->Html->actionIconBtn('fa fa-plus',' Add User','add',array(),'btn-primary'); ?></div>
-		</div>
-	</div>
-	<table class="table table-hover table-striped table-bordered">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>First Name</th>
-				<th>Last Name</th>
-				<th>Email</th>				
-				<th>Last Updated</th>
-				<th class='text-center'>Action</th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php if(empty($users)){?>
-				<tr>
-					<td colspan='7' class='text-warning'>No record found.</td>
-				</tr>
-			<?php }else{?>			
-				 <?php foreach ($users as $user): ?>
-					<tr>
-						<td>
-							<?php echo $user['User']['id']; ?>
-						</td>
-						<td>
-							<?php echo $user['User']['first']; ?>
-						</td>
-						<td>
-							<?php echo $user['User']['last']; ?>
-						</td>
-						<td>
-							<?php echo $user['User']['email']; ?>
-						</td>
-						<td>
-							<?php echo $user['User']['modified']; ?>
-						</td>
-						<td class="text-center">
-							<span class="text-left">
-								<?php 
-                                    echo $this->Html->actionIcon('fa fa-pencil', 'edit', $user['User']['id']);
-                                    echo '&nbsp;&nbsp;';
-                                    if (CakePlugin::loaded('GtwFiles')){
-                                        echo $this->Html->link('<i class="fa fa-file"> </i>',array('plugin'=>'gtw_files','controller'=>'files','action'=>'index',$user['User']['id']),array('title'=>'Click here to view file uploaded by '.$user['User']['first'],'escape'=>false));
-                                        echo '&nbsp;&nbsp;';
-                                    }
-                                    if($user['User']['role'] != 'admin'){
-                                        echo $this->Html->link('<i class="fa fa-trash-o"> </i>',array('controller'=>'users','action'=>'delete',$user['User']['id']),array('role'=>'button','escape'=>false,'title'=>'Delete this user'),'Are you sure? You want to delete this user.');
-                                    }
-                                ?>
-							</span>
-						</td>
-					</tr>
-				<?php endforeach; ?>
-			<?php }?>
-		</tbody>
-	</table>	
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box box-primary">           
+            <div class="box-footer clearfix">
+                <?php echo $this->element('paginationtop'); ?>
+            </div>
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th><?php echo __('Id'); ?></th>
+                            <th><?php echo __('First Name'); ?></th>
+                            <th><?php echo __('Last Name'); ?></th>
+                            <th><?php echo __('Email'); ?></th>
+                            <th><?php echo __('Last Updated'); ?></th>
+                            <th class='text-center'><?php echo __('Action'); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (empty($users)) { ?>
+                            <tr>
+                                <td colspan='7' class='text-warning'><?php echo __('No record found.'); ?></td>
+                            </tr>
+                        <?php } else { ?>	
+                            <?php foreach ($users as $user) { ?>
+                                <tr>
+                                    <td>
+                                        <?php echo $user->id; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $user->first; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $user->last; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $user->email; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $user->modified; ?>
+                                    </td>
+                                    <td class="actions text-center">
+                                        <span class='text-left'>
+                                            <?php
+                                            echo $this->Html->link('<i class="fa fa-pencil">&nbsp;</i> ', ['action' => 'edit', $user->id], ['escape' => false, 'title' => 'Click here to edit this user']);
+                                            echo '&nbsp;&nbsp;';
+                                            echo $this->Html->link('<i class="fa fa-th">&nbsp;</i> ', ['action' => 'view', $user->id], ['escape' => false, 'title' => 'Click here to view this user']);
+                                            echo '&nbsp;&nbsp;';
+                                            echo $this->Html->link('<i class="fa fa-file">&nbsp;</i>', array('controller' => 'files', 'action' => 'index', $user->id), array('title' => 'Click here to view file uploaded by ' . $user->first, 'escape' => false));
+                                            echo '&nbsp;&nbsp;';
+                                            echo $this->Html->link('<i class="fa fa-trash-o">&nbsp;</i> ', ['action' => 'delete', $user->id], ['role' => 'button', 'escape' => false, 'title' => 'Delete this user','confirm' => __('Are you sure? You want to delete this user.')]);
+                                            ?>
+                                        </span>
+                                    </td>
+                                </tr>
+                            <?php }
+                        }
+                        ?>			
+                    </tbody>
+                </table>
+            </div>
+            <div class="box-footer clearfix">
+                <?php echo $this->element('pagination');  ?>
+            </div>
+        </div>
+    </div>
 </div>

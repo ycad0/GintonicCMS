@@ -1,30 +1,23 @@
+<?php 
+use Cake\Core\Configure;
+?>
 <div class="container">
     <div class="row">
         <div class="col-sm-6 col-md-4 col-md-offset-4">
             <h1 class="text-center login-title">Reset your password</h1>
-            <div class="account-wall">            
-                <?php echo $this->Html->image("/GtwUsers/img/logo.png", array("class" => "img-responsive profile-img")); ?>
-                <?php echo $this->Form->create('User', array(
-                        'action' => 'reset_password/'.$userId.'/'.$token,
-                        'class' => 'form-signin'
-                ));?>
-                    <?php echo $this->Session->flash(); ?>
-                   	<input name="data[User][new_password]" type="password" class="form-control" autofocus placeholder="New Password" required id='new_password' style='margin-bottom:0px;'>
-                   	<input name="data[User][confirm_password]" type="password" class="form-control" placeholder="Confirm Password" required id='confirm_password' oninput="checkPassword(this)">
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">Reset Password</button>
-                    <span class="clearfix"></span>
-                </form>
+            <div class="account-wall">
+                <?php
+                echo $this->Html->image(Configure::read('Gtw.site_logo_url'), ["class" => "img-responsive profile-img", "alt" => Configure::read('Gtw.site_name')]);
+                echo $this->Form->create('Users', ['class' => 'form-signin','url'=>['controller'=>'Users','action'=>'reset_password',$userId,$token], 'id' => 'UserLoginForm', 'novalidate' => 'novalidate']);
+                echo $this->Flash->render();
+                echo $this->Form->input('new_password', ['label' => false,'type'=>'password', 'class' => 'form-control', 'placeholder' => 'New Password', 'required', 'autofocus','style'=>['margin-bottom:0px;']]);
+                echo $this->Form->input('confirm_password', ['label' => false,'type'=>'password', 'class' => 'form-control', 'placeholder' => 'Confirm Password', 'required', 'autofocus','style'=>['margin-bottom:0px;','oninput'=>'checkPassword(this)']]);
+                echo $this->Form->submit(__('Reset Password'), ['class' => 'btn btn-lg btn-primary btn-block']);
+                ?>
+                <span class="clearfix"></span>
+                <?php echo $this->Form->end();?>
             </div>
-            <?php echo $this->Html->link('Already have an account?',
-                array(
-                    'plugin' => 'gtw_users',
-                    'controller' => 'users',
-                    'action' => 'signin'
-                ),
-                array(
-                    'class' => 'text-center new-account'
-                ));
-             ?>
+            <?php echo $this->Html->link(__('Already have an account?'), ['controller' => 'Users', 'action' => 'signin'], ['escape' => false,'class'=>'text-center new-account']); ?>
         </div>
     </div>
 </div>
