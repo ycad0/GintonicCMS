@@ -8,6 +8,7 @@ use Cake\Event\Event;
 use Cake\Network\Exception\NotFoundException;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\ORM\TableRegistry;
+use Cake\Network\Http\Client;
 
 class UsersController extends AppController{
     public function initialize() {
@@ -28,19 +29,16 @@ class UsersController extends AppController{
             $this->Flash->warning(__('You don\'t have permission to add user'));
             $this->redirect(array('controller'=>'users','action'=>'profile'));
         }
-        
-        $arrConditions = array();
-        $this->paginate = array(
-            'conditions' => $arrConditions,
-            'order' => array('Users.created' => 'desc'),
-            'limit' => 3
-        );
-        $this->set('users', $this->paginate('Users'));
-//        
-//        $users = $this->Users->find('all')
-//                //->where(['role <> '=>'admin'])
-//                ->all();
-//        $this->set(compact('users'));
+//        $arrConditions = array('Users.role != '=>'admin');
+//        $this->paginate = array(
+//            'where' => $arrConditions,
+//            'order' => array('Users.created' => 'desc'),
+//            'limit' => 3
+//        );
+//        $this->set('users', $this->paginate('Users'));
+        $arrConditions = ['Users.role'=>'user'];
+        $query = $this->Users->find('all')->where($arrConditions)->contain(['Files']);
+        $this->set('users', $this->paginate($query));
     }
 
     public function view($id)
@@ -77,7 +75,13 @@ class UsersController extends AppController{
             $this->Flash->warning(__('Invalid user'));
             return $this->redirect($this->request->referer());
         }
+//        $user = $this->Users->find()
+//                    ->where(['Users.id'=>$userId])
+//                    ->contain('Files')
+//                    ->first();
         $user = $this->Users->get($userId);
+        $this->loadModel('GintonicCMS.Files');
+        $avatar ='/' . $this->Files->getUrl('',$user->file_id);
         if ($this->request->is(['post', 'put'])) {
             $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {
@@ -86,18 +90,37 @@ class UsersController extends AppController{
             }
             $this->Flash->warning(__('The user could not be saved. Please, try again.'));
         }
-        $this->set(compact('user'));
+        $this->set(compact('user','avatar'));
         $this->render('/Users/edit_avatar');
     }
     
-    public function update_avatar($userId, $fileId){
+    public function update_avatar($userId = null, $fileId =null){
+        if (!empty($this->request->data['id'])) {
+            $userId = $this->request->data['id'];
+        }
+        if (!empty($this->request->data['file_id'])) {
+            $fileId = $this->request->data['file_id'];
+        }
         $user = $this->Users->safeRead(['Users.id'=>$userId]);
         $oldFile = $user->file_id;
-        $user->file_id = $fileId;
-        $user = $this->Users->patchEntity($user, $this->request->data);
+        $user->file_id = $this->request->data['file_id'];
         if ($this->Users->save($user)) {
-            $this->Users->Files->delete($oldFile);
+            $this->loadModel('GintonicCMS.Files');
+            $file = $this->Files->get($oldFile);
+            $this->Files->deleteFile($file->filename,$file->id);
+            $file = $this->Files->get($fileId);
+            echo json_encode(array(
+                    'message' => __('Profile photo has been change successfully.'),
+                    'success' => True,
+                    'file' => '/' . $this->Files->getUrl($file->filename),
+                ));
+        } else {
+            echo json_encode(array(
+                    'message' => __('Unable to change profile photo, Try again.'),
+                    'success' => false
+                ));
         }
+        exit;
     }
 
     public function signup()

@@ -6,16 +6,33 @@ use Cake\ORM\Table;
 use Cake\Network\Session;
 use Cake\Filesystem\File;
 use Cake\Filesystem\Folder;
+use Cake\I18n\Time;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
+use Cake\ORM\Entity;
 
 class FilesTable extends Table 
 {   
     public function initialize(array $config)
     {
-        $this->belongsTo('Users', [
-            'className' => 'Users',
-//            'foreignKey' => 'user_id',
-//            'propertyName' => 'Sender',
+        //for the default add the created and modified
+        $this->addBehavior('Timestamp', [
+            'events' => [
+                'Model.beforeSave' => [
+                    'created' => 'new',
+                    'modified' => 'always'
+                ]
+            ]
         ]);
+        
+//        $this->belongsTo('Users', [
+//            'className' => 'Users',
+//            'foreignKey' => 'user_id',
+//            'propertyName' => 'User',
+//        ]);
+        $this->addAssociations(['hasMany' => ['GintonicCMS.Users']]);
+        
+        
     }
     
 //    public function save(\Cake\Datasource\EntityInterface $entity, $options = array()) {
@@ -49,15 +66,8 @@ class FilesTable extends Table
         $count = empty($count) ? '' : ('_' . $count);
         return date("d_m_Y_G.i.s") . '_' . $userId . $count . '.' . $ext;
     }
-    
-    function save(\Cake\Datasource\EntityInterface $entity, $options = array()) {
-        if(!isset($entity->created)){
-            $entity->created = date('Y-m-d H:i:s');
-        }
-        parent::save($entity, $options);
-    }
 
-    public function getPath($filename, $dirName) {
+    public function getPath($filename, $dirName = null) {
         if (empty($dirName)) {
             $path = WWW_ROOT . 'files' . DS . 'uploads' . DS;
         } else {
@@ -68,13 +78,22 @@ class FilesTable extends Table
         return $path . $filename;
     }
 
-    public function getUrl($filename) {
+    public function getUrl($filename=null,$fileId = null) {
+        if(!empty($fileId)){
+            $file = $this->get($fileId);
+            return 'files/uploads/' . $file->filename;
+        }
         return 'files/uploads/' . $filename;
     }
 
-    public function deleteFile($filename) {
+    public function deleteFile($filename,$fileId = null) {
+        if(!empty($fileId)){
+            $oldFile = $this->get($fileId);
+            $this->delete($oldFile);
+        }
         $file = new File($this->getPath($filename));
         $file->delete();
+        $file->close();
     }
 
 }

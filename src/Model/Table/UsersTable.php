@@ -28,6 +28,19 @@ class UsersTable extends Table
     public function initialize(array $config) {
         parent::initialize($config);
         $this->primaryKey('id');
+        $this->addBehavior('Timestamp', [
+            'events' => [
+                'Model.beforeSave' => [
+                    'created' => 'new',
+                    'modified' => 'always'
+                ]
+            ]
+        ]);
+        $this->belongsTo('Files', [
+            'className' => 'GintonicCMS.Files',
+            'foreignKey' => 'file_id',
+            'propertyName' => 'file',
+        ]);
     }
     
     public function resetToken() {
@@ -42,7 +55,6 @@ class UsersTable extends Table
     }
     
     public function updateToken() {
-
         if (!$this->safeRead(null, CakeSession::read("Auth.User.id"))) {
             return false;
         }
@@ -63,21 +75,20 @@ class UsersTable extends Table
     }
     
     public function isValidated($email) {
-        $user = $this->findByEmail($email);
+        //$user = $this->findByEmail($email);
+        $user = $this->safeRead(['email'=>$email]);
         if (!isset($user)) {
             return false;
         }
-        return $user['User']['validated'];
+        //return $user['User']['validated'];
+        return $user->validated;
     }
     
     public function signupMail($email) {
-        $user = $this->find()
-                ->where(['email'=>$email])
-                ->first();
-//        $users = $this->findByEmail($email);
-//        foreach ($users as $user){
-//            $user = $user;
-//        }
+        $user = $this->safeRead(['email'=>$email]);
+//        $user = $this->find()
+//                ->where(['email'=>$email])
+//                ->first();
         
         if(!empty($user)){
             unset($user->password);
@@ -129,10 +140,11 @@ class UsersTable extends Table
     }
     
     public function ForgotPasswordEmail($email) {
-        $userObj = $this->findByEmail($email);
-        foreach ($userObj as $user){
-            $user = $user;
-        }
+        $user = $this->safeRead(['email'=>$email]);
+//        $userObj = $this->findByEmail($email);
+//        foreach ($userObj as $user){
+//            $user = $user;
+//        }
         $arrResponse = array('status' => 'fail', 'message' => 'Unable to send forgot password email, Please try again');
         if (empty($user)) {
             return array('status' => 'fail', 'message' => 'No matching email found');

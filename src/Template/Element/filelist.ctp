@@ -11,8 +11,8 @@ use Cake\I18n\Number;
     <td><?php echo $file->filename;?></td>
     <td><?php echo $file->ext;?></td>
     <td class='text-right'><?php echo Number::toReadableSize($file->size);?></td>
-    <?php if($this->Session->read('Auth.User.role')=='admin'){?>
-        <td><?php echo $file->first.' <small>('.$file->email.')</small>';?></td>
+    <?php if($this->Session->read('Auth.User.role')=='admin'){ ?>
+        <td><?php echo $file->filename.' <small>('.$file->ext.')</small>';?></td>
     <?php }?>
     <td>
         <?php

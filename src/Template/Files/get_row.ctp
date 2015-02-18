@@ -1,5 +1,5 @@
 <?php
-	foreach ($files as $key => $file) {
-		echo $this->element('filelist',array('file'=>$file));
-	}
+    foreach ($files as $key => $file) {
+            echo $this->element('GintonicCMS.filelist',array('file'=>$file));
+    }
 ?>

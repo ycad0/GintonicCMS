@@ -33,6 +33,13 @@ $cakeDescription = 'User Management';
         <?= $this->element('user/header'); ?>
         <div id="container">
             <div id="content">
+                <section class="content-header">
+                    <h1 style="float: left"><?php echo $this->fetch('pagetitle');?></h1>
+                    <div class="top-links" style="float: right">
+                        <?php echo $this->fetch('top_links'); ?>
+                    </div>
+                    <div class="clearfix"></div>
+                </section>
                 <?= $this->Flash->render() ?>
                 <div class="row">
                     <?= $this->fetch('content') ?>

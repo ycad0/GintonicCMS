@@ -15,7 +15,7 @@ class GtwRequireHelper extends Helper {
         }
         $configStripped = substr( $config, strrpos( $config, '/' )+1 );
         return
-            "<script>var baseUrl = '". $this->Html->Url->build('/', true) ."';</script>
+            "<script type='text/javascript'> var baseUrl = '". $this->Html->Url->build('/', true) ."'; </script>
             <script data-main='".$config."' src='".$require."'></script>
             <script type='text/javascript'>
                 require(['". $configStripped . "'], function () {

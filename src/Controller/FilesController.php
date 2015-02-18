@@ -30,11 +30,16 @@ class FilesController extends AppController
         $file = $this->Files->newEntity($this->request->data);
         $this->layout = 'ajax';
         if ($this->request->is(['post','put'])) {
+            if(isset($this->request->data['callBack'])){
+                $this->set('callbackModule',$this->request->data['callBack']);
+                unset($this->request->data['callBack']);
+            }
             $totalFiles = count($this->request->data['tmpFile']);
             $count = count($this->request->data['tmpFile'])>1?0:'';
             $flag = true;
             $title = $this->request->data['title'];
             $dirName = isset($this->request->data['dir'])?$this->request->data['dir']:"";
+            $fileIds = $fileNames = array();
             foreach ($this->request->data['tmpFile'] as $key => $name) {
                 $tmpFileArray['title'] = !empty($count)?($title . '_' . $count):$title;
                 $tmpFileArray['tmpFile'] = $name;
@@ -45,7 +50,8 @@ class FilesController extends AppController
                             $count
                     );
                     $this->request->data['dir'] = $dirName;
-                    $file = $this->Files->patchEntity($file, $this->request->data);
+                    //$file = $this->Files->patchEntity($file, $this->request->data);
+                    $file = $this->Files->newEntity($this->request->data);
                     unset($file->tmpFile);
                     if ($result = $this->Files->save($file)) {
                         $fileIds[] = $result->id;
@@ -76,7 +82,7 @@ class FilesController extends AppController
         $this->layout = 'ajax';
         $fileIds = explode(', ', $id);
         foreach ($fileIds as $key => $id) {
-                $files[]= $this->Files->read(null, $id);
+                $files[]= $this->Files->get($id);
         }
         $this->set('files',$files);
     }
@@ -99,6 +105,9 @@ class FilesController extends AppController
             $this->set(compact('userId'));
             $arrConditions = array('user_id' => $userId);
         }
+        $files = TableRegistry::get('Files');
+//        debug($files->newEntity($this->request->data()));
+//        exit;
         if ($this->request->session()->read('Auth.User.role') != 'admin') {
             $arrConditions = array('user_id' => $this->request->session()->read('Auth.User.id'));
         }
@@ -107,6 +116,8 @@ class FilesController extends AppController
             'order' => array('Files.created' => 'desc'),
             'limit' => 3
         );
+//        debug($this->paginate('Files'));
+//        exit;
         $this->set('files', $this->paginate('Files'));
     }
 

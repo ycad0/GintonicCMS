@@ -2,13 +2,14 @@ define(['jquery','basepath'], function ($, basepath) {
     return function(id, path){
         $.ajax({
             type: "POST",
-            url: basepath + "gtw_users/users/update_avatar",
+            url: basepath + "gintonic_c_m_s/users/update_avatar/",
 			dataType: 'json',
             data: { 
                 id: $('#user-id').val(),
                 file_id: id,
             },
             success: function(response, status) {
+                alert(response.file);
 				$('#gtwuserphoto').attr('src',response.file);
                 if (response.success){
                     $('#contact-alert').html(

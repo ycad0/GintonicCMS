@@ -29,7 +29,7 @@ echo $this->Form->create($user, ['templates' => ['inputContainer' => '<div class
         <div id="modal-loader"></div>
         <?php
         if (!empty($avatar)) {
-            echo $this->Html->image('/' . $avatar, array('class' => 'img-responsive img-thumbnail', 'id' => 'gtwuserphoto'));
+            echo $this->Html->image($avatar, array('class' => 'img-responsive img-thumbnail', 'id' => 'gtwuserphoto'));
         } else {
             echo $this->Html->image('http://i.imgur.com/dCVa3ik.jpg', array('class' => 'img-responsive img-thumbnail', 'id' => 'gtwuserphoto'));
         }

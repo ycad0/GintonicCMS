@@ -21,7 +21,7 @@ require(['jquery','basepath'], function ($, basepath) {
     });
     // Function called when an image is added. id is the file id in the database
     function uploadComplete(id, path, callbackModule){
-        $('#file-modal').modal('hide');        
+        $('#file-modal').modal('hide');
         require([callbackModule], function(callback){
             callback(id, path);
         });

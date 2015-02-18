@@ -1,7 +1,12 @@
 <?php
 use Cake\View\Helper\Helper\UrlHelper;
+
 $add = $this->Url->build(['controller' => 'files', 'action' => 'add']);
-//$add .= '/' . implode('/', $this->request->params['pass']);
+$add .= '/' . implode('/', $this->request->params['pass']);
+$callback = implode('/', $this->request->params['pass']);
+
+$this->Helpers()->load('GintonicCMS.GtwRequire');
+echo $this->GtwRequire->req('files/feedback');
 ?>
 <div class="modal fade" id="file-modal" tabindex="-1" role="dialog" aria-labelledby="file-modal-label" aria-hidden="true">
     <div class="modal-dialog">
@@ -13,6 +18,7 @@ $add = $this->Url->build(['controller' => 'files', 'action' => 'add']);
             </div>
             <div class="modal-body">
                 <?php
+                echo $this->Form->input('callBack',['value'=>$callback,'type'=>'hidden']);
                 echo $this->Form->input('title', ['type' => 'text', 'label' => 'Title']);
                 ?>
                 <div class="input-group">
@@ -22,7 +28,9 @@ $add = $this->Url->build(['controller' => 'files', 'action' => 'add']);
                             <input type="file" id="FileTmpFile" style="display:none" class="form-control" name="tmpFile[]" multiple="">
                         </label>
                     </span>
-                    <input type="text" readonly="" placeholder="No file Uploaded" class="form-control" id="filename"></div>
+                    <?php //echo $this->Form->input('f',['label'=>false,'type'=>'text','readonly','placeholder'=>__('No file uploaded'),'class'=>'form-control','id'=>'filename','div'=>false]);?>
+                    <input type="text" readonly="" placeholder="No file Uploaded" class="form-control" id="filename">
+                </div>
                 <?php
                 if ($this->request->named) {
                     echo $this->Form->input('dir', array('type' => 'hidden', 'value' => !empty($this->request->named['dir']) ? $this->request->named['dir'] : ''));
