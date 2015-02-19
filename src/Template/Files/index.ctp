@@ -35,16 +35,16 @@ echo $this->GtwRequire->req('files/filepicker');
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (empty($files)) { ?>
+                        <?php if (empty($files)) : ?>
                             <tr>
                                 <td colspan='7' class='text-warning'>No file uploaded yet.</td>
                             </tr>
                             <?php
-                        } else {
+                        else :
                             foreach ($files as $file) {
                                 echo $this->element('filelist', array('file' => $file));
                             }
-                        }
+                        endif;
                         ?>
                     </tbody>
                 </table> 

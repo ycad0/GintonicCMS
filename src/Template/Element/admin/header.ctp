@@ -1,6 +1,5 @@
 <?php 
 use Cake\Core\Configure;
-use Cake\Core\Configure\Engine\PhpConfig;
 ?>
 <header class="header">
     <?php echo $this->Html->link($this->Html->image(Configure::read('Gtw.site_logo_url'),['alt'=>Configure::read('Gtw.site_name')]), ['controller' => 'admins', 'action' => 'index'], ['escape' => false, 'class' => 'logo']) ?>

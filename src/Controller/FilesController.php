@@ -12,12 +12,14 @@ class FilesController extends AppController
 {   
     public $helpers = array('Number', 'Time');
     
-    public function initialize() {
+    public function initialize() 
+    {
         parent::initialize();
         $this->loadComponent('RequestHandler');
     }
     
-    public function beforeFilter(Event $event) {
+    public function beforeFilter(Event $event) 
+    {
         parent::beforeFilter($event);
         $this->__checklogin();
         if ($this->RequestHandler->responseType() == 'json') {
@@ -106,18 +108,14 @@ class FilesController extends AppController
             $arrConditions = array('user_id' => $userId);
         }
         $files = TableRegistry::get('Files');
-//        debug($files->newEntity($this->request->data()));
-//        exit;
         if ($this->request->session()->read('Auth.User.role') != 'admin') {
             $arrConditions = array('user_id' => $this->request->session()->read('Auth.User.id'));
         }
         $this->paginate = array(
             'conditions' => $arrConditions,
             'order' => array('Files.created' => 'desc'),
-            'limit' => 3
+            'limit' => 5
         );
-//        debug($this->paginate('Files'));
-//        exit;
         $this->set('files', $this->paginate('Files'));
     }
 

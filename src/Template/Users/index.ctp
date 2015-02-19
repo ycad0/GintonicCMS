@@ -6,9 +6,6 @@ $this->start('top_links');
 echo $this->Html->link('<i class="fa fa-plus">&nbsp;</i> Add User', ['action' => 'add'], ['class' => 'btn btn-primary', 'escape' => false]);
 $this->end();
 $this->Helpers()->load('GintonicCMS.GtwRequire');
-//$this->GtwRequire->req("ui/datatables");
-//$this->GtwRequire->req("ui/calendar"); 
-//$this->GtwRequire->req('ui/wysiwyg');
 ?>
 <div class="row">
     <div class="col-xs-12">

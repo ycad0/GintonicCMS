@@ -17,6 +17,9 @@ $this->end();
                 <h1><?php echo $user->first.' '.$user->last; ?></h1>
             </div>
             <div class="box-body">
+                <div class="col-md-8">
+                    <?php echo $this->Html->image($avatar, array('class' => 'img-responsive img-thumbnail')); ?>
+                </div>
                 <div class="col-md-4">
                     <h2><a href="mailto:<?php echo $user->email ?>"><?php echo $user->email; ?></a></h2>
                 </div>

@@ -25,26 +25,10 @@ class FilesTable extends Table
             ]
         ]);
         
-//        $this->belongsTo('Users', [
-//            'className' => 'Users',
-//            'foreignKey' => 'user_id',
-//            'propertyName' => 'User',
-//        ]);
-        $this->addAssociations(['hasMany' => ['GintonicCMS.Users']]);
-        
-        
     }
-    
-//    public function save(\Cake\Datasource\EntityInterface $entity, $options = array()) {
-//        //$this->set($entity);
-//        if($entity->modified){
-//            unset($entity->modified);
-//        }
-//        parent::save($entity, $options);
-//    }
-    
 
-    public function moveUploaded($tmpFile, $userId, $dirName, $count) {
+    public function moveUploaded($tmpFile, $userId, $dirName, $count) 
+    {
         // fetch data
         $fileInfo['user_id'] = $userId;
         $fileInfo['size'] = $tmpFile['tmpFile']['size'];
@@ -62,13 +46,16 @@ class FilesTable extends Table
     }
 
     // This function creates/define what path and filename to give before storing it
-    public function createFileName($ext, $userId, $count) {
+    public function createFileName($ext, $userId, $count) 
+    {
         $count = empty($count) ? '' : ('_' . $count);
         return date("d_m_Y_G.i.s") . '_' . $userId . $count . '.' . $ext;
     }
 
-    public function getPath($filename, $dirName = null) {
-        if (empty($dirName)) {
+    public function getPath($filename, $dirName = null) 
+    {
+        if (empty($dirName)) 
+        {
             $path = WWW_ROOT . 'files' . DS . 'uploads' . DS;
         } else {
             $path = WWW_ROOT . 'files' . DS . 'uploads' . DS . $dirName . DS;
@@ -78,7 +65,8 @@ class FilesTable extends Table
         return $path . $filename;
     }
 
-    public function getUrl($filename=null,$fileId = null) {
+    public function getUrl($filename=null,$fileId = null) 
+    {
         if(!empty($fileId)){
             $file = $this->get($fileId);
             return 'files/uploads/' . $file->filename;
@@ -86,7 +74,8 @@ class FilesTable extends Table
         return 'files/uploads/' . $filename;
     }
 
-    public function deleteFile($filename,$fileId = null) {
+    public function deleteFile($filename,$fileId = null) 
+    {
         if(!empty($fileId)){
             $oldFile = $this->get($fileId);
             $this->delete($oldFile);

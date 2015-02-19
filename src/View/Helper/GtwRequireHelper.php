@@ -4,11 +4,13 @@ namespace GintonicCMS\View\Helper;
 use Cake\View\Helper;
 use Cake\View\Helper\UrlHelper;
 
-class GtwRequireHelper extends Helper {
+class GtwRequireHelper extends Helper 
+{
     
     public $helpers = array('Html');
     
-    public function load($config, $require = '//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.8/require.min.js'){
+    public function load($config, $require = '//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.8/require.min.js')
+    {
         $modules = '';
         if (!is_null($this->_View->get('requiredeps'))){
             $modules = "require([". implode(',',$this->_View->get('requiredeps')) . "]);";
@@ -25,7 +27,8 @@ class GtwRequireHelper extends Helper {
             </script>";
     }
     
-    public function req($name){
+    public function req($name)
+    {
         if (!isset($this->_View->viewVars['requiredeps'])){
             $this->_View->viewVars['requiredeps'] = array();
         }
@@ -33,14 +36,16 @@ class GtwRequireHelper extends Helper {
         return;
     }
     
-    public function ajax_req($name){
+    public function ajax_req($name)
+    {
         return 
             '<script>'.
                 'require(["'.$name.'"]);'.
             '</script>';
     }
     
-    public function basemodule($base, $default){
+    public function basemodule($base, $default)
+    {
     
         $jsController = $base . Inflector::camelize($this->params['controller']);
         

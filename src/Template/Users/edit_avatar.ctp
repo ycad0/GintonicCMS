@@ -38,31 +38,16 @@ echo $this->Form->create($user, ['templates' => ['inputContainer' => '<div class
     </div>
     <div class="col-md-8">
         <fieldset>
-            <?php
-            echo $this->Form->input('email', array(
-                'label' => 'Email',
-            ));
-            ?>
-            <?php
-            echo $this->Form->input('password', array(
-                'label' => 'Password',
-                'type' => 'hidden'
-            ));
+            <?php 
+            echo $this->Form->input('email', array('label' => 'Email'));
+            echo $this->Form->input('password', array('label' => 'Password','type' => 'hidden'));
             ?>
             <div class="form-group">
                 <label for="decoy-password">Password</label>
                 <input type="password" name="decoy-password" class="form-control" value="DefaultPassword" id="decoy-password">
             </div>
-            <?php
-            echo $this->Form->input('first', array(
-                'label' => 'First Name',
-            ));
-            ?>
-            <?php
-            echo $this->Form->input('last', array(
-                'label' => 'Last Name',
-            ));
-            ?>
+            <?php echo $this->Form->input('first', array('label' => 'First Name')); ?>
+            <?php echo $this->Form->input('last', array('label' => 'Last Name')); ?>
 <?php
 echo $this->Form->submit('Save', array(
     'div' => false,

@@ -1,5 +1,5 @@
 <?php
-use Cake\View\Helper\Helper\UrlHelper;
+use Cake\View\Helper\UrlHelper;
 
 $add = $this->Url->build(['controller' => 'files', 'action' => 'add']);
 $add .= '/' . implode('/', $this->request->params['pass']);

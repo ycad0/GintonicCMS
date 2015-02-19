@@ -2,13 +2,8 @@
 namespace GintonicCMS\Controller;
 
 use GintonicCMS\Controller\AppController;
-use Cake\Controller\Controller;
-use Cake\Core\Configure;
 use Cake\Event\Event;
-use Cake\Network\Exception\NotFoundException;
-use Cake\Auth\DefaultPasswordHasher;
 use Cake\ORM\TableRegistry;
-use Cake\Network\Http\Client;
 
 class UsersController extends AppController{
     public function initialize() {
@@ -29,13 +24,6 @@ class UsersController extends AppController{
             $this->Flash->warning(__('You don\'t have permission to add user'));
             $this->redirect(array('controller'=>'users','action'=>'profile'));
         }
-//        $arrConditions = array('Users.role != '=>'admin');
-//        $this->paginate = array(
-//            'where' => $arrConditions,
-//            'order' => array('Users.created' => 'desc'),
-//            'limit' => 3
-//        );
-//        $this->set('users', $this->paginate('Users'));
         $arrConditions = ['Users.role'=>'user'];
         $query = $this->Users->find('all')->where($arrConditions)->contain(['Files']);
         $this->set('users', $this->paginate($query));
@@ -48,8 +36,9 @@ class UsersController extends AppController{
             $this->redirect(['controller'=>'users','action'=>'profile']);
         }
         $user = $this->Users->safeRead(['Users.id'=>$id]);
-        //$user = $this->Users->get($id);
-        $this->set(compact('user'));
+        $this->loadModel('GintonicCMS.Files');
+        $avatar ='/' . $this->Files->getUrl('',$user->file_id);
+        $this->set(compact('user','avatar'));
     }
 
     public function add()
@@ -75,18 +64,18 @@ class UsersController extends AppController{
             $this->Flash->warning(__('Invalid user'));
             return $this->redirect($this->request->referer());
         }
-//        $user = $this->Users->find()
-//                    ->where(['Users.id'=>$userId])
-//                    ->contain('Files')
-//                    ->first();
         $user = $this->Users->get($userId);
         $this->loadModel('GintonicCMS.Files');
         $avatar ='/' . $this->Files->getUrl('',$user->file_id);
         if ($this->request->is(['post', 'put'])) {
-            $this->Users->patchEntity($user, $this->request->data);
+            $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('User has been updated.'));
-                return $this->redirect(['action' => 'index']);
+                if($this->request->session()->read('Auth.User.role') == 'admin'){
+                    return $this->redirect(['action' => 'index']);
+                }else{
+                    return $this->redirect(['action' => 'profile']);
+                }
             }
             $this->Flash->warning(__('The user could not be saved. Please, try again.'));
         }
@@ -94,7 +83,8 @@ class UsersController extends AppController{
         $this->render('/Users/edit_avatar');
     }
     
-    public function update_avatar($userId = null, $fileId =null){
+    public function update_avatar($userId = null, $fileId =null)
+    {
         if (!empty($this->request->data['id'])) {
             $userId = $this->request->data['id'];
         }
@@ -159,11 +149,6 @@ class UsersController extends AppController{
                 if(empty($user['validated'])){
                     $this->Flash->success(__('Login successfull.Please validate your email address'));
                 }
-//                if ($this->Auth->authenticationProvider()->needsPasswordRehash()) {
-//                    $user = $this->Users->get($this->Auth->user('id'));
-//                    $user->password = $this->request->data('password');
-//                    $this->Users->save($user);
-//                }
                 return $this->redirect($this->Auth->redirectUrl());
             }
             $this->Flash->error('Your username or password is incorrect.');
@@ -211,9 +196,6 @@ class UsersController extends AppController{
             $password = $this->Users->find()
                                     ->where(['Users.id'=>$this->request->session()->read('Auth.User.id')])
                                     ->first();
-//            if ($this->Users->findCustomPassword($this->request->data['current_password']) != $password->password) {
-//                $this->Flash->warning(__('Old Password does not match.'));
-//            } elseif ($this->request->data['new_password'] != $this->request->data['confirm_password']) {
             if ($this->request->data['new_password'] != $this->request->data['confirm_password']) {
                 $this->Flash->warning(__('Confirm Password entered does not match.'));
             } elseif ($this->request->data['new_password'] == "") {
@@ -232,7 +214,8 @@ class UsersController extends AppController{
         }
     }
     
-    public function reset_password($userId = null, $token = null) {
+    public function reset_password($userId = null, $token = null) 
+    {
         if ($userId && $token) {
             $arrResponse = $this->Users->checkForgotPassword($userId, $token);
             if ($arrResponse['status'] == 'fail') {
@@ -260,7 +243,8 @@ class UsersController extends AppController{
         }
     }
     
-    public function resend_verification() {
+    public function resend_verification() 
+    {
         if ($this->request->is(['post','put'])) {
             $arrResponse = $this->Users->ResendVerification($this->request->data['email']);
             if (!empty($arrResponse)) {
@@ -274,7 +258,8 @@ class UsersController extends AppController{
         }
     }
     
-    public function forgot_password() {
+    public function forgot_password() 
+    {
         //Check For Already Logged In
         if ($this->Auth->user()) {
             $this->Flash->warning(__('You are already login.'));
@@ -293,7 +278,8 @@ class UsersController extends AppController{
         }
     }
     
-    public function delete($id = null) {
+    public function delete($id = null) 
+    {
         if (empty($this->Auth->user())) {
             $this->Flash->warning(__('You are not login.'));
             return $this->redirect($this->Auth->redirectUrl());
@@ -311,7 +297,8 @@ class UsersController extends AppController{
         return $this->redirect(array('action' => 'index'));
     }
 
-    function isAuthorized($user) {
+    function isAuthorized($user) 
+    {
         if (!empty($user)) {
             if ($user['role'] == 'admin') {
                 $this->layout = 'admin';

@@ -8,7 +8,7 @@ require(['jquery'], function(){
     $('#decoy-password').focus(function(){
         $(this).val('');
     });
-    $('#decoy-password').on('input', function() {
-        $('#UserPassword').val($('#decoy-password').val());
+    $('#decoy-password').on('keypress', function() {
+        $('#password').val($('#decoy-password').val());
     });
 });

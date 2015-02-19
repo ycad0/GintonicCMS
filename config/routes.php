@@ -1,7 +1,8 @@
 <?php
 use Cake\Routing\Router;
 
-Router::plugin('GintonicCMS', function ($routes) {
+Router::plugin('GintonicCMS', function ($routes) 
+{
     Router::extensions('rss');
     $routes->connect('/', array('controller' => 'users', 'action' => 'signin'));
     $routes->connect('/users', array('controller' => 'users'));

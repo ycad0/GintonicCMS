@@ -25,7 +25,8 @@ class UsersTable extends Table
             ]);
     }
     
-    public function initialize(array $config) {
+    public function initialize(array $config) 
+    {
         parent::initialize($config);
         $this->primaryKey('id');
         $this->addBehavior('Timestamp', [
@@ -41,55 +42,21 @@ class UsersTable extends Table
             'foreignKey' => 'file_id',
             'propertyName' => 'file',
         ]);
-    }
-    
-    public function resetToken() {
-        if (!$this->safeRead(null, CakeSession::read("Auth.User.id"))) {
-            return false;
-        }
-
-        $this->data['User']['token'] = md5(uniqid(rand(), true));
-        $this->data['User']['token_creation'] = date("Y-m-d H:i:s");
-
-        return $this->save();
-    }
-    
-    public function updateToken() {
-        if (!$this->safeRead(null, CakeSession::read("Auth.User.id"))) {
-            return false;
-        }
-
-        App::uses('CakeTime', 'Utility');
-
-        $emptyToken = !$this->data['User']['token'];
-        $expiredToken = CakeTime::wasWithinLast(
-                        Configure::read('GtwCookies.loginDuration'), $this->data['User']['token_creation']
-        );
-
-        if ($emptyToken || $expiredToken) {
-            $this->data['User']['token'] = md5(uniqid(rand(), true));
-            $this->data['User']['token_creation'] = date("Y-m-d H:i:s");
-        }
-
-        return $this->save();
+        
+        $this->addAssociations(['hasMany' => ['GintonicCMS.Files']]);
     }
     
     public function isValidated($email) {
-        //$user = $this->findByEmail($email);
         $user = $this->safeRead(['email'=>$email]);
         if (!isset($user)) {
             return false;
         }
-        //return $user['User']['validated'];
         return $user->validated;
     }
     
-    public function signupMail($email) {
+    public function signupMail($email) 
+    {
         $user = $this->safeRead(['email'=>$email]);
-//        $user = $this->find()
-//                ->where(['email'=>$email])
-//                ->first();
-        
         if(!empty($user)){
             unset($user->password);
             $user->token = md5(uniqid(rand(), true));
@@ -100,7 +67,8 @@ class UsersTable extends Table
         return true;
     }
     
-    public function sendSignupMail($user) {
+    public function sendSignupMail($user) 
+    {
         $email = new Email();
         $email->profile('default');
         $email->viewVars(array('userId' => $user->id, 'token' => $user->token));
@@ -113,7 +81,8 @@ class UsersTable extends Table
         
     }
     
-    public function safeRead($conditions = null) {
+    public function safeRead($conditions = null) 
+    {
         $this->data = $this->find()
                 ->where([$conditions])
                 ->first();
@@ -123,7 +92,8 @@ class UsersTable extends Table
         return $this->data;
     }
     
-    public function confirmation($userId, $token) {
+    public function confirmation($userId, $token) 
+    {
         $user = $this->safeRead(['id'=>$userId]);
         if (!$user) {
             return false;
@@ -139,12 +109,9 @@ class UsersTable extends Table
         return $user;
     }
     
-    public function ForgotPasswordEmail($email) {
+    public function ForgotPasswordEmail($email) 
+    {
         $user = $this->safeRead(['email'=>$email]);
-//        $userObj = $this->findByEmail($email);
-//        foreach ($userObj as $user){
-//            $user = $user;
-//        }
         $arrResponse = array('status' => 'fail', 'message' => 'Unable to send forgot password email, Please try again');
         if (empty($user)) {
             return array('status' => 'fail', 'message' => 'No matching email found');
@@ -160,7 +127,8 @@ class UsersTable extends Table
         return $arrResponse;
     }
 
-    public function sendForgotPasswordEmail($user) {
+    public function sendForgotPasswordEmail($user) 
+    {
         $email = new Email('default');
         $email->viewVars(array('userId' => $user->id, 'token' => $user->token));
         $email->template('GintonicCMS.forgot_password')
@@ -191,7 +159,8 @@ class UsersTable extends Table
         return $arrResponse;
     }
 
-    public function ResendVerification($email) {
+    public function ResendVerification($email) 
+    {
         $user = $this->safeRead(['email'=>$email]);
         if (empty($user)) {
             return array('status' => 'fail', 'message' => 'No matching email found. Please try with correct email address.');
@@ -206,7 +175,8 @@ class UsersTable extends Table
         }
     }
 
-    public function ResendVerificationEmail($user) {
+    public function ResendVerificationEmail($user) 
+    {
         $email = new Email('default');
         $email->viewVars(array('userId' => $user->id, 'token' => $user->token,'user'=>$user));
         $email->template('GintonicCMS.resend_code')
