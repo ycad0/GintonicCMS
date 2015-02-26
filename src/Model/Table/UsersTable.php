@@ -37,13 +37,20 @@ class UsersTable extends Table
                 ]
             ]
         ]);
-        $this->belongsTo('Files', [
-            'className' => 'GintonicCMS.Files',
-            'foreignKey' => 'file_id',
-            'propertyName' => 'file',
+        $this->addAssociations([
+            'belongsTo' => ['Files'=>[
+                'className' => 'GintonicCMS.Files',
+                'foreignKey' => 'file_id',
+                'propertyName' => 'file'
+            ]],
         ]);
+//        $this->belongsTo('Files', [
+//            'className' => 'GintonicCMS.Files',
+//            'foreignKey' => 'file_id',
+//            'propertyName' => 'file',
+//        ]);
         
-        $this->addAssociations(['hasMany' => ['GintonicCMS.Files']]);
+        //$this->addAssociations(['belongsTo' => ['GintonicCMS.Files']]);
     }
     
     public function isValidated($email) {

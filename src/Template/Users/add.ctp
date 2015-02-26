@@ -12,7 +12,7 @@ echo $this->GtwRequire->req('users/add_edit');
     <div class="col-xs-12">
         <div class="box box-primary">
             <div class="box-body">
-                <?php echo $this->Form->create($user, ['templates' => ['inputContainer' => '<div class="form-group no-leftpadding input text col-md-12 col-sm-12">{{content}}</div>', 'input' => '<input type="{{type}}" class="form-control" name="{{name}}"{{attrs}}>'], 'class' => 'form-horizontal', 'id' => 'UserAddEditForm', 'novalidate' => 'novalidate']); ?>
+                <?php echo $this->Form->create($user, ['id' => 'UserAddEditForm', 'novalidate' => 'novalidate']); ?>
                 <div class="row">
                     <div class="col-md-12">				
                         <?php

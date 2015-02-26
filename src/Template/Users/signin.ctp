@@ -16,23 +16,25 @@ echo $this->GtwRequire->req('users/login_validation');
                 echo $this->Html->image(Configure::read('Gtw.site_logo_url'), ["class" => "img-responsive profile-img", "alt" => Configure::read('Gtw.site_name')]);
                 ?>
                 <?php
-                echo $this->Form->create('Users', ['class' => 'form-signin', 'id' => 'UserLoginForm', 'novalidate' => 'novalidate']);
+                echo $this->Form->create('Users', ['templates'=>['submitContainer' => '<div class="submit form-group">{{content}}</div>'],'class' => 'form-signin form-horizontal', 'id' => 'UserLoginForm', 'novalidate' => 'novalidate']);
                 ?>
                 <?php echo $this->Flash->render() ?>
-                <p class="text-center">
+                <p class="text-center form-group">
                     <?php
                     echo $this->Html->link(__('Create an account'), ['controller' => 'users', 'action' => 'signup'], ['class' => 'text-center new-account', 'style' => 'display:inline-block']);
                     ?>
                 </p>
                 <?php
-                echo $this->Form->input('email', ['label' => false, 'class' => 'form-control', 'placeholder' => 'Email', 'required', 'autofocus']);
-                echo $this->Form->input('password', ['label' => false, 'class' => 'form-control', 'placeholder' => 'Password', 'required']);
+                echo $this->Form->input('email', ['label' => false, 'placeholder' => 'Email', 'required', 'autofocus']);
+                echo $this->Form->input('password', ['label' => false, 'placeholder' => 'Password', 'required']);
                 echo $this->Form->submit(__('Sign in'), ['class' => 'btn btn-lg btn-primary btn-block']);
                 ?>
-                <label class="checkbox pull-left col-xs-10">
-                    <input name="remember" type="checkbox" value="remember-me">
-                    <?php echo __('Remember me'); ?>
-                </label>
+                <p class="checkbox form-group">
+                    <label>
+                        <input name="remember" type="checkbox" value="remember-me">
+                        <?php echo __('Remember me'); ?>
+                    </label>
+                </p>
                 <div class="clearfix"></div>
                 <?php echo $this->Form->end(); ?>
             </div>

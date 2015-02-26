@@ -13,7 +13,7 @@ echo $this->GtwRequire->req('users/register_validation');
                 <?php 
                 echo $this->Html->image(Configure::read('Gtw.site_logo_url'), ["class" => "img-responsive profile-img", "alt" => Configure::read('Gtw.site_name')]);
                 echo $this->Flash->render();
-                echo $this->Form->create('Users',['templates'=>['inputContainer'=>'<div class="form-group">{{content}}</div>'],'class' => 'form-signin','id'=>'UserSignupForm']);
+                echo $this->Form->create('Users',['templates'=>['submitContainer' => '<div class="submit form-group">{{content}}</div>'],'class' => 'form-signin form-horizontal','id'=>'UserSignupForm']);
                 echo $this->Form->input('first',['class'=>'form-control','placeholder'=>__('First Name'),'id'=>'signup-first'],'required');
                 echo $this->Form->input('last',['class'=>'form-control','placeholder'=>__('Last Name'),'id'=>'signup-last']);
                 echo $this->Form->input('email',['class'=>'form-control','placeholder'=>__('Email'),'id'=>'signup-email','parsley-trigger'=>'change','required']);

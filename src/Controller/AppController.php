@@ -6,7 +6,8 @@ use App\Controller\AppController as BaseController;
 
 class AppController extends BaseController
 {
-    public $helpers = ['GintonicCMS.GtwRequire','GintonicCMS.Custom','Paginator'];
+    public $helpers = ['GintonicCMS.GtwRequire','GintonicCMS.Custom'];
+    
     public $paginate = ['maxLimit' => 5];
     
     function initialize() 
@@ -15,7 +16,7 @@ class AppController extends BaseController
         $this->loadComponent('Flash');
         $this->loadComponent('GtwCookie');
         $this->loadComponent('Auth');
-
+        
         // Allow the display action so our pages controller
         $this->Auth->allow(['display']);
     }
@@ -38,6 +39,11 @@ class AppController extends BaseController
         $this->layout = 'default';
         if(!empty($user)){
             if($user['role'] == 'admin'){
+                if(!empty($user['file_id'])){
+                    $this->loadModel('GintonicCMS.Files');
+                    $adminAvatar ='/' . $this->Files->getUrl('',$user['file_id']);
+                    $this->set(compact('adminAvatar'));
+                }
                 $this->layout = 'admin';
             }
         }

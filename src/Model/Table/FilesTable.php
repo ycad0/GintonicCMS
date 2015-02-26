@@ -25,6 +25,11 @@ class FilesTable extends Table
             ]
         ]);
         
+        $this->belongsTo('Users', [
+            'className' => 'GintonicCMS.Users',
+            'foreignKey' => 'user_id',
+            'propertyName' => 'user',
+        ]);
     }
 
     public function moveUploaded($tmpFile, $userId, $dirName, $count) 

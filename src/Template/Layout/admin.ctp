@@ -14,9 +14,9 @@
         <?php echo $this->fetch('script') ?>
     </head>
     <body class="wysihtml5-supported  pace-done fixed skin-blue">
-        <?php echo $this->element('admin/header')?>
+        <?php echo $this->element('GintonicCMS.admin/header')?>
         <div class="wrapper row-offcanvas row-offcanvas-left">
-            <?php echo $this->element('admin/left')?>
+            <?php echo $this->element('GintonicCMS.admin/left')?>
             <aside class="right-side">
                 <section class="content-header">
                     <h1 style="float: left"><?php echo $this->fetch('pagetitle');?></h1>
