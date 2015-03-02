@@ -21,7 +21,16 @@ use Cake\Core\Configure;
                     <?php echo $this->Html->link(__('Dashboard'), ['controller' => 'users', 'action' => 'profile'], ['escape' => false]); ?>
                 </li>
                 <li class="<?php echo $this->Custom->getActiveClass('Files',['index']) ?>">
-                    <?php echo $this->Html->link(__('Manage Files'), ['controller' => 'files', 'action' => 'index'], ['escape' => false]); ?>
+                    <?php echo $this->Html->link(__('Manage Files'), ['plugin'=>'GintonicCMS','controller' => 'files', 'action' => 'index'], ['escape' => false]); ?>
+                </li>
+                <li class="<?php echo $this->Custom->getActiveClass('Comments',['index']) ?>">
+                    <?php echo $this->Html->link(__('View Comments'), ['plugin'=>'GtwComments','controller' => 'comments', 'action' => 'view'], ['escape' => false]); ?>
+                </li>
+                <li class="<?php echo $this->Custom->getActiveClass('Comments',['index']) ?>">
+                    <?php echo $this->Html->link(__('Manage Comments'), ['plugin'=>'GtwComments','controller' => 'comments', 'action' => 'index'], ['escape' => false]); ?>
+                </li>
+                <li class="<?php echo $this->Custom->getActiveClass('Messages',['index']) ?>">
+                    <?php echo $this->Html->link(__('Manage Messages'), ['plugin'=>'GtwMessage','controller' => 'messages', 'action' => 'index'], ['escape' => false]); ?>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -29,22 +38,27 @@ use Cake\Core\Configure;
                     <?php echo $this->Html->link(($this->Session->read('Auth.User.first') . ' ' . $this->Session->read('Auth.User.last')) . '<span class="caret"></span>','#',['escape'=>false,'class'=>'dropdown-toggle','data-toggle'=>'dropdown','role'=>'button','aria-expanded'=>false]); ?>
                     <ul class="dropdown-menu" role="menu">
                         <li>
-                            <?php echo $this->Html->link(__('Profile'),['controller'=>'users','action'=>'edit',$this->Session->read('Auth.User.id')],['escape'=>false]); ?>
+                            <?php echo $this->Html->link(__('Profile'),['plugin'=>'GintonicCMS','controller'=>'users','action'=>'edit',$this->Session->read('Auth.User.id')],['escape'=>false]); ?>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <?php echo $this->Html->link(__('Signout'),['controller'=>'users','action'=>'signout'],['escape'=>false]); ?>
+                            <?php echo $this->Html->link(__('Signout'),['plugin'=>'GintonicCMS','controller'=>'users','action'=>'signout'],['escape'=>false]); ?>
                         </li>
                     </ul>
                 </li>
             </ul>
             <?php else : ?>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="<?php echo $this->Custom->getActiveClass('Users',['signin']) ?>">
-                    <?php echo $this->Html->link(__('signin'), ['controller' => 'users', 'action' => 'signin'], ['escape' => false]); ?>
+            <ul class="nav navbar-nav">
+                <li class="<?php echo $this->Custom->getActiveClass('Comments',['index']) ?>">
+                    <?php echo $this->Html->link(__('View Comments'), ['plugin'=>'GtwComments','controller' => 'comments', 'action' => 'view'], ['escape' => false]); ?>
                 </li>
-                <li class="<?php echo $this->Custom->getActiveClass('Users',['signup']) ?>">
-                    <?php echo $this->Html->link(__('Signup'), ['controller' => 'users', 'action' => 'signup'], ['escape' => false]); ?>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="<?php echo $this->Custom->getActiveClass('users',['signin']) ?>">
+                    <?php echo $this->Html->link(__('signin'), ['plugin'=>'GintonicCMS','controller' => 'users', 'action' => 'signin'], ['escape' => false]); ?>
+                </li>
+                <li class="<?php echo $this->Custom->getActiveClass('users',['signup']) ?>">
+                    <?php echo $this->Html->link(__('Signup'), ['plugin'=>'GintonicCMS','controller' => 'users', 'action' => 'signup'], ['escape' => false]); ?>
                 </li>
             </ul>
             <?php endif; ?>

@@ -11,7 +11,7 @@ echo $this->GtwRequire->req('files/feedback');
 <div class="modal fade" id="file-modal" tabindex="-1" role="dialog" aria-labelledby="file-modal-label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <?php echo $this->Form->create($file, array('url' => ['controller' => 'files', 'action' => 'add'],'id' => 'ControllerAddForm','role' =>'form','templates' => ['inputContainer' => '<div class="form-group">{{content}}</div>', 'input' => '<input type="{{type}}" class="form-control" name="{{name}}"{{attrs}}>'],'type' => 'file','target' => 'upload_target')); ?>
+            <?php echo $this->Form->create($file, array('url' => ['controller' => 'files', 'action' => 'add'],'id' => 'ControllerAddForm','role' =>'form','type' => 'file','target' => 'upload_target')); ?>
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="file-modal-label"><?php echo __('Upload File'); ?></h4>

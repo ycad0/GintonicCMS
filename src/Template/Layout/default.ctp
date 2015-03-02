@@ -8,12 +8,13 @@
         </title>
         <?php echo $this->Html->meta('icon') ?>
         <?php echo $this->Html->css('site') ?>
+        
         <?php echo $this->fetch('meta') ?>
         <?php echo $this->fetch('css') ?>
         <?php echo $this->fetch('script') ?>
     </head>
     <body>
-        <?php echo $this->element('user/header')?>
+        <?php echo $this->element('GintonicCMS.user/header')?>
         <div class="wrapper row-offcanvas ">
             <section class="content">
                 <section class="content-header">

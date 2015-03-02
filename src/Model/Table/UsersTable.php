@@ -17,7 +17,7 @@ class UsersTable extends Table
     {
         return $validator
             ->notEmpty('email', 'A username is required')
-            ->notEmpty('password', 'A password is required')
+//            ->notEmpty('password', 'A password is required')
             ->notEmpty('role', 'A role is required')
             ->add('role', 'inList', [
                 'rule' => ['inList', ['admin', 'author']],
@@ -37,13 +37,20 @@ class UsersTable extends Table
                 ]
             ]
         ]);
-        $this->belongsTo('Files', [
-            'className' => 'GintonicCMS.Files',
-            'foreignKey' => 'file_id',
-            'propertyName' => 'file',
+        $this->addAssociations([
+            'belongsTo' => ['Files'=>[
+                'className' => 'GintonicCMS.Files',
+                'foreignKey' => 'file_id',
+                'propertyName' => 'file'
+            ]],
         ]);
+//        $this->belongsTo('Files', [
+//            'className' => 'GintonicCMS.Files',
+//            'foreignKey' => 'file_id',
+//            'propertyName' => 'file',
+//        ]);
         
-        $this->addAssociations(['hasMany' => ['GintonicCMS.Files']]);
+        //$this->addAssociations(['belongsTo' => ['GintonicCMS.Files']]);
     }
     
     public function isValidated($email) {
