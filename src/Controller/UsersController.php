@@ -64,9 +64,15 @@ class UsersController extends AppController{
             $this->Flash->warning(__('Invalid user'));
             return $this->redirect($this->request->referer());
         }
-        $user = $this->Users->get($userId);
-        $this->loadModel('GintonicCMS.Files');
-        $avatar ='/' . $this->Files->getUrl('',$user->file_id);
+        $user = $this->Users->find()
+                    ->where(['Users.id'=>$userId])
+                    ->contain(['Files'])
+                    ->first();
+        //$user = $this->Users->get($userId);
+        $avatar ='';
+        if(!empty($user->file)){
+            $avatar = '/files/uploads/' . $user->file->filename;
+        }
         if ($this->request->is(['post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {
@@ -92,12 +98,16 @@ class UsersController extends AppController{
             $fileId = $this->request->data['file_id'];
         }
         $user = $this->Users->safeRead(['Users.id'=>$userId]);
-        $oldFile = $user->file_id;
+        if(!empty($user->file_id)){
+            $oldFile = $user->file_id;
+        }
         $user->file_id = $this->request->data['file_id'];
         if ($this->Users->save($user)) {
             $this->loadModel('GintonicCMS.Files');
-            $file = $this->Files->get($oldFile);
-            $this->Files->deleteFile($file->filename,$file->id);
+            if(!empty($oldFile)){
+                $file = $this->Files->get($oldFile);
+                $this->Files->deleteFile($file->filename,$file->id);
+            }
             $file = $this->Files->get($fileId);
             echo json_encode(array(
                     'message' => __('Profile photo has been change successfully.'),
@@ -173,14 +183,15 @@ class UsersController extends AppController{
     
     public function confirmation($userId = null, $token = null) {
         if ($userId || $token) {
-            $user = $this->Users->confirmation($userId, $token);
+            $user = $this->Users->safeRead(['id'=>$userId]);
             if (!empty($user['validated'])) {
                 $this->Flash->warning(__('Your email address is already validated, please use email and password to login'));
                 return $this->redirect($this->Auth->redirectUrl());
             } elseif (!empty($user)) {
+                $user = $this->Users->confirmation($userId, $token);
                 $this->Auth->setUser($user->toArray());
                 $this->Flash->success(__('Email address successfuly validated'));
-                return $this->redirect($this->Auth->redirectUrl());
+                return $this->redirect(['plugin'=>'GintonicCMS','controller'=>'users','action'=>'profile']);
             } else {
                 $this->Flash->warning(__('The authorization link provided is erroneous, please contact an administrator'));
                 return $this->redirect($this->Auth->redirectUrl());

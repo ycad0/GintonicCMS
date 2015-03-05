@@ -30,7 +30,7 @@
                         <?php
                         echo $this->Html->getCrumbs(' / ', [
                             'text' => '<i class="fa fa-dashboard">&nbsp;</i> Home',
-                            'url' => ['controller' => 'users', 'action' => 'profile'],
+                            'url' => ['plugin'=>'GintonicCMS','controller' => 'users', 'action' => 'profile'],
                             'escape' => false
                         ]);
                         ?>

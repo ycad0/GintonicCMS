@@ -112,7 +112,6 @@ class UsersTable extends Table
         if (!$this->save($user)) {
             return false;
         }
-
         return $user;
     }
     
