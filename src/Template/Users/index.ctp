@@ -17,18 +17,18 @@ $this->Helpers()->load('GintonicCMS.GtwRequire');
                 <table class="table table-hover table-bordered">
                     <thead>
                         <tr>
-                            <th><?php echo __('Id'); ?></th>
-                            <th><?php echo __('First Name'); ?></th>
-                            <th><?php echo __('Last Name'); ?></th>
-                            <th><?php echo __('Email'); ?></th>
-                            <th><?php echo __('Last Updated'); ?></th>
+                            <th><?php echo $this->Paginator->sort('id'); ?></th>
+                            <th><?php echo $this->Paginator->sort('first',__('First Name')); ?></th>
+                            <th><?php echo $this->Paginator->sort('last',__('Last Name')); ?></th>
+                            <th><?php echo $this->Paginator->sort('email'); ?></th>
+                            <th><?php echo $this->Paginator->sort('modified',__('Last Updated')); ?></th>
                             <th class='text-center'><?php echo __('Action'); ?></th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if (empty($users)) { ?>
                             <tr>
-                                <td colspan='7' class='text-warning'><?php echo __('No record found.'); ?></td>
+                                <td colspan='6' class='text-warning'><?php echo __('No record found.'); ?></td>
                             </tr>
                         <?php } else { ?>	
                             <?php foreach ($users as $user) { ?>
@@ -69,7 +69,7 @@ $this->Helpers()->load('GintonicCMS.GtwRequire');
                 </table>
             </div>
             <div class="box-footer clearfix">
-                <?php echo $this->element('pagination');  ?>
+                <?php echo $this->element('GintonicCMS.pagination');  ?>
             </div>
         </div>
     </div>

@@ -8,8 +8,8 @@ use Cake\Auth\DefaultPasswordHasher;
 class User extends Entity
 {
 
-    protected $_accessible = ['fullname'=>true,'*' => true];
-    protected $_virtual = ['fullname'];
+    protected $_accessible = ['full_name'=>true,'first'=>true,'last'=>true,'*' => true];
+    protected $_virtual = ['full_name'];
 
     protected function _setPassword($password)
     {
@@ -28,7 +28,6 @@ class User extends Entity
                     ->where(['user_id' => $this->id])
                     ->all();
     }
-    
     
 }
 

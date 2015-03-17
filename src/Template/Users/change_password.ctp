@@ -6,7 +6,7 @@ $this->start('top_links');
 echo $this->Html->link('<i class="fa fa-reply">&nbsp;</i> Back', $this->request->referer(), ['class' => 'btn btn-default', 'escape' => false, 'title' => 'Click here to goto back']);
 $this->end();
 $this->Helpers()->load('GintonicCMS.GtwRequire');
-echo $this->GtwRequire->req('users/change_password');
+//echo $this->GtwRequire->req('users/change_password');
 ?>
 <div class="row">
     <div class="col-xs-12">
