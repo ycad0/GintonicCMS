@@ -150,7 +150,7 @@ class UsersController extends AppController{
     public function signin()
     {
         if (!empty($this->Auth->user())) {
-            $this->Message->setWarning(__('You are already Loggedin.'));
+            $this->FlashMessage->setWarning(__('You are already Loggedin.'));
             return $this->redirect($this->Auth->redirectUrl());
         }
         if ($this->request->is(['post', 'put'])) {

@@ -15,7 +15,7 @@ class AppController extends BaseController
         parent::initialize();
         $this->loadComponent('Flash');
         $this->loadComponent('GtwCookie');
-        $this->loadComponent('GintonicCMS.Message');
+        $this->loadComponent('GintonicCMS.FlashMessage');
         $this->loadComponent('Auth');
         
         // Allow the display action so our pages controller

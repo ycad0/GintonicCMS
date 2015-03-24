@@ -10,7 +10,7 @@ use Cake\Event\Event;
 use Cake\Network\Response;
 use Cake\Routing\Router;
 
-class MessageComponent extends Component
+class FlashMessageComponent extends Component
 {
     var $components = array('Flash');
     var $config = array();
