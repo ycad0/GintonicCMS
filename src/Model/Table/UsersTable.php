@@ -16,13 +16,16 @@ class UsersTable extends Table
     public function validationDefault(Validator $validator)
     {
         return $validator
-            ->notEmpty('email', 'A username is required')
-//            ->notEmpty('password', 'A password is required')
-            ->notEmpty('role', 'A role is required')
-            ->add('role', 'inList', [
-                'rule' => ['inList', ['admin', 'author']],
-                'message' => 'Please enter a valid role'
-            ]);
+            ->notEmpty('email', __('A username is required'))
+            ->notEmpty('role', __('A role is required'))
+            ->add('email', [
+                            'unique' => [
+                                'rule' => ['validateUnique'],
+                                'provider' => 'table'
+                            ]
+            ])
+            ->requirePresence('password')
+            ->notEmpty('password',['message'=>__('Please enter password.')]);
     }
     
     public function initialize(array $config) 
@@ -112,7 +115,6 @@ class UsersTable extends Table
         if (!$this->save($user)) {
             return false;
         }
-
         return $user;
     }
     

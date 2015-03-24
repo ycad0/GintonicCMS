@@ -25,8 +25,14 @@ class UsersController extends AppController{
             $this->redirect(array('controller'=>'users','action'=>'profile'));
         }
         $arrConditions = ['Users.role'=>'user'];
-        $query = $this->Users->find('all')->where($arrConditions)->contain(['Files']);
-        $this->set('users', $this->paginate($query));
+        //$query = $this->Users->find('all')->where($arrConditions)->contain(['Files']);
+        $this->paginate = array(
+            'conditions' => $arrConditions,
+//            'contain' => ['Files'],
+            'order' => array('Files.created' => 'desc'),
+            'limit' => 5
+        );
+        $this->set('users', $this->paginate('Users'));
     }
 
     public function view($id)
@@ -64,9 +70,15 @@ class UsersController extends AppController{
             $this->Flash->warning(__('Invalid user'));
             return $this->redirect($this->request->referer());
         }
-        $user = $this->Users->get($userId);
-        $this->loadModel('GintonicCMS.Files');
-        $avatar ='/' . $this->Files->getUrl('',$user->file_id);
+        $user = $this->Users->find()
+                    ->where(['Users.id'=>$userId])
+                    ->contain(['Files'])
+                    ->first();
+        //$user = $this->Users->get($userId);
+        $avatar ='';
+        if(!empty($user->file)){
+            $avatar = '/files/uploads/' . $user->file->filename;
+        }
         if ($this->request->is(['post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {
@@ -92,12 +104,16 @@ class UsersController extends AppController{
             $fileId = $this->request->data['file_id'];
         }
         $user = $this->Users->safeRead(['Users.id'=>$userId]);
-        $oldFile = $user->file_id;
+        if(!empty($user->file_id)){
+            $oldFile = $user->file_id;
+        }
         $user->file_id = $this->request->data['file_id'];
         if ($this->Users->save($user)) {
             $this->loadModel('GintonicCMS.Files');
-            $file = $this->Files->get($oldFile);
-            $this->Files->deleteFile($file->filename,$file->id);
+            if(!empty($oldFile)){
+                $file = $this->Files->get($oldFile);
+                $this->Files->deleteFile($file->filename,$file->id);
+            }
             $file = $this->Files->get($fileId);
             echo json_encode(array(
                     'message' => __('Profile photo has been change successfully.'),
@@ -134,12 +150,20 @@ class UsersController extends AppController{
     public function signin()
     {
         if (!empty($this->Auth->user())) {
-            $this->Flash->warning(__('You are already Loggedin.'));
+            $this->FlashMessage->setWarning(__('You are already Loggedin.'));
             return $this->redirect($this->Auth->redirectUrl());
         }
         if ($this->request->is(['post', 'put'])) {
             $user = $this->Auth->identify();
             if ($user) {
+                $this->loadModel('GintonicCMS.Files');
+                $user['file'] = $this->Files->find()
+                        ->where(['Files.id' => $user['file_id']])
+                        ->select(['id', 'filename'])
+                        ->first();
+                if (!empty($user['file'])) {
+                    $user['file'] = $user['file']->toArray();
+                }
                 $this->Auth->setUser($user);
                 if (isset($this->request->data['remember'])) {
                     $this->GtwCookie->rememberMe($this->request->session()->read('Auth'));
@@ -162,7 +186,7 @@ class UsersController extends AppController{
             return $this->redirect($this->Auth->logout());
         }
         $this->GtwCookie->forgetMe();
-        $this->Flash->success('You are now logged out.');
+        $this->Flash->success(__('You are now logged out.'));
         return $this->redirect($this->Auth->logout());
     }
     
@@ -173,14 +197,15 @@ class UsersController extends AppController{
     
     public function confirmation($userId = null, $token = null) {
         if ($userId || $token) {
-            $user = $this->Users->confirmation($userId, $token);
+            $user = $this->Users->safeRead(['id'=>$userId]);
             if (!empty($user['validated'])) {
                 $this->Flash->warning(__('Your email address is already validated, please use email and password to login'));
                 return $this->redirect($this->Auth->redirectUrl());
             } elseif (!empty($user)) {
+                $user = $this->Users->confirmation($userId, $token);
                 $this->Auth->setUser($user->toArray());
                 $this->Flash->success(__('Email address successfuly validated'));
-                return $this->redirect($this->Auth->redirectUrl());
+                return $this->redirect(['plugin'=>'GintonicCMS','controller'=>'users','action'=>'profile']);
             } else {
                 $this->Flash->warning(__('The authorization link provided is erroneous, please contact an administrator'));
                 return $this->redirect($this->Auth->redirectUrl());
@@ -193,9 +218,7 @@ class UsersController extends AppController{
     public function change_password()
     {
         if (!empty($this->request->data)) {
-            $password = $this->Users->find()
-                                    ->where(['Users.id'=>$this->request->session()->read('Auth.User.id')])
-                                    ->first();
+            $userDetail = $this->Users->get($this->request->session()->read('Auth.User.id'));
             if ($this->request->data['new_password'] != $this->request->data['confirm_password']) {
                 $this->Flash->warning(__('Confirm Password entered does not match.'));
             } elseif ($this->request->data['new_password'] == "") {
@@ -203,7 +226,8 @@ class UsersController extends AppController{
             } else {
                 $this->request->data['id'] = $this->request->session()->read('Auth.User.id');
                 $this->request->data['password'] = $this->request->data['new_password'];
-                $users = $this->Users->newEntity($this->request->data);
+                $users = $this->Users->patchEntity($userDetail,$this->request->data);
+                //$users = $this->Users->newEntity($this->request->data);
                 if ($this->Users->save($users)) {
                     $this->Flash->success(__('Password has been updated Successfully.'));
                     $this->redirect(array('controller'=>'users','action' => 'profile'));

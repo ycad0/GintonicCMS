@@ -4,6 +4,7 @@ use Cake\Core\Configure\Engine\PhpConfig;
 
 $this->Helpers()->load('GintonicCMS.GtwRequire');
 echo $this->GtwRequire->req('users/login_validation'); 
+$controller = (isset($this->request->params['controller']) && !empty($this->request->params['controller']))?$this->request->params['controller']:'users';
 ?>
 <div class="container">
     <div class="row">
@@ -16,12 +17,12 @@ echo $this->GtwRequire->req('users/login_validation');
                 echo $this->Html->image(Configure::read('Gtw.site_logo_url'), ["class" => "img-responsive profile-img", "alt" => Configure::read('Gtw.site_name')]);
                 ?>
                 <?php
-                echo $this->Form->create('Users', ['templates'=>['submitContainer' => '<div class="submit form-group">{{content}}</div>'],'class' => 'form-signin form-horizontal', 'id' => 'UserLoginForm', 'novalidate' => 'novalidate']);
+                echo $this->Form->create('Users', ['url'=>['controller'=>$controller],'templates'=>['submitContainer' => '<div class="submit form-group">{{content}}</div>'],'class' => 'form-signin form-horizontal', 'id' => 'UserLoginForm', 'novalidate' => 'novalidate']);
                 ?>
                 <?php echo $this->Flash->render() ?>
                 <p class="text-center form-group">
                     <?php
-                    echo $this->Html->link(__('Create an account'), ['controller' => 'users', 'action' => 'signup'], ['class' => 'text-center new-account', 'style' => 'display:inline-block']);
+                    echo $this->Html->link(__('Create an account'), ['controller' => $controller, 'action' => 'signup'], ['class' => 'text-center new-account', 'style' => 'display:inline-block']);
                     ?>
                 </p>
                 <?php

@@ -15,6 +15,7 @@ class AppController extends BaseController
         parent::initialize();
         $this->loadComponent('Flash');
         $this->loadComponent('GtwCookie');
+        $this->loadComponent('GintonicCMS.FlashMessage');
         $this->loadComponent('Auth');
         
         // Allow the display action so our pages controller
@@ -44,7 +45,7 @@ class AppController extends BaseController
                     $adminAvatar ='/' . $this->Files->getUrl('',$user['file_id']);
                     $this->set(compact('adminAvatar'));
                 }
-                $this->layout = 'admin';
+                $this->layout = 'GintonicCMS.admin';
             }
         }
     }
