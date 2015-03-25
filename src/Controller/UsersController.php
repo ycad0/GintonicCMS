@@ -166,7 +166,7 @@ class UsersController extends AppController{
                 }
                 $this->Auth->setUser($user);
                 if (isset($this->request->data['remember'])) {
-                    $this->GtwCookie->rememberMe($this->request->session()->read('Auth'));
+                    $this->Cookie->rememberMe($this->request->session()->read('Auth'));
                 }
                 // User needs to be validated
                 $this->Flash->success(__('Login successfull.'));
@@ -185,7 +185,7 @@ class UsersController extends AppController{
             $this->Flash->warning(__('You are not login.'));
             return $this->redirect($this->Auth->logout());
         }
-        $this->GtwCookie->forgetMe();
+        $this->Cookie->forgetMe();
         $this->Flash->success(__('You are now logged out.'));
         return $this->redirect($this->Auth->logout());
     }
