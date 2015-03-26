@@ -1,6 +1,5 @@
-<?php 
-use Cake\Core\Configure;
-?>
+<?php use Cake\Core\Configure; ?>
+
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -23,15 +22,6 @@ use Cake\Core\Configure;
                 <li class="<?php echo $this->Custom->getActiveClass('Files',['index']) ?>">
                     <?php echo $this->Html->link(__('Manage Files'), ['plugin'=>'GintonicCMS','controller' => 'files', 'action' => 'index'], ['escape' => false]); ?>
                 </li>
-                <li class="<?php echo $this->Custom->getActiveClass('Comments',['index']) ?>">
-                    <?php echo $this->Html->link(__('View Comments'), ['plugin'=>'GtwComments','controller' => 'comments', 'action' => 'view'], ['escape' => false]); ?>
-                </li>
-                <li class="<?php echo $this->Custom->getActiveClass('Comments',['index']) ?>">
-                    <?php echo $this->Html->link(__('Manage Comments'), ['plugin'=>'GtwComments','controller' => 'comments', 'action' => 'index'], ['escape' => false]); ?>
-                </li>
-                <li class="<?php echo $this->Custom->getActiveClass('Messages',['index']) ?>">
-                    <?php echo $this->Html->link(__('Manage Messages'), ['plugin'=>'GtwMessage','controller' => 'messages', 'action' => 'index'], ['escape' => false]); ?>
-                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
@@ -48,11 +38,6 @@ use Cake\Core\Configure;
                 </li>
             </ul>
             <?php else : ?>
-            <ul class="nav navbar-nav">
-                <li class="<?php echo $this->Custom->getActiveClass('Comments',['index']) ?>">
-                    <?php echo $this->Html->link(__('View Comments'), ['plugin'=>'GtwComments','controller' => 'comments', 'action' => 'view'], ['escape' => false]); ?>
-                </li>
-            </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="<?php echo $this->Custom->getActiveClass('users',['signin']) ?>">
                     <?php echo $this->Html->link(__('signin'), ['plugin'=>'GintonicCMS','controller' => 'users', 'action' => 'signin'], ['escape' => false]); ?>

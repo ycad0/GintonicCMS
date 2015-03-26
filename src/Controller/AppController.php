@@ -13,40 +13,35 @@ class AppController extends BaseController
     function initialize() 
     {
         parent::initialize();
+
         $this->loadComponent('Flash');
         $this->loadComponent('Cookie');
         $this->loadComponent('GintonicCMS.FlashMessage');
         $this->loadComponent('Auth');
         
-        // Allow the display action so our pages controller
         $this->Auth->allow(['display']);
     }
     
     function isAuthorized($user)
     {
-        if(!empty($user)){
-            if($user['role'] == 'admin'){
-                $this->layout = 'admin';
-            }
+        if(!empty($user) && $user['role'] == 'admin'){
+            $this->layout = 'admin';
             return true;
-        }else{
-            return false;
         }
+        return false;
     }
     
     function __checklogin()
     {
         $user = $this->Auth->user();
         $this->layout = 'default';
-        if(!empty($user)){
-            if($user['role'] == 'admin'){
-                if(!empty($user['file_id'])){
-                    $this->loadModel('GintonicCMS.Files');
-                    $adminAvatar ='/' . $this->Files->getUrl('',$user['file_id']);
-                    $this->set(compact('adminAvatar'));
-                }
-                $this->layout = 'GintonicCMS.admin';
+        if(!empty($user) && $user['role'] == 'admin'){
+            if(!empty($user['file_id'])){
+                $this->loadModel('GintonicCMS.Files');
+                $adminAvatar ='/' . $this->Files->getUrl('',$user['file_id']);
+                $this->set(compact('adminAvatar'));
             }
+            $this->layout = 'GintonicCMS.admin';
         }
     }
     
