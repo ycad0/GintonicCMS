@@ -6,19 +6,22 @@ use App\Controller\AppController as BaseController;
 
 class AppController extends BaseController
 {
-    public $helpers = ['GintonicCMS.GtwRequire','GintonicCMS.Custom'];
+    public $helpers = [
+        'GintonicCMS.GtwRequire',
+        'GintonicCMS.Custom',
+        'Form' => ['className' => 'BoostCake.Form'],
+        'Paginator' => ['className' => 'BoostCake.Paginator'],
+    ];
     
     public $paginate = ['maxLimit' => 5];
     
     function initialize() 
     {
         parent::initialize();
-
         $this->loadComponent('Flash');
         $this->loadComponent('Cookie');
         $this->loadComponent('GintonicCMS.FlashMessage');
         $this->loadComponent('Auth');
-        
         $this->Auth->allow(['display']);
     }
     
