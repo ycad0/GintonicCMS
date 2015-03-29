@@ -5,30 +5,27 @@ use GintonicCMS\Controller\AppController;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 
-class UsersController extends AppController{
-    public function initialize() {
-        parent::initialize();
-        $this->loadComponent('Auth');
-        TableRegistry::config('Users', ['table' => 'Users']);
-    }
-    
-    public function beforeFilter(Event $event) {
+class UsersController extends AppController
+{
+
+    public function beforeFilter(Event $event) 
+    {
         parent::beforeFilter($event);
-        $this->__checklogin();
-        $this->Auth->allow(['signin', 'signup','signout','confirmation', 'forgot_password','reset_password']);
+        $this->Auth->allow([
+            'signin',
+            'signup',
+            'signout',
+            'confirmation',
+            'forgot_password',
+            'reset_password'
+        ]);
     }
     
     public function index()
     {
-        if($this->request->session()->read('Auth.User.role') != 'admin'){
-            $this->Flash->warning(__('You don\'t have permission to add user'));
-            $this->redirect(array('controller'=>'users','action'=>'profile'));
-        }
-        $arrConditions = ['Users.role'=>'user'];
-        //$query = $this->Users->find('all')->where($arrConditions)->contain(['Files']);
+        $this->layout = 'admin';
         $this->paginate = array(
-            'conditions' => $arrConditions,
-//            'contain' => ['Files'],
+            'conditions' => ['Users.role'=>'user'],
             'order' => array('Files.created' => 'desc'),
             'limit' => 5
         );
@@ -132,7 +129,7 @@ class UsersController extends AppController{
     public function signup()
     {
         if (!empty($this->Auth->user())) {
-            $this->Flash->warning(__('You are already Loggedin.'));
+            $this->Flash->warning(__('You are already signed in.'));
             return $this->redirect($this->Auth->redirectUrl());
         }
         $user = $this->Users->newEntity($this->request->data);
@@ -150,7 +147,7 @@ class UsersController extends AppController{
     public function signin()
     {
         if (!empty($this->Auth->user())) {
-            $this->FlashMessage->setWarning(__('You are already Loggedin.'));
+            $this->FlashMessage->setWarning(__('You are already signed in.'));
             return $this->redirect($this->Auth->redirectUrl());
         }
         if ($this->request->is(['post', 'put'])) {
@@ -158,9 +155,9 @@ class UsersController extends AppController{
             if ($user) {
                 $this->loadModel('GintonicCMS.Files');
                 $user['file'] = $this->Files->find()
-                        ->where(['Files.id' => $user['file_id']])
-                        ->select(['id', 'filename'])
-                        ->first();
+                    ->where(['Files.id' => $user['file_id']])
+                    ->select(['id', 'filename'])
+                    ->first();
                 if (!empty($user['file'])) {
                     $user['file'] = $user['file']->toArray();
                 }
@@ -169,9 +166,9 @@ class UsersController extends AppController{
                     $this->Cookie->rememberMe($this->request->session()->read('Auth'));
                 }
                 // User needs to be validated
-                $this->Flash->success(__('Login successfull.'));
+                $this->Flash->success(__('Login successful.'));
                 if(empty($user['validated'])){
-                    $this->Flash->success(__('Login successfull.Please validate your email address'));
+                    $this->Flash->success(__('Login successful. Please validate your email address'));
                 }
                 return $this->redirect($this->Auth->redirectUrl());
             }
@@ -182,7 +179,7 @@ class UsersController extends AppController{
     public function signout()
     {
         if (empty($this->Auth->user())) {
-            $this->Flash->warning(__('You are not login.'));
+            $this->Flash->warning(__('You are not logged in.'));
             return $this->redirect($this->Auth->logout());
         }
         $this->Cookie->forgetMe();
@@ -321,18 +318,6 @@ class UsersController extends AppController{
         return $this->redirect(array('action' => 'index'));
     }
 
-    function isAuthorized($user) 
-    {
-        if (!empty($user)) {
-            if ($user['role'] == 'admin') {
-                $this->layout = 'admin';
-            }
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
 }
 
 ?>

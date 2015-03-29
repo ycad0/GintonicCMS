@@ -7,7 +7,7 @@
             <?php echo $this->fetch('title') ?>
         </title>
         <?php echo $this->Html->meta('icon') ?>
-        <?php echo $this->Html->css('GintonicCMS.site.css') ?>
+        <?php echo $this->Html->css('GintonicCMS.admin.css') ?>
         
         <?php echo $this->fetch('meta') ?>
         <?php echo $this->fetch('css') ?>

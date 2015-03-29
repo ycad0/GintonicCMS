@@ -2,7 +2,11 @@
 use Cake\Core\Configure;
 ?>
 <header class="header">
-    <?php echo $this->Html->link($this->Html->image(Configure::read('Gtw.site_logo_url'),['alt'=>Configure::read('Gtw.site_name')]), ['controller' => 'admins', 'action' => 'index'], ['escape' => false, 'class' => 'logo']) ?>
+    <?php echo $this->Html->link(
+        $this->Html->image('GintonicCMS.gintonic-white.png',['alt'=>Configure::read('Gtw.site_name')]),
+        ['controller' => 'admins', 'action' => 'index'], 
+        ['escape' => false, 'class' => 'logo']
+    ); ?>
     <nav class="navbar navbar-static-top" role="navigation">
         <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>

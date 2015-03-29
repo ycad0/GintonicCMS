@@ -21,7 +21,6 @@
             <li><?php echo $this->Html->link('<i class="fa fa-dashboard"></i> <span> ' . __('My Profile') . '</span>', ['plugin'=>'GintonicCMS','controller' => 'users', 'action' => 'profile'], ['escape' => false]) ?></li>
             <li><?php echo $this->Html->link('<i class="fa fa-user"></i> <span> ' . __('User Management') . '</span>', ['plugin'=>'GintonicCMS','controller' => 'users', 'action' => 'index'], ['escape' => false]) ?></li>
             <li><?php echo $this->Html->link('<i class="fa fa-file"></i> <span> ' . __('File Management') . '</span>', ['plugin'=>'GintonicCMS','controller' => 'files', 'action' => 'index'], ['escape' => false]) ?></li>
-            <li><?php echo $this->Html->link('<i class="fa fa-file"></i> <span> ' . __('Comments Management') . '</span>', ['plugin'=>'GtwComments','controller' => 'comments', 'action' => 'index'], ['escape' => false]) ?></li>
         </ul>
     </section>
 </aside>
