@@ -19,10 +19,10 @@ class UsersTable extends Table
             ->notEmpty('email', __('A username is required'))
             ->notEmpty('role', __('A role is required'))
             ->add('email', [
-                            'unique' => [
-                                'rule' => ['validateUnique'],
-                                'provider' => 'table'
-                            ]
+                'unique' => [
+                    'rule' => ['validateUnique'],
+                    'provider' => 'table'
+                ]
             ])
             ->requirePresence('password')
             ->notEmpty('password',['message'=>__('Please enter password.')]);
@@ -47,13 +47,6 @@ class UsersTable extends Table
                 'propertyName' => 'file'
             ]],
         ]);
-//        $this->belongsTo('Files', [
-//            'className' => 'GintonicCMS.Files',
-//            'foreignKey' => 'file_id',
-//            'propertyName' => 'file',
-//        ]);
-        
-        //$this->addAssociations(['belongsTo' => ['GintonicCMS.Files']]);
     }
     
     public function isValidated($email) {
@@ -83,10 +76,10 @@ class UsersTable extends Table
         $email->profile('default');
         $email->viewVars(array('userId' => $user->id, 'token' => $user->token));
         $email->template('GintonicCMS.signup')
-                ->emailFormat('html')
-                ->to($user->email)
-                ->from(Configure::read('Gtw.admin_mail'))
-                ->subject('Account validation');
+             ->emailFormat('html')
+             ->to($user->email)
+             ->from(Configure::read('admin_mail'))
+             ->subject('Account validation');
         return $email->send();
         
     }
@@ -94,8 +87,8 @@ class UsersTable extends Table
     public function safeRead($conditions = null) 
     {
         $this->data = $this->find()
-                ->where([$conditions])
-                ->first();
+             ->where([$conditions])
+             ->first();
         if (isset($this->data->password)){
             unset($this->data->password);
         }
@@ -143,7 +136,7 @@ class UsersTable extends Table
         $email->template('GintonicCMS.forgot_password')
                 ->emailFormat('html')
                 ->to($user->email)
-                ->from([Configure::read('Gtw.admin_mail') => Configure::read('Gtw.site_name')])
+                ->from([Configure::read('admin_mail') => Configure::read('site_name')])
                 ->subject('Forgot Password');
         return $email->send();
     }
@@ -189,10 +182,10 @@ class UsersTable extends Table
         $email = new Email('default');
         $email->viewVars(array('userId' => $user->id, 'token' => $user->token,'user'=>$user));
         $email->template('GintonicCMS.resend_code')
-                ->emailFormat('html')
-                ->to($user->email)
-                ->from([Configure::read('Gtw.admin_mail') => Configure::read('Gtw.site_name')])
-                ->subject('Account validation');
+            ->emailFormat('html')
+            ->to($user->email)
+            ->from([Configure::read('admin_mail') => Configure::read('site_name')])
+            ->subject('Account validation');
         return $email->send();
     }
     
