@@ -18,7 +18,6 @@ class AppController extends BaseController
         $this->loadComponent('Flash');
         $this->loadComponent('GintonicCMS.Cookie');
         $this->loadComponent('GintonicCMS.FlashMessage');
-        $this->loadComponent('Auth');
         parent::initialize();
     }
     
