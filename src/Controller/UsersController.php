@@ -216,7 +216,7 @@ class UsersController extends AppController
     
     public function confirmation($userId = null, $token = null) {
         if ($userId || $token) {
-            $user = $this->Users->safeRead(['id'=>$userId]);
+            $user = $this->Users->safeRead(['Users.id'=>$userId]);
             if (!empty($user['validated'])) {
                 $this->FlashMessage->setWarning(__('Your email address is already validated, please use email and password to login'));
                 return $this->redirect($this->Auth->redirectUrl());
