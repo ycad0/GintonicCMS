@@ -18,7 +18,10 @@ class User extends Entity
     
     protected function _getFullName()
     {
-        return $this->_properties['first'] . '  ' . $this->_properties['last'];
+        if(isset($this->_properties['first']) && isset($this->_properties['last'])){
+            return $this->_properties['first'] . '  ' . $this->_properties['last'];
+        }
+        return false;
     }
     
     protected function _getUserFiles()

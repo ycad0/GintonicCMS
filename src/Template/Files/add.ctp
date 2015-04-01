@@ -5,8 +5,8 @@ $add = $this->Url->build(['controller' => 'files', 'action' => 'add']);
 $add .= '/' . implode('/', $this->request->params['pass']);
 $callback = implode('/', $this->request->params['pass']);
 
-$this->Helpers()->load('GintonicCMS.GtwRequire');
-echo $this->GtwRequire->req('files/feedback');
+$this->Helpers()->load('GintonicCMS.Require');
+echo $this->Require->req('files/feedback');
 ?>
 <div class="modal fade" id="file-modal" tabindex="-1" role="dialog" aria-labelledby="file-modal-label" aria-hidden="true">
     <div class="modal-dialog">

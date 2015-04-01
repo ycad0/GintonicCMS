@@ -4,6 +4,7 @@ namespace GintonicCMS\Controller;
 use GintonicCMS\Controller\AppController;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
+use Cake\Core\Configure;
 
 class UsersController extends AppController
 {
@@ -21,75 +22,93 @@ class UsersController extends AppController
         ]);
     }
     
-    public function index()
+    public function admin_index()
     {
-        $this->layout = 'admin';
+        if((!$this->request->session()->check('Auth.User')) || ($this->request->session()->read('Auth.User.role') != 'admin')){
+            $this->FlashMessage->setWarning(__('You don\'t have permission to access this.'));
+            return $this->redirect(['controller'=>'users','action'=>'profile']);
+        }
+        $arrConditions = ['Users.role <> '=>'admin'];
         $this->paginate = array(
-            'conditions' => ['Users.role'=>'user'],
-            'order' => array('Files.created' => 'desc'),
+            'conditions' => $arrConditions,
+            'order' => array('Users.created' => 'desc'),
             'limit' => 5
         );
         $this->set('users', $this->paginate('Users'));
     }
+    
 
-    public function view($id)
+    public function admin_view($userId = null)
     {
-        if (!$id) {
-            $this->Flash->warning(__('Invalid user.'));
-            $this->redirect(['controller'=>'users','action'=>'profile']);
+        if(!$this->request->session()->check('Auth.User.id') || empty($userId) || ($this->request->session()->read('Auth.User.role')!= 'admin')){
+            $this->FlashMessage->setWarning(__('Invalid User.'));
+            return $this->redirect($this->Auth->redirectUrl());
         }
-        $user = $this->Users->safeRead(['Users.id'=>$id]);
-        $this->loadModel('GintonicCMS.Files');
-        $avatar ='/' . $this->Files->getUrl('',$user->file_id);
-        $this->set(compact('user','avatar'));
+        $user = $this->Users->safeRead(['Users.id'=>$userId]);
+        $this->set(compact('user'));
+        $this->render('/Users/view');
+    }
+    
+    public function view(){
+        if(!$this->request->session()->check('Auth.User.id')){
+            $this->FlashMessage->setWarning(__('Please Login to view this page.'));
+            return $this->redirect($this->Auth->redirectUrl());
+        }
+        $user = $this->Users->safeRead(['Users.id'=>$this->request->session()->read('Auth.User.id')]);
+        $this->set(compact('user'));
     }
 
-    public function add()
+    public function admin_add()
     {
         if($this->request->session()->read('Auth.User.role') != 'admin'){
-            $this->Flash->warning(__('You don\'t have permission to add user'));
-            $this->redirect(array('controller'=>'users','action'=>'profile'));
+            $this->FlashMessage->setWarning(__('You don\'t have permission to add user'));
+            return $this->redirect(['controller'=>'users','action'=>'profile']);
         }
         $this->request->data["validated"] = 1;
         $user = $this->Users->newEntity($this->request->data);
         if ($this->request->is('post')) {
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                $this->FlashMessage->setSuccess(__('The user has been saved.'));
+                return $this->redirect(['controller'=>'users','action' => 'admin_index']);
             }
-            $this->Flash->error(__('Unable to add the user.'));
+            $this->FlashMessage->setWarning(__('Unable to add the user.'));
         }
         $this->set('user', $user);
     }
     
-    public function edit($userId = 0) {
-        if (!$userId) {
-            $this->Flash->warning(__('Invalid user'));
+    public function edit() {
+        if (!$this->request->session()->check('Auth.User.id')) {
+            $this->FlashMessage->setWarning(__('You are not a authorised person to access this.'));
             return $this->redirect($this->request->referer());
         }
-        $user = $this->Users->find()
-                    ->where(['Users.id'=>$userId])
-                    ->contain(['Files'])
-                    ->first();
-        //$user = $this->Users->get($userId);
-        $avatar ='';
-        if(!empty($user->file)){
-            $avatar = '/files/uploads/' . $user->file->filename;
-        }
+        $user = $this->Users->safeRead(['Users.id'=>$this->request->session()->read('Auth.User.id')],true);
         if ($this->request->is(['post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('User has been updated.'));
-                if($this->request->session()->read('Auth.User.role') == 'admin'){
-                    return $this->redirect(['action' => 'index']);
-                }else{
-                    return $this->redirect(['action' => 'profile']);
-                }
+                $this->FlashMessage->setSuccess(__('User has been updated.'));
+                return $this->redirect(['action' => 'profile']);
             }
-            $this->Flash->warning(__('The user could not be saved. Please, try again.'));
+            $this->FlashMessage->setWarning(__('The user could not be saved. Please, try again.'));
         }
-        $this->set(compact('user','avatar'));
-        $this->render('/Users/edit_avatar');
+        $this->set(compact('user'));
+    }
+    
+    public function admin_edit($userId = 0) {
+        if (!empty($userId) && ($this->request->session()->read('Auth.User.role') != 'admin')) {
+            $this->FlashMessage->setWarning(__('Invalid user'));
+            return $this->redirect($this->request->referer());
+        }
+        $user = $this->Users->safeRead(['Users.id'=>$userId],true);
+        if ($this->request->is(['post', 'put'])) {
+            $user = $this->Users->patchEntity($user, $this->request->data);
+            if ($this->Users->save($user)) {
+                $this->FlashMessage->setSuccess(__('User has been updated.'));
+                return $this->redirect(['action' => 'admin_index']);
+            }
+            $this->FlashMessage->setWarning(__('The user could not be saved. Please, try again.'));
+        }
+        $this->set(compact('user'));
+        $this->render('/Users/edit');
     }
     
     public function update_avatar($userId = null, $fileId =null)
@@ -129,17 +148,17 @@ class UsersController extends AppController
     public function signup()
     {
         if (!empty($this->Auth->user())) {
-            $this->Flash->warning(__('You are already signed in.'));
+            $this->FlashMessage->setWarning(__('You are already signed in.'));
             return $this->redirect($this->Auth->redirectUrl());
         }
         $user = $this->Users->newEntity($this->request->data);
         if ($this->request->is(['post','put'])) {
             if ($this->Users->save($user)) {
                 $this->Users->signupMail($this->request->data['email']);
-                $this->Flash->success(__('Please check your e-mail to validate your account'));
+                $this->FlashMessage->setSuccess(__('Please check your e-mail to validate your account'));
                 return $this->redirect($this->Auth->redirectUrl());
             }
-            $this->Flash->warning(__('Error creating your account, please contact an administrator'));
+            $this->FlashMessage->setWarning(__('Error creating your account, please contact an administrator'));
         }
         $this->set('user', $user);
     }
@@ -155,60 +174,63 @@ class UsersController extends AppController
             if ($user) {
                 $this->loadModel('GintonicCMS.Files');
                 $user['file'] = $this->Files->find()
-                    ->where(['Files.id' => $user['file_id']])
-                    ->select(['id', 'filename'])
-                    ->first();
+                                            ->where(['Files.id' => $user['file_id']])
+                                            ->select(['id', 'filename'])
+                                            ->first();
                 if (!empty($user['file'])) {
                     $user['file'] = $user['file']->toArray();
+                }else{
+                    $user['file'] = ['id'=>0,'filename'=>'default'];
                 }
                 $this->Auth->setUser($user);
                 if (isset($this->request->data['remember'])) {
                     $this->Cookie->rememberMe($this->request->session()->read('Auth'));
                 }
                 // User needs to be validated
-                $this->Flash->success(__('Login successful.'));
+                $message = 'Login successful.';
                 if(empty($user['validated'])){
-                    $this->Flash->success(__('Login successful. Please validate your email address'));
+                    $message = 'Login successful. Please validate your email address.';
                 }
+                $this->FlashMessage->setSuccess(__($message));
                 return $this->redirect($this->Auth->redirectUrl());
             }
-            $this->Flash->error('Your username or password is incorrect.');
+            $this->FlashMessage->setWarning(__('Your username or password is incorrect.'));
         }
     }
     
     public function signout()
     {
         if (empty($this->Auth->user())) {
-            $this->Flash->warning(__('You are not logged in.'));
+            $this->FlashMessage->setWarning(__('You are not logged in.'));
             return $this->redirect($this->Auth->logout());
         }
         $this->Cookie->forgetMe();
-        $this->Flash->success(__('You are now logged out.'));
+        $this->request->session()->destroy();
+        $this->FlashMessage->setSuccess(__('You are now logged out.'));
         return $this->redirect($this->Auth->logout());
     }
     
     function profile() 
     {
-        
     }
     
     public function confirmation($userId = null, $token = null) {
         if ($userId || $token) {
             $user = $this->Users->safeRead(['id'=>$userId]);
             if (!empty($user['validated'])) {
-                $this->Flash->warning(__('Your email address is already validated, please use email and password to login'));
+                $this->FlashMessage->setWarning(__('Your email address is already validated, please use email and password to login'));
                 return $this->redirect($this->Auth->redirectUrl());
             } elseif (!empty($user)) {
                 $user = $this->Users->confirmation($userId, $token);
                 $this->Auth->setUser($user->toArray());
-                $this->Flash->success(__('Email address successfuly validated'));
+                $this->FlashMessage->setSuccess(__('Email address successfuly validated'));
                 return $this->redirect(['plugin'=>'GintonicCMS','controller'=>'users','action'=>'profile']);
             } else {
-                $this->Flash->warning(__('The authorization link provided is erroneous, please contact an administrator'));
+                $this->FlashMessage->setWarning(__('The authorization link provided is erroneous, please contact an administrator'));
                 return $this->redirect($this->Auth->redirectUrl());
             }
         }
-        $this->Flash->warning(__('Please check your e-mail for validation link'));
+        $this->FlashMessage->setWarning(__('Please check your e-mail for validation link'));
         return $this->redirect($this->Auth->redirectUrl());
     }
     
@@ -217,19 +239,18 @@ class UsersController extends AppController
         if (!empty($this->request->data)) {
             $userDetail = $this->Users->get($this->request->session()->read('Auth.User.id'));
             if ($this->request->data['new_password'] != $this->request->data['confirm_password']) {
-                $this->Flash->warning(__('Confirm Password entered does not match.'));
+                $this->FlashMessage->setWarning(__('Confirm Password entered does not match.'));
             } elseif ($this->request->data['new_password'] == "") {
-                $this->Flash->warning(__('New Password Must Not Blank'));
+                $this->FlashMessage->setWarning(__('New Password Must Not Blank'));
             } else {
                 $this->request->data['id'] = $this->request->session()->read('Auth.User.id');
                 $this->request->data['password'] = $this->request->data['new_password'];
                 $users = $this->Users->patchEntity($userDetail,$this->request->data);
-                //$users = $this->Users->newEntity($this->request->data);
                 if ($this->Users->save($users)) {
-                    $this->Flash->success(__('Password has been updated Successfully.'));
-                    $this->redirect(array('controller'=>'users','action' => 'profile'));
+                    $this->FlashMessage->setSuccess(__('Password has been updated Successfully.'));
+                    return $this->redirect(['controller'=>'users','action' => 'profile']);
                 } else {
-                    $this->Flash->warning(__('Unable to Change Password, Please try again.'));
+                    $this->FlashMessage->setWarning(__('Unable to Change Password, Please try again.'));
                 }
             }
         }
@@ -240,17 +261,16 @@ class UsersController extends AppController
         if ($userId && $token) {
             $arrResponse = $this->Users->checkForgotPassword($userId, $token);
             if ($arrResponse['status'] == 'fail') {
-                $this->Flash->warning($arrResponse['message']);
+                $this->FlashMessage->setWarning(__($arrResponse['message']));
                 return $this->redirect($this->Auth->redirectUrl());
             }
         } else {
-            $this->Flash->warning(__($arrResponse['message']));
-            return $this->redirect($this->Auth->redirectUrl());
+            $this->FlashMessage->setWarning(__($arrResponse['message']),$this->Auth->redirectUrl());
         }
         $this->set(compact('userId', 'token'));
         if ($this->request->is(['post','put'])) {
             if ($this->request->data['new_password'] != $this->request->data['confirm_password']) {
-                $this->Flash->warning(__('New Password and Confirm Password must be same'));
+                $this->FlashMessage->setWarning(__('New Password and Confirm Password must be same'));
             } else {
                 $this->request->data['id'] = $userId;
                 $this->request->data['password'] = $this->request->data['new_password'];
@@ -258,7 +278,7 @@ class UsersController extends AppController
                 $this->request->data['token_creation'] = date("Y-m-d H:i:s");
                 $users = $this->Users->newEntity($this->request->data);
                 $this->Users->save($users);
-                $this->Flash->success(__('Your password has been updated successfully'));
+                $this->FlashMessage->setSuccess(__('Your password has been updated successfully'));
                 return $this->redirect($this->Auth->redirectUrl());
             }
         }
@@ -270,9 +290,9 @@ class UsersController extends AppController
             $arrResponse = $this->Users->ResendVerification($this->request->data['email']);
             if (!empty($arrResponse)) {
                 if ($arrResponse['status'] == 'fail') {
-                    $this->Flash->warning($arrResponse['message']);
+                    $this->FlashMessage->setWarning(__($arrResponse['message']));
                 } else {
-                    $this->Flash->success($arrResponse['message']);
+                    $this->FlashMessage->setSuccess(__($arrResponse['message']));
                     return $this->redirect($this->Auth->redirectUrl());
                 }
             }
@@ -283,41 +303,49 @@ class UsersController extends AppController
     {
         //Check For Already Logged In
         if ($this->Auth->user()) {
-            $this->Flash->warning(__('You are already login.'));
+            $this->FlashMessage->setWarning(__('You are already login.'));
             return $this->redirect($this->Auth->redirectUrl());
         }
         if ($this->request->is(['post','put'])) {
             $arrResponse = $this->Users->ForgotPasswordEmail($this->request->data['email']);
             if (!empty($arrResponse)) {
                 if ($arrResponse['status'] == 'fail') {
-                    $this->Flash->warning($arrResponse['message']);
+                    $this->FlashMessage->setWarning($arrResponse['message']);
                 } else {
-                    $this->Flash->success($arrResponse['message']);
+                    $this->FlashMessage->setSuccess($arrResponse['message']);
                     return $this->redirect($this->Auth->redirectUrl());
                 }
             }
         }
     }
     
-    public function delete($id = null) 
+    public function admin_delete($id = null) 
     {
         if (empty($this->Auth->user())) {
-            $this->Flash->warning(__('You are not login.'));
+            $this->FlashMessage->setWarning(__('You are not login.'));
             return $this->redirect($this->Auth->redirectUrl());
         }
         $user = $this->Users->get($id);
         if (!$user) {
-            $this->Flash->warning(__('Invalid user'));
+            $this->FlashMessage->setWarning(__('Invalid user'));
             return $this->redirect($this->request->referer());
         }
         if ($this->Users->delete($user)) {
-            $this->Flash->success(__('Users deleted'));
-            return $this->redirect(array('action' => 'index'));
+            $this->FlashMessage->setSuccess(__('Users deleted'));
+            return $this->redirect(['action' => 'admin_index']);
         }
-        $this->Flash->warning(__('Users was not deleted'));
-        return $this->redirect(array('action' => 'index'));
+        $this->FlashMessage->setWarning(__('Users was not deleted'));
+        return $this->redirect(['action' => 'admin_index']);
     }
-
+    
+    function change_layout($layout = 'default'){
+        if($this->request->session()->read('Auth.User.role') == 'admin'){
+            $this->request->session()->write('Site.layout','GintonicCMS.'.$layout);
+        }else{
+            $this->FlashMessage->setWarning(__('You are not authorised user to access this.'));
+        }
+        return $this->redirect(['plugin'=>'GintonicCMS','controller'=>'users','action'=>'profile']);
+    }
 }
 
 ?>

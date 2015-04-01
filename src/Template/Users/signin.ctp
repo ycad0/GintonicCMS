@@ -3,8 +3,8 @@
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
 
-$this->Helpers()->load('GintonicCMS.GtwRequire');
-echo $this->GtwRequire->req('users/login_validation'); 
+$this->Helpers()->load('GintonicCMS.Require');
+echo $this->Require->req('users/login_validation'); 
 
 $controller = 'users';
 if (isset($this->request->params['controller']) && !empty($this->request->params['controller'])){

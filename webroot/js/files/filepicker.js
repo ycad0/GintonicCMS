@@ -31,17 +31,17 @@ require(['jquery','basepath'], function ($, basepath) {
     window.uploadComplete = uploadComplete;
     //Allow to Edit Title
     $('.editTitle').on('click',function(){
-        $('#gtwFileid').val($(this).data('pk'));
-        $('#gtwFileTitle').val($(this).data('value'));
+        $('#Fileid').val($(this).data('pk'));
+        $('#FileTitle').val($(this).data('value'));
         $('.modal-footer').children('input[type="submit"]').show();
         $('.modal-footer').children('button.btn-primary').hide();
         $('#editTitleModal').modal();
     });
     $('.getFileLink').on('click',function(){
-        $('#gtwFileLink').val($(this).data('value'));
+        $('#FileLink').val($(this).data('value'));
         $('#getFileLinkModal').modal();
     });
-    $('#gtwFileUpdateForm').on('submit',function (e){
+    $('#FileUpdateForm').on('submit',function (e){
         $('.modal-footer').children('input[type="submit"]').hide();
         $('.modal-footer').children('button').show();
         e.preventDefault();

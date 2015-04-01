@@ -3,10 +3,10 @@ $this->assign('pagetitle', __('Add New user') . '<small>' . __('User Management'
 $this->Html->addCrumb(__('User Management'), ['controller' => 'users', 'action' => 'index']);
 $this->Html->addCrumb(__('Add New user'));
 $this->start('top_links');
-echo $this->Html->link('<i class="fa fa-reply">&nbsp;</i> Back', ['action' => 'index'], ['class' => 'btn btn-default', 'escape' => false, 'title' => 'Click here to goto users list']);
+echo $this->Html->link('<i class="fa fa-reply">&nbsp;</i> Back', ['action' => 'admin_index'], ['class' => 'btn btn-default', 'escape' => false, 'title' => 'Click here to goto users list']);
 $this->end();
-$this->Helpers()->load('GintonicCMS.GtwRequire');
-echo $this->GtwRequire->req('users/add_edit');
+$this->Helpers()->load('GintonicCMS.Require');
+echo $this->Require->req('users/add_edit');
 ?>
 <div class="row">
     <div class="col-xs-12">

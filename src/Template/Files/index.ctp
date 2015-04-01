@@ -8,7 +8,7 @@ echo $this->Html->link('<i class="fa fa-chevron-left">&nbsp;</i>&nbsp;Back', 'ja
 }
 echo $this->Html->link('<i class="fa fa-upload">&nbsp;</i>&nbsp;Upload file', 'javascript:void(0)', ['data-multiple'=>'true','data-loading-text'=>'Loading...','data-upload-callback'=>'files/index','class' => 'btn btn-primary upload', 'escape' => false, 'title' => 'Click here to upload files']);
 $this->end();
-echo $this->GtwRequire->req('files/filepicker');
+echo $this->Require->req('files/filepicker');
 ?>
 <div id = "upload-alert"></div>
 <div id="modal-loader"></div>
@@ -17,6 +17,13 @@ echo $this->GtwRequire->req('files/filepicker');
         <div class="box box-primary">           
             <div class="box-footer clearfix">
                 <?php echo $this->element('paginationtop'); ?>
+                <?php if($this->Session->read('Auth.User.role') != 'admin'): ?>
+                <div class="col-md-6 col-sm-6 text-right">
+                    <?php 
+                    echo $this->Html->link('<i class="fa fa-upload">&nbsp;</i>&nbsp;Upload file', 'javascript:void(0)', ['data-multiple'=>'true','data-loading-text'=>'Loading...','data-upload-callback'=>'files/index','class' => 'btn btn-sm btn-primary upload', 'escape' => false, 'title' => 'Click here to upload files']);
+                    ?>
+                </div>
+                <?php endif; ?>
             </div>
             <div class="box-body table-responsive no-padding">
                 <table class="table table-hover table-striped table-bordered" id="all-files">
@@ -58,15 +65,15 @@ echo $this->GtwRequire->req('files/filepicker');
 <div class="modal fade" id="editTitleModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
-            <?php echo $this->Form->create('Files',array('url'=>array('action'=>'update'),'id'=>'gtwFileUpdateForm'));?>
+            <?php echo $this->Form->create('Files',array('url'=>array('action'=>'update'),'id'=>'FileUpdateForm'));?>
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"><?php echo __('Update Title'); ?></h4>
             </div>
             <div class="modal-body">                
                 <?php 
-                    echo $this->Form->input('id',array('type'=>'hidden','id'=>'gtwFileid'));
-                    echo $this->Form->input('title',array('label'=>false,'class'=>'form-control','div'=>false,'id'=>'gtwFileTitle','maxlength'=>255));
+                    echo $this->Form->input('id',array('type'=>'hidden','id'=>'Fileid'));
+                    echo $this->Form->input('title',array('label'=>false,'class'=>'form-control','div'=>false,'id'=>'FileTitle','maxlength'=>255));
                 ?>
             </div>
             <div class="modal-footer">
@@ -87,7 +94,7 @@ echo $this->GtwRequire->req('files/filepicker');
             </div>
             <div class="modal-body">
                 <?php 
-                    echo $this->Form->input('link',array('label'=>false,'class'=>'form-control','onclick'=>'this.select();','div'=>false,'id'=>'gtwFileLink','maxlength'=>255));
+                    echo $this->Form->input('link',array('label'=>false,'class'=>'form-control','onclick'=>'this.select();','div'=>false,'id'=>'FileLink','maxlength'=>255));
                 ?>
             </div>
             <div class="modal-footer">

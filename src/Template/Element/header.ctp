@@ -1,5 +1,44 @@
 <?php use Cake\Core\Configure; ?>
-
+<?php if($this->Session->read('Auth.User.role') == 'admin'): ?>
+    <div class="container-fluid no-padding navbar-inverse">
+        <div class="navbar-header">
+            <?php
+            echo $this->Html->link(
+                    $this->Html->image('GintonicCMS.gintonic-white.png', ['class'=>'pull-left img-responsive profile-img navbar-img','alt' => Configure::read('site_name')]).'<small>'.__('Admin').'</small>', ['plugin'=>'GintonicCMS','controller' => 'users', 'action' => 'change_layout','admin'], ['escape' => false, 'class' => 'navbar-brand']
+            );
+            ?>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-admin-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+<!--        <span class="navbar-brand">
+            <?php 
+            echo __('You are logged in as admin');
+            ?>
+        </span>-->
+        <div class="collapse navbar-collapse pull-right" id="bs-admin-navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <?php echo $this->Html->link(
+                        '<i class="fa fa-user-secret">&nbsp;</i>&nbsp;'.__('My Account') ,
+                        ['plugin'=>'GintonicCMS','controller'=>'users','action' => 'change_layout','admin'],
+                        ['escape' => false]
+                    );?>
+                </li>
+                <li>
+                    <?php echo $this->Html->link(
+                        __('Logout').'&nbsp;<i class="fa fa-sign-out">&nbsp;</i>',
+                        ['plugin'=>'GintonicCMS','controller' => 'users', 'action' => 'signout'],
+                        ['escape' => false]
+                    );?>
+                </li>
+            </ul>
+        </div>
+    </div>
+<?php endif; ?>
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -39,6 +78,7 @@
                     ); ?>
                 </li>
             </ul>
+            <?php if($this->Session->read('Auth.User.role') != 'admin'): ?>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <?php echo $this->Html->link(
@@ -79,6 +119,7 @@
                     </ul>
                 </li>
             </ul>
+            <?php endif; ?>
             <?php else : ?>
             <ul class="nav navbar-nav navbar-right">
                 <li class="<?php echo $this->Custom->getActiveClass('users',['signin']) ?>">

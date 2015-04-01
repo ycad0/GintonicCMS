@@ -3,7 +3,7 @@ define(function(require){
     var $= require('jquery');
      var jqueryvalidate = require('jqueryvalidate');
 	
-	$(document).ready(function() {	
+	$(document).ready(function() {
                 jQuery('#UserAddEditForm').validate({
                     errorClass: "error",
                     rules:{

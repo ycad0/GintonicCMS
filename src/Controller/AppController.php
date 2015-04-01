@@ -3,11 +3,12 @@
 namespace GintonicCMS\Controller;
 
 use App\Controller\AppController as BaseController;
+use Cake\Core\Configure;
 
 class AppController extends BaseController
 {
     public $helpers = [
-        'GintonicCMS.GtwRequire',
+        'GintonicCMS.Require',
         'GintonicCMS.Custom',
         'Form' => ['className' => 'BoostCake.Form'],
         'Paginator' => ['className' => 'BoostCake.Paginator'],
@@ -18,6 +19,7 @@ class AppController extends BaseController
         $this->loadComponent('Flash');
         $this->loadComponent('GintonicCMS.Cookie');
         $this->loadComponent('GintonicCMS.FlashMessage');
+        $this->__set_layout();
         parent::initialize();
     }
     
@@ -28,5 +30,13 @@ class AppController extends BaseController
         }
         return parent::isAuthorized($user);
     }
-
+    
+    function __set_layout()
+    {
+        if(!$this->request->session()->check('Site.layout')){
+            $this->request->session()->write('Site.layout',Configure::read('Site.layout'));
+        }
+        $this->layout = $this->request->session()->read('Site.layout');
+    }
+    
 }

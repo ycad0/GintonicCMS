@@ -71,7 +71,7 @@ class Initial extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('role', 'string', [
-                'default' => null,
+                'default' => 'user',
                 'limit' => 20,
                 'null' => true,
             ])

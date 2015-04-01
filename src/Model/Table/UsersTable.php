@@ -21,7 +21,8 @@ class UsersTable extends Table
             ->add('email', [
                 'unique' => [
                     'rule' => ['validateUnique'],
-                    'provider' => 'table'
+                    'provider' => 'table',
+                    'message'=>__('Email adress already exists.')
                 ]
             ])
             ->requirePresence('password')
@@ -84,12 +85,16 @@ class UsersTable extends Table
         
     }
     
-    public function safeRead($conditions = null) 
+    public function safeRead($conditions = null,$withPassword = false) 
     {
         $this->data = $this->find()
-             ->where([$conditions])
-             ->first();
-        if (isset($this->data->password)){
+                            ->where([$conditions])
+                            ->contain(['Files'=>['fields'=>['Files.id','Files.filename']]])
+                            ->first();
+        if(empty($this->data['file'])){
+            $this->data['file']= ['id'=>0,'filename'=>'default'];
+        }
+        if (isset($this->data->password) && empty($withPassword)){
             unset($this->data->password);
         }
         return $this->data;
@@ -97,7 +102,7 @@ class UsersTable extends Table
     
     public function confirmation($userId, $token) 
     {
-        $user = $this->safeRead(['id'=>$userId]);
+        $user = $this->safeRead(['Users.id'=>$userId]);
         if (!$user) {
             return false;
         }
@@ -149,7 +154,7 @@ class UsersTable extends Table
     public function checkForgotPassword($userId, $token) 
     {
         $arrResponse = array('status' => 'fail', 'message' => 'Invalid forgot password token');
-        $user = $this->safeRead(['id'=>$userId]);
+        $user = $this->safeRead(['Users.id'=>$userId]);
         if (!empty($user) && $user->token == $token) {
             $time = new Time($this->data->token_creation);
             if (!$time->wasWithinLast('+1 day')) {
