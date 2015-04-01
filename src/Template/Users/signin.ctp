@@ -3,8 +3,8 @@
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
 
-$this->Helpers()->load('GintonicCMS.GtwRequire');
-echo $this->GtwRequire->req('users/login_validation'); 
+$this->Helpers()->load('GintonicCMS.Require');
+echo $this->Require->req('users/login_validation'); 
 
 $controller = 'users';
 if (isset($this->request->params['controller']) && !empty($this->request->params['controller'])){
@@ -22,7 +22,7 @@ if (isset($this->request->params['controller']) && !empty($this->request->params
 
                 <?php echo $this->Html->image(
                     Configure::read('site_logo_url'), [
-                        "class" => "img-responsive profile-img",
+                        "class" => "img-responsive profile-img site-logo",
                         "alt" => Configure::read('site_name')
                     ]
                 );?>

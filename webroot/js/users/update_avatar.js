@@ -9,7 +9,7 @@ define(['jquery', 'basepath'], function($, basepath) {
                 file_id: id,
             },
             success: function(response, status) {
-                $('#gtwuserphoto').attr('src', response.file);
+                $('#userphoto').attr('src', response.file);
                 if (response.success) {
                     $('#contact-alert').html(
                             '<div class="alert alert-dismissable alert-success">' +

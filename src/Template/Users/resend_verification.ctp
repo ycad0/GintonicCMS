@@ -1,8 +1,8 @@
 <?php 
 use Cake\Core\Configure;
 
-$this->Helpers()->load('GintonicCMS.GtwRequire');
-echo $this->GtwRequire->req('users/resend_code'); 
+$this->Helpers()->load('GintonicCMS.Require');
+echo $this->Require->req('users/resend_code'); 
 ?>
 <div class="container">
     <div class="row">
@@ -10,7 +10,7 @@ echo $this->GtwRequire->req('users/resend_code');
             <h1 class="text-center login-title"><?php echo __('Resend the Email Verification')?></h1>
             <div class="account-wall">
                 <?php
-                echo $this->Html->image(Configure::read('Gtw.site_logo_url'), ["class" => "img-responsive profile-img", "alt" => Configure::read('Gtw.site_name')]);
+                echo $this->Html->image(Configure::read('site_logo_url'), ["class" => "img-responsive profile-img site-logo", "alt" => Configure::read('site_name')]);
                 echo $this->Form->create('Users', ['class' => 'form-signin','url'=>['controller'=>'Users','action'=>'resend_verification'], 'id' => 'UserResendVerificationForm', 'novalidate' => 'novalidate']);
                 echo $this->Flash->render();
                 echo $this->Form->input('email', ['label' => 'Email', 'class' => 'form-control', 'placeholder' => 'Email Address', 'required', 'autofocus']);

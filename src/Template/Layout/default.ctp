@@ -34,9 +34,9 @@
           </div>
         </footer>
 
-        <?php echo $this->GtwRequire->req('jquery');?>
-        <?php echo $this->GtwRequire->req('bootstrap');?>
-        <?php //echo $this->GtwRequire->load($this->Url->build('/',TRUE).'gintonic_c_m_s/js/config'); ?>
+        <?php echo $this->Require->req('jquery');?>
+        <?php echo $this->Require->req('bootstrap');?>
+        <?php echo $this->Require->load($this->Url->build('/',TRUE).'gintonic_c_m_s/js/config'); ?>
 
     </body>
 </html>

@@ -3,8 +3,9 @@ namespace GintonicCMS\View\Helper;
 
 use Cake\View\Helper;
 use Cake\View\Helper\UrlHelper;
+use Cake\Utility\Inflector;
 
-class GtwRequireHelper extends Helper 
+class RequireHelper extends Helper 
 {
     
     public $helpers = array('Html');
