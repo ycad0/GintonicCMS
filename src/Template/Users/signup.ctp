@@ -8,7 +8,7 @@ use Cake\Core\Configure\Engine\PhpConfig;
             <h1 class="text-center login-title"><?php echo __('Sign up'); ?></h1>
             <div class="account-wall">
                 <?php 
-                echo $this->Html->image(Configure::read('site_logo_url'), ["class" => "img-responsive profile-img", "alt" => Configure::read('site_name')]);
+                echo $this->Html->image(Configure::read('site_logo_url'), ["class" => "img-responsive profile-img site-logo", "alt" => Configure::read('site_name')]);
                 echo $this->Flash->render();
                 echo $this->Form->create('Users',['url'=>['controller'=>'Users'],'templates'=>['submitContainer' => '<div class="submit form-group">{{content}}</div>'],'class' => 'form-signin form-horizontal','id'=>'UserSignupForm']);
                 echo $this->Form->input('first',['class'=>'form-control','placeholder'=>__('First Name'),'id'=>'signup-first'],'required');

@@ -22,7 +22,7 @@ if (isset($this->request->params['controller']) && !empty($this->request->params
 
                 <?php echo $this->Html->image(
                     Configure::read('site_logo_url'), [
-                        "class" => "img-responsive profile-img",
+                        "class" => "img-responsive profile-img site-logo",
                         "alt" => Configure::read('site_name')
                     ]
                 );?>
