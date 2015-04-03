@@ -132,22 +132,23 @@ class UsersController extends AppController
             }
             $file = $this->Files->get($fileId);
             echo json_encode(array(
-                    'message' => __('Profile photo has been change successfully.'),
-                    'success' => True,
-                    'file' => '/' . $this->Files->getUrl($file->filename),
-                ));
+                'message' => __('Profile photo has been change successfully.'),
+                'success' => True,
+                'file' => '/' . $this->Files->getUrl($file->filename),
+            ));
         } else {
             echo json_encode(array(
-                    'message' => __('Unable to change profile photo, Try again.'),
-                    'success' => false
-                ));
+                'message' => __('Unable to change profile photo, Try again.'),
+                'success' => false
+            ));
         }
         exit;
     }
 
     public function signup()
     {
-        if (!empty($this->Auth->user())) {
+        $user = $this->Auth->user();
+        if (!empty($user)) {
             $this->FlashMessage->setWarning(__('You are already signed in.'));
             return $this->redirect($this->Auth->redirectUrl());
         }
@@ -165,7 +166,8 @@ class UsersController extends AppController
 
     public function signin()
     {
-        if (!empty($this->Auth->user())) {
+        $user = $this->Auth->user();
+        if (!empty($user)) {
             $this->FlashMessage->setWarning(__('You are already signed in.'));
             return $this->redirect($this->Auth->redirectUrl());
         }
@@ -174,9 +176,9 @@ class UsersController extends AppController
             if ($user) {
                 $this->loadModel('GintonicCMS.Files');
                 $user['file'] = $this->Files->find()
-                                            ->where(['Files.id' => $user['file_id']])
-                                            ->select(['id', 'filename'])
-                                            ->first();
+                    ->where(['Files.id' => $user['file_id']])
+                    ->select(['id', 'filename'])
+                    ->first();
                 if (!empty($user['file'])) {
                     $user['file'] = $user['file']->toArray();
                 }else{
@@ -200,7 +202,8 @@ class UsersController extends AppController
     
     public function signout()
     {
-        if (empty($this->Auth->user())) {
+        $user = $this->Auth->user();
+        if (!empty($user)) {
             $this->FlashMessage->setWarning(__('You are not logged in.'));
             return $this->redirect($this->Auth->logout());
         }
@@ -321,7 +324,8 @@ class UsersController extends AppController
     
     public function admin_delete($id = null) 
     {
-        if (empty($this->Auth->user())) {
+        $user = $this->Auth->user();
+        if (!empty($user)) {
             $this->FlashMessage->setWarning(__('You are not login.'));
             return $this->redirect($this->Auth->redirectUrl());
         }

@@ -25,7 +25,8 @@ class CookieComponent extends Component
             return;
         }
         $user = $this->Cookie->read('remember_me');
-        if(empty($this->Auth->user())){
+        $auth = $this->Auth->user($user);
+        if (!empty($auth)) {
             $this->Controller->redirect(['controller' => 'users', 'action' => 'signout']);
         }
         return $this->Controller->redirect($this->Auth->redirectUrl());
