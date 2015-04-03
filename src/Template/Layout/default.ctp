@@ -22,15 +22,16 @@
     </head>
     <body>
 
-        <?php echo $this->element('GintonicCMS.header')?>
-        <div class="container">
-            <?php echo $this->Flash->render(); ?>
-            <?php echo $this->fetch('content'); ?>	                    
+        <?php echo $this->element('GintonicCMS.top-menu')?>
+        <?php echo $this->Flash->render(); ?>
+
+        <div id="content">
+        <?php echo $this->fetch('content'); ?>	                    
         </div>
 
         <footer class="footer">
           <div class="container">
-            <p class="text-muted">Place sticky footer content here.</p>
+            <p class="text-muted">Powered by <a href="https://github.com/gintonicweb/GintonicCMS">GintonicCMS</a> from <a href="http://gintonicweb.com">Gintonic Web</a> </p>
           </div>
         </footer>
 
