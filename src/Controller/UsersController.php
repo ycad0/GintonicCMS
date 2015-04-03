@@ -147,6 +147,7 @@ class UsersController extends AppController
 
     public function signup()
     {
+        $this->layout = 'bare';
         $user = $this->Auth->user();
         if (!empty($user)) {
             $this->FlashMessage->setWarning(__('You are already signed in.'));
@@ -166,6 +167,7 @@ class UsersController extends AppController
 
     public function signin()
     {
+        $this->layout = 'bare';
         $user = $this->Auth->user();
         if (!empty($user)) {
             $this->FlashMessage->setWarning(__('You are already signed in.'));

@@ -1,6 +1,6 @@
 <?php use Cake\Core\Configure; ?>
 <?php if($this->Session->read('Auth.User.role') == 'admin'): ?>
-    <div class="container-fluid no-padding navbar-inverse">
+    <div class="container navbar-inverse">
         <div class="navbar-header">
             <?php
             echo $this->Html->link(
@@ -40,7 +40,7 @@
     </div>
 <?php endif; ?>
 <nav class="navbar navbar-default">
-    <div class="container-fluid">
+    <div class="container">
         <div class="navbar-header">
             <?php echo $this->Html->link(
                 $this->Html->image(
@@ -135,7 +135,7 @@
                 </li>
                 <li class="<?php echo $this->Custom->getActiveClass('users',['signup']) ?>">
                     <?php echo $this->Html->link(
-                        __('Signup'),
+                        __('signup'),
                         [
                             'plugin'=>'GintonicCMS',
                             'controller' => 'users',
