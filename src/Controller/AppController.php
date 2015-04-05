@@ -19,7 +19,6 @@ class AppController extends BaseController
         $this->loadComponent('Flash');
         $this->loadComponent('GintonicCMS.Cookie');
         $this->loadComponent('GintonicCMS.FlashMessage');
-        $this->__set_layout();
         parent::initialize();
     }
     
@@ -29,14 +28,6 @@ class AppController extends BaseController
             return true;
         }
         return parent::isAuthorized($user);
-    }
-    
-    function __set_layout()
-    {
-        if(!$this->request->session()->check('Site.layout')){
-            $this->request->session()->write('Site.layout',Configure::read('Site.layout'));
-        }
-        $this->layout = $this->request->session()->read('Site.layout');
     }
     
 }
