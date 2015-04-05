@@ -25,9 +25,7 @@
         <?php echo $this->element('GintonicCMS.top-menu')?>
         <?php echo $this->Flash->render(); ?>
 
-        <div id="content">
         <?php echo $this->fetch('content'); ?>	                    
-        </div>
 
         <footer class="footer">
           <div class="container">
