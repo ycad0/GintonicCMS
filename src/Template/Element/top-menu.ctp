@@ -10,7 +10,7 @@
                         "alt" => Configure::read('site_name')
                     ]
                 ),
-                ['controller'=>'users','action'=>'profile'],
+                ['plugin'=>'GintonicCMS','controller'=>'Users','action'=>'profile'],
                 ['escape'=>false,'class'=>['navbar-brand']]
             );?>
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#user-menu">
@@ -26,7 +26,7 @@
                 <li class="<?php echo $this->Custom->getActiveClass('Users',['profile']) ?>">
                     <?php echo $this->Html->link(
                         __('Dashboard'),
-                        ['controller' => 'users', 'action' => 'profile'],
+                        ['plugin'=>'GintonicCMS','controller' => 'Users', 'action' => 'profile'],
                         ['escape' => false]
                     );?>
                 </li>
@@ -40,6 +40,7 @@
             </ul>
             <?php endif; ?>
             <ul class="nav navbar-nav navbar-right">
+                <?php if($this->Session->check('Auth.User')): ?>
                 <li class="dropdown">
                     <?php echo $this->Html->link(
                         ($this->Session->read('Auth.User.first').' '.$this->Session->read('Auth.User.last')).'<span class="caret"></span>',
@@ -54,12 +55,12 @@
                     ); ?>
                     <ul class="dropdown-menu" role="menu">
                         <li>
-                            <?php if($this->Session->read('Auth.User.role') != 'admin'): ?>
+                            <?php if($this->Session->read('Auth.User.role') == 'admin'): ?>
                                 <?php echo $this->Html->link(
                                     __('Administration'),
                                     [
                                         'plugin'=>'GintonicCMS',
-                                        'controller'=>'users',
+                                        'controller'=>'Users',
                                         'action' => 'change_layout',
                                         'admin'
                                     ],
@@ -72,19 +73,20 @@
                                 __('Profile'),
                                 [
                                     'plugin'=>'GintonicCMS',
-                                    'controller'=>'users',
+                                    'controller'=>'Users',
                                     'action'=>'edit',
                                     $this->Session->read('Auth.User.id')
                                 ],
                                 ['escape'=>false]
                             ); ?>
                         </li>
+                        <?php echo $this->fetch('topMenuActions'); ?>
                         <li>
                             <?php echo $this->Html->link(
                                 __('Signout'),
                                 [
                                     'plugin'=>'GintonicCMS',
-                                    'controller'=>'users',
+                                    'controller'=>'Users',
                                     'action'=>'signout'
                                 ],
                                 ['escape'=>false]
@@ -92,6 +94,7 @@
                         </li>
                     </ul>
                 </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>
