@@ -7,7 +7,7 @@ $this->end();
 <div class="container">
     <div class="row">
         <div class="col-sm-8 col-md-6 col-md-offset-3">
-            <div class="account-wall">
+            <div class="account-wall user-profile">
                 <?php echo $this->Html->image(
                     $this->Custom->getFileUrl($this->Session->read('Auth.User.file.filename')),
                     ['class'=>'img-responsive center-block']
