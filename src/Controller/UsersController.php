@@ -217,6 +217,10 @@ class UsersController extends AppController
     
     function profile() 
     {
+        if(!$this->request->session()->check('Auth.User.id')){
+            $this->FlashMessage->setWarning(__('You are not logged in.'));
+            return $this->redirect($this->Auth->logout());
+        }
     }
     
     public function confirmation($userId = null, $token = null) {
