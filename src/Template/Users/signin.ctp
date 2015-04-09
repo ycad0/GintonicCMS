@@ -6,10 +6,6 @@ use Cake\Core\Configure\Engine\PhpConfig;
 $this->Helpers()->load('GintonicCMS.Require');
 echo $this->Require->req('users/login_validation'); 
 
-$controller = 'users';
-if (isset($this->request->params['controller']) && !empty($this->request->params['controller'])){
-    $controller = $this->request->params['controller'];
-}
 ?>
 
 <div class="container">
@@ -19,22 +15,21 @@ if (isset($this->request->params['controller']) && !empty($this->request->params
                 <?php echo __('Sign in to continue'); ?>
             </h1>
             <div class="account-wall">
-
-                <?php echo $this->Html->image(
-                    Configure::read('site_logo_url'), [
-                        "class" => "img-responsive profile-img site-logo",
-                        "alt" => Configure::read('site_name')
-                    ]
-                );?>
-
+                <?php echo $this->Html->link(
+                        $this->Html->image(
+                                Configure::read('site_logo_url'), [
+                                    "class" => "img-responsive profile-img site-logo",
+                                    "alt" => Configure::read('site_name')
+                                ]
+                        ),
+                        '/',
+                        ['escape'=>false]
+                ); ?>
                 <?php echo $this->Form->create('Users', [
                     'inputdefaults' => [
                         'div' => 'form-group',
                         'wrapInput' => false,
                         'class' => 'form-control'
-                    ],
-                    'url' => [
-                        'controller' => $controller
                     ],
                     'templates' => [
                         'submitContainer' => '<div class="submit form-group">{{content}}</div>'
@@ -49,7 +44,7 @@ if (isset($this->request->params['controller']) && !empty($this->request->params
                 <p class="text-center form-group">
                     <?php echo $this->Html->link(
                         __('Create an account'),
-                        ['controller' => $controller, 'action' => 'signup'], 
+                        ['action' => 'signup'], 
                         [
                             'class' => 'text-center new-account',
                             'style' => 'display:inline-block'
@@ -86,7 +81,6 @@ if (isset($this->request->params['controller']) && !empty($this->request->params
                 <?php echo $this->Html->link(
                     __('Forgot your password?'),
                     [
-                        'controller' => 'Users',
                         'action' => 'forgot_password'
                     ],
                     ['escape' => false]
