@@ -47,14 +47,14 @@ use Cake\Core\Configure\Engine\PhpConfig;
                     'id'=>'signup-password'
                 ]);
                 echo $this->Form->submit(__('Sign up'),[
-                echo $this->Form->input('first',['class'=>'form-control','placeholder'=>__('First Name'),'id'=>'signup-first'],'required');
-                echo $this->Form->input('last',['class'=>'form-control','placeholder'=>__('Last Name'),'id'=>'signup-last']);
-                echo $this->Form->input('email',['class'=>'form-control','placeholder'=>__('Email'),'id'=>'signup-email','parsley-trigger'=>'change','required']);
-                echo $this->Form->input('password',['type'=>'password','class'=>'form-control','placeholder'=>__('Password'),'id'=>'signup-password']);
-                echo $this->Form->submit(__('Sign up'),['class'=>'btn btn-lg btn-primary btn-block']);
+                    'class'=>'btn btn-lg btn-primary btn-block'
+                ]);
                 echo $this->Form->end();
                 ?>
             </div>
+            <?php echo $this->Html->link(
+                __('Already have an account?'),
+                ['controller'=>'Users','action'=>'signin'],
                 ['escape'=>false,'class' => 'text-center new-account']
             ); ?>
         </div>
