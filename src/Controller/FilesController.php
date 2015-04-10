@@ -28,6 +28,10 @@ class FilesController extends AppController
 
     function add()
     {
+        if(!$this->request->session()->check('Auth.User.id')){
+            $this->FlashMessage->setWarning(__('You are not logged in.'));
+            return $this->redirect(['plugin'=>'GintonicCMS','controller'=>'Users','action'=>'signin']);
+        }
         $file = $this->Files->newEntity($this->request->data);
         $this->layout = 'ajax';
         if ($this->request->is(['post','put'])) {
@@ -90,6 +94,10 @@ class FilesController extends AppController
 
     public function delete($id)
     {
+        if(!$this->request->session()->check('Auth.User.id')){
+            $this->FlashMessage->setWarning(__('You are not logged in.'));
+            return $this->redirect(['plugin'=>'GintonicCMS','controller'=>'Users','action'=>'signin']);
+        }
         $file = $this->Files->get($id);
         if ($this->Files->delete($file)) {
             //Delete File
@@ -101,11 +109,14 @@ class FilesController extends AppController
 
     public function index()
     {
+        if(!$this->request->session()->check('Auth.User.id')){
+            $this->FlashMessage->setWarning(__('You are not logged in.'));
+            return $this->redirect(['plugin'=>'GintonicCMS','controller'=>'Users','action'=>'signin']);
+        }
         $arrConditions = array();
-        $files = TableRegistry::get('Files');
         $arrConditions = array('Files.id NOT IN' => $this->request->session()->read('Auth.User.file.id'));
         if ($this->request->session()->read('Auth.User.role') != 'admin') {
-            $arrConditions = array('user_id' => $this->request->session()->read('Auth.User.id'));
+            $arrConditions = array('Files.user_id' => $this->request->session()->read('Auth.User.id'));
         }
         $this->paginate = array(
             'conditions' => $arrConditions,
@@ -117,6 +128,10 @@ class FilesController extends AppController
     
     public function admin_index($userId = 0)
     {
+        if($this->request->session()->read('Auth.User.role') != 'admin'){
+            $this->FlashMessage->setWarning(__('You are not logged in.'));
+            return $this->redirect(['plugin'=>'GintonicCMS','controller'=>'Users','action'=>'signin']);
+        }
         $arrConditions = array();
         if (!empty($userId)) {
             $this->set(compact('userId'));
@@ -138,6 +153,10 @@ class FilesController extends AppController
 
     public function download($filename)
     {
+        if(!$this->request->session()->check('Auth.User.id')){
+            $this->FlashMessage->setWarning(__('You are not logged in.'));
+            return $this->redirect(['plugin'=>'GintonicCMS','controller'=>'Users','action'=>'signin']);
+        }
         $filename = WWW_ROOT . 'files' . DS . 'uploads' . DS . $filename;
         if (file_exists($filename) && !is_dir($filename)) {
             $this->autoRender = false;

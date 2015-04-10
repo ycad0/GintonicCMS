@@ -10,7 +10,7 @@
                         "alt" => Configure::read('site_name')
                     ]
                 ),
-                ['plugin'=>'GintonicCMS','controller'=>'Users','action'=>'profile'],
+                '/',
                 ['escape'=>false,'class'=>['navbar-brand']]
             );?>
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#user-menu">
