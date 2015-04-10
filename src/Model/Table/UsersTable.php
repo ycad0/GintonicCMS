@@ -88,9 +88,9 @@ class UsersTable extends Table
     public function safeRead($conditions = null,$withPassword = false) 
     {
         $this->data = $this->find()
-                            ->where([$conditions])
-                            ->contain(['Files'=>['fields'=>['Files.id','Files.filename']]])
-                            ->first();
+            ->where([$conditions])
+            ->contain(['Files'=>['fields'=>['Files.id','Files.filename']]])
+            ->first();
         if(empty($this->data['file'])){
             $this->data['file']= ['id'=>0,'filename'=>'default'];
         }

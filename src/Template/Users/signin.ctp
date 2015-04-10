@@ -6,10 +6,6 @@ use Cake\Core\Configure\Engine\PhpConfig;
 $this->Helpers()->load('GintonicCMS.Require');
 echo $this->Require->req('users/login_validation'); 
 
-$controller = 'users';
-if (isset($this->request->params['controller']) && !empty($this->request->params['controller'])){
-    $controller = $this->request->params['controller'];
-}
 ?>
 
 <div class="container">
@@ -21,7 +17,8 @@ if (isset($this->request->params['controller']) && !empty($this->request->params
             <div class="account-wall">
 
                 <?php echo $this->Html->image(
-                    Configure::read('site_logo_url'), [
+                    Configure::read('site_logo_url'), 
+                    [
                         "class" => "img-responsive profile-img site-logo",
                         "alt" => Configure::read('site_name')
                     ]
@@ -32,9 +29,6 @@ if (isset($this->request->params['controller']) && !empty($this->request->params
                         'div' => 'form-group',
                         'wrapInput' => false,
                         'class' => 'form-control'
-                    ],
-                    'url' => [
-                        'controller' => $controller
                     ],
                     'templates' => [
                         'submitContainer' => '<div class="submit form-group">{{content}}</div>'
@@ -57,21 +51,20 @@ if (isset($this->request->params['controller']) && !empty($this->request->params
                     );?>
                 </p>
 
-                <?php
-                echo $this->Form->input('email', [
+                <?php echo $this->Form->input('email', [
                     'label' => false,
                     'placeholder' => 'Email',
                     'required', 'autofocus'
-                ]);
-                echo $this->Form->input('password', [
+                ]);?>
+                <?php echo $this->Form->input('password', [
+
                     'label' => false,
                     'placeholder' => 'Password',
                     'required'
-                ]);
-                echo $this->Form->submit(__('Sign in'), 
+                ]); ?>
+                <?php echo $this->Form->submit(__('Sign in'), 
                     ['class' => 'btn btn-lg btn-primary btn-block']
-                );
-                ?>
+                );?>
                 <p class="checkbox form-group">
                     <label>
                         <input name="remember" type="checkbox" value="remember-me">

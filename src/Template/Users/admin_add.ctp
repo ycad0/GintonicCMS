@@ -12,7 +12,7 @@ echo $this->Require->req('users/add_edit');
     <div class="col-xs-12">
         <div class="box box-primary">
             <div class="box-body">
-                <?php echo $this->Form->create($user, ['id' => 'UserAddEditForm', 'novalidate' => 'novalidate']); ?>
+                <?php echo $this->Form->create($user, ['id'=>'UserAddEditForm', 'novalidate'=>'novalidate']); ?>
                 <div class="row">
                     <div class="col-md-12">				
                         <?php

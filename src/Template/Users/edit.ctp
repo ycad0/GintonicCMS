@@ -14,9 +14,14 @@ $this->Helpers()->load('GintonicCMS.Require');
 echo $this->Require->req('users/reset_password');
 echo $this->Require->req('files/filepicker');
 ?>
-<?php
-echo $this->Form->create($user, ['templates' => ['inputContainer' => '<div class="form-group">{{content}}</div>', 'input' => '<input type="{{type}}" class="form-control" name="{{name}}"{{attrs}}>']]);
-?>
+
+
+<?php echo $this->Form->create($user, [
+    'templates' => [
+        'inputContainer' => '<div class="form-group">{{content}}</div>',
+        'input' => '<input type="{{type}}" class="form-control" name="{{name}}"{{attrs}}>'
+    ]
+]); ?>
 <input id="user-id" type="hidden" value="<?php echo $user->id ?>" />
 <div class="row">
     <div class="col-md-12">
@@ -45,12 +50,10 @@ echo $this->Form->create($user, ['templates' => ['inputContainer' => '<div class
             </div>
             <?php echo $this->Form->input('first', array('label' => 'First Name')); ?>
             <?php echo $this->Form->input('last', array('label' => 'Last Name')); ?>
-<?php
-echo $this->Form->submit('Save', array(
-    'div' => false,
-    'class' => 'btn btn-primary'
-));
-?>
+            <?php echo $this->Form->submit('Save', [
+                'div' => false,
+                'class' => 'btn btn-primary'
+            ]); ?>
         </fieldset>
     </div>
 </div>

@@ -34,7 +34,12 @@ class CookieComponent extends Component
     
     public function rememberMe($userInfo)
     {
-        $this->Cookie->write('remember_me', $userInfo, true, Configure::read('Cookie.loginDuration'));
+        $this->Cookie->write(
+            'remember_me',
+            $userInfo,
+            true,
+            Configure::read('Cookie.loginDuration')
+        );
     }
     
     public function forgetMe()

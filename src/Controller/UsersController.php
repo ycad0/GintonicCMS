@@ -147,7 +147,7 @@ class UsersController extends AppController
 
     public function signup()
     {
-        $this->layout = 'bare';
+        $this->render('GintonicCMS.signup', 'GintonicCMS.bare');
         $user = $this->Auth->user();
         if (!empty($user)) {
             $this->FlashMessage->setWarning(__('You are already signed in.'));
@@ -167,7 +167,8 @@ class UsersController extends AppController
 
     public function signin()
     {
-        $this->layout = 'bare';
+        $this->render('GintonicCMS.signin', 'GintonicCMS.bare');
+
         $user = $this->Auth->user();
         if (!empty($user)) {
             $this->FlashMessage->setWarning(__('You are already signed in.'));
