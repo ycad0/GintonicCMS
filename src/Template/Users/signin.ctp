@@ -43,7 +43,6 @@ echo $this->Require->req('users/login_validation');
                 <p class="text-center form-group">
                     <?php echo $this->Html->link(
                         __('Create an account'),
-                        ['controller' => $controller, 'action' => 'signup'], 
                         [
                             'class' => 'text-center new-account',
                             'style' => 'display:inline-block'
