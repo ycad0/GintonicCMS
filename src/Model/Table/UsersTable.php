@@ -1,4 +1,5 @@
 <?php
+
 namespace GintonicCMS\Model\Table;
 
 use Cake\ORM\Table;

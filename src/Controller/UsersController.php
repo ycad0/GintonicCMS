@@ -147,7 +147,7 @@ class UsersController extends AppController
 
     public function signup()
     {
-        $this->layout = 'bare';
+        $this->layout = 'GintonicCMS.bare';
         $user = $this->Auth->user();
         if (!empty($user)) {
             $this->FlashMessage->setWarning(__('You are already signed in.'));
@@ -167,7 +167,7 @@ class UsersController extends AppController
 
     public function signin()
     {
-        $this->layout = 'bare';
+        $this->layout = 'GintonicCMS.bare';
         $user = $this->Auth->user();
         if (!empty($user)) {
             $this->FlashMessage->setWarning(__('You are already signed in.'));
@@ -217,6 +217,10 @@ class UsersController extends AppController
     
     function profile() 
     {
+        if(!$this->request->session()->check('Auth.User.id')){
+            $this->FlashMessage->setWarning(__('You are not logged in.'));
+            return $this->redirect($this->Auth->logout());
+        }
     }
     
     public function confirmation($userId = null, $token = null) {
