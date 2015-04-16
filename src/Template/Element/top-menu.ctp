@@ -40,8 +40,8 @@
             </ul>
             <?php endif; ?>
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
                 <?php if($this->Session->check('Auth.User')): ?>
+                <li class="dropdown">
                     <?php echo $this->Html->link(
                         ($this->Session->read('Auth.User.first').' '.$this->Session->read('Auth.User.last')).'<span class="caret"></span>',
                         '#',
@@ -93,28 +93,15 @@
                             ); ?>
                         </li>
                     </ul>
-                    <?php else: ?>
-                        <?php echo $this->Html->link(
-                            'Sign in',
-                            '/signin',
-                            [
-                                'escape'=>false,
-                                'role'=>'button',
-                                'aria-expanded'=>false
-                            ]
-                        ); ?>
-                        |
-                        <?php echo $this->Html->link(
-                            'Sign up',
-                            '/signup',
-                            [
-                                'escape'=>false,
-                                'role'=>'button',
-                                'aria-expanded'=>false
-                            ]
-                        ); ?>
-                    <?php endif; ?>
                 </li>
+                <?php else: ?>
+                    <li>
+                        <a href="/signin">Sign in</a>
+                    </li>
+                    <li>
+                        <a href="/signup">Sign up</a>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>
