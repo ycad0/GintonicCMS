@@ -15,6 +15,17 @@ echo $this->Require->req('users/login_validation');
                 <?php echo __('Sign in to continue'); ?>
             </h1>
             <div class="account-wall">
+<<<<<<< HEAD
+
+                <?php echo $this->Html->image(
+                    Configure::read('site_logo_url'), 
+                    [
+                        "class" => "img-responsive profile-img site-logo",
+                        "alt" => Configure::read('site_name')
+                    ]
+                );?>
+
+=======
                 <?php echo $this->Html->link(
                         $this->Html->image(
                                 Configure::read('site_logo_url'), [
@@ -25,6 +36,7 @@ echo $this->Require->req('users/login_validation');
                         '/',
                         ['escape'=>false]
                 ); ?>
+>>>>>>> 173b78a60ec392f233e1534a1f160e10a5c63f5f
                 <?php echo $this->Form->create('Users', [
                     'inputdefaults' => [
                         'div' => 'form-group',
@@ -44,7 +56,10 @@ echo $this->Require->req('users/login_validation');
                 <p class="text-center form-group">
                     <?php echo $this->Html->link(
                         __('Create an account'),
+<<<<<<< HEAD
+=======
                         ['action' => 'signup'], 
+>>>>>>> 173b78a60ec392f233e1534a1f160e10a5c63f5f
                         [
                             'class' => 'text-center new-account',
                             'style' => 'display:inline-block'
@@ -52,21 +67,20 @@ echo $this->Require->req('users/login_validation');
                     );?>
                 </p>
 
-                <?php
-                echo $this->Form->input('email', [
+                <?php echo $this->Form->input('email', [
                     'label' => false,
                     'placeholder' => 'Email',
                     'required', 'autofocus'
-                ]);
-                echo $this->Form->input('password', [
+                ]);?>
+                <?php echo $this->Form->input('password', [
+
                     'label' => false,
                     'placeholder' => 'Password',
                     'required'
-                ]);
-                echo $this->Form->submit(__('Sign in'), 
+                ]); ?>
+                <?php echo $this->Form->submit(__('Sign in'), 
                     ['class' => 'btn btn-lg btn-primary btn-block']
-                );
-                ?>
+                );?>
                 <p class="checkbox form-group">
                     <label>
                         <input name="remember" type="checkbox" value="remember-me">
