@@ -10,7 +10,7 @@ $this->end();
             <div class="account-wall user-profile">
                 <?php echo $this->Html->image(
                     $this->Custom->getFileUrl($this->Session->read('Auth.User.file.filename')),
-                    ['class'=>'img-responsive center-block']
+                    ['class'=>'img-responsive center-block' , 'style' => 'width:300px;height:300px;']
                 ); ?>
                 <h1 class="text-center login-title">
                     <?php echo __('Welcome :') . ' ' . $this->Session->read("Auth.User.first") . " " . $this->Session->read("Auth.User.last") ?>
