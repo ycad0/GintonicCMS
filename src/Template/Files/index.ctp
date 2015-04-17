@@ -4,22 +4,13 @@ $this->Html->addCrumb(__('File Management'), ['controller' => 'files', 'action' 
 $this->Html->addCrumb(__('Files'));
 
 $this->start('top_links');
-if (!empty($userId)) {
-    echo $this->Html->link(
-            '<i class="fa fa-chevron-left">&nbsp;</i>&nbsp;Back', 'javascript:void(0)', [
-        'onclick' => 'javascript:history.go(-1);',
-        'class' => 'btn btn-default',
-        'escape' => false,
-        'title' => 'Click here to go back'
-            ]
-    );
-}
+
 echo $this->Html->link(
         '<i class="fa fa-upload">&nbsp;</i>&nbsp;Upload file', 'javascript:void(0)', [
     'data-multiple' => 'true',
     'data-loading-text' => 'Loading...',
     'data-upload-callback' => 'files/index',
-    'class' => 'btn btn-primary upload',
+    'class' => 'btn btn-primary upload btn-sm',
     'escape' => false,
     'title' => 'Click here to upload files'
         ]
