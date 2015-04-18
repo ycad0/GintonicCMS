@@ -23,14 +23,14 @@
         <div class="collapse navbar-collapse" id="user-menu">
             <?php if($this->Session->check('Auth.User')): ?>
             <ul class="nav navbar-nav">
-                <li class="<?php echo $this->Custom->getActiveClass('Users',['profile']) ?>">
+                <li>
                     <?php echo $this->Html->link(
                         __('Dashboard'),
                         ['plugin'=>'GintonicCMS','controller' => 'Users', 'action' => 'profile'],
                         ['escape' => false]
                     );?>
                 </li>
-                <li class="<?php echo $this->Custom->getActiveClass('Files',['index']) ?>">
+                <li>
                     <?php echo $this->Html->link(
                         __('Manage Files'),
                         ['plugin'=>'GintonicCMS','controller' => 'files', 'action' => 'index'],

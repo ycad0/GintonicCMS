@@ -9,7 +9,7 @@ class AppController extends BaseController
 {
     public $helpers = [
         'GintonicCMS.Require',
-        'GintonicCMS.Custom',
+        'GintonicCMS.User',
         'Form' => ['className' => 'BoostCake.Form'],
         'Paginator' => ['className' => 'BoostCake.Paginator'],
     ];
