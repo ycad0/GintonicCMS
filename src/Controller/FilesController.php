@@ -18,6 +18,12 @@ class FilesController extends AppController
         $this->loadComponent('RequestHandler');
     }
     
+    public function isAuthorized($user = null) {
+        
+        return true;
+        //return parent::isAuthorized();        
+    }
+    
     public function beforeFilter(Event $event) 
     {
         parent::beforeFilter($event);

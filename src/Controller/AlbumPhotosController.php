@@ -7,6 +7,12 @@ use Cake\Network\Response;
 
 class AlbumPhotosController extends AppController {
     
+    public function isAuthorized($user = null) {
+        
+        return true;
+        //return parent::isAuthorized();
+    }
+    
     public function index($userId = null) {
         
         $this->loadModel('Users');

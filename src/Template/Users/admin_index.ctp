@@ -1,9 +1,8 @@
 <?php
 $this->assign('pagetitle', __('Users') . '<small>' . __('User Management') . '</small>');
-$this->Html->addCrumb(__('User Management'), ['controller' => 'users', 'action' => 'index']);
 $this->Html->addCrumb(__('Users'));
 $this->start('top_links');
-echo $this->Html->link('<i class="fa fa-plus">&nbsp;</i> Add User', ['action' => 'admin_add'], ['class' => 'btn btn-primary', 'escape' => false]);
+echo $this->Html->link('<i class="fa fa-plus">&nbsp;</i> Add User', ['action' => 'admin_add'], ['class' => 'btn btn-primary btn-sm', 'escape' => false]);
 $this->end();
 $this->Helpers()->load('GintonicCMS.Require');
 ?>
