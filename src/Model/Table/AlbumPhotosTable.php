@@ -3,13 +3,8 @@
 namespace GintonicCMS\Model\Table;
 
 use Cake\ORM\Table;
-use Cake\Network\Session;
-use Cake\Validation\Validator;
 use Cake\Core\Configure;
-use Cake\Core\Configure\Engine\PhpConfig;
-use Cake\Network\Email\Email;
 use Cake\I18n\Time;
-use Cake\Auth\DefaultPasswordHasher;
 
 class AlbumPhotosTable extends Table {
     
@@ -24,12 +19,15 @@ class AlbumPhotosTable extends Table {
             ]
         ]);
         
-        $this->addAssociations([
-            'belongsTo' => ['Files'=>[
-                'className' => 'GintonicCMS.Files',
-                'foreignKey' => 'file_id',
-                'propertyName' => 'file'
-            ]],
+        $this->belongsTo('GintonicCMS.Files', [
+            'className' => 'GintonicCMS.Files',
+            'foreignKey' => 'file_id',
+            'propertyName' => 'file',
         ]);
+    }
+    
+    public function testr(){
+        debug('df');
+        exit;
     }
 }

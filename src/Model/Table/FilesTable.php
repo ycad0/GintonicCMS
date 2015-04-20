@@ -30,6 +30,8 @@ class FilesTable extends Table
             'foreignKey' => 'user_id',
             'propertyName' => 'user',
         ]);
+        
+        $this->hasMany('GintonicCMS.AlbumPhotos');
     }
 
     public function moveUploaded($tmpFile, $userId, $dirName, $count) 

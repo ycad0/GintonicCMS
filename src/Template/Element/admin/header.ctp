@@ -53,7 +53,7 @@ use Cake\Core\Configure;
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header bg-danger">
-                            <?php echo $this->Html->image($this->Custom->getFileUrl($this->Session->read('Auth.User.file.filename')), ['class' => 'img-circle']); ?>
+                            <?php echo $this->Html->image($this->File->getFileUrl($this->Session->read('Auth.User.file.filename')), ['class' => 'img-circle']); ?>
                             <p>
                                 <?php echo $this->Session->read('Auth.User.first') . ' ' . $this->Session->read('Auth.User.last'); ?>
                             </p>

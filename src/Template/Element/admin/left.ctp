@@ -7,7 +7,7 @@ echo $this->Require->req('admin/admin');
         <div class="user-panel">
             <div class="pull-left image">
                 <?php
-                echo $this->Html->image($this->Custom->getFileUrl($this->Session->read('Auth.User.file.filename')),['class' => 'img-circle']);
+                echo $this->Html->image($this->File->getFileUrl($this->Session->read('Auth.User.file.filename')),['class' => 'img-circle']);
                 ?>
             </div>
             <div class="pull-left info">

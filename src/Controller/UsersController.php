@@ -180,7 +180,7 @@ class UsersController extends AppController
                 $message = 'Login successful.';
                 if (empty($user['validated'])) {
                     $message = 'Login successful. Please validate your email address.';
-                }
+                }                
                 $this->FlashMessage->setSuccess(__($message));
                 return $this->redirect($this->Auth->redirectUrl());
             }
