@@ -11,7 +11,7 @@ use Cake\I18n\Number;
     <td><?php echo $file->filename; ?></td>
     <td><?php echo $file->ext; ?></td>
     <td class='text-right'><?php echo Number::toReadableSize($file->size); ?></td>
-    <?php if ($this->Session->read('Auth.User.role') == 'admin') : ?>
+    <?php if ($this->request->session()->read('Auth.User.role') == 'admin') : ?>
         <td><?php echo $file->user_id ; ?></td>
         <?php endif; ?>
     <td>

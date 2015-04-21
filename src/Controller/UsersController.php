@@ -260,7 +260,7 @@ class UsersController extends AppController
                 return $this->redirect($this->Auth->redirectUrl());
             }
         } else {
-            $this->FlashMessage->setWarning(__($arrResponse['message']), $this->Auth->redirectUrl());
+            $this->FlashMessage->setWarning(__('Forgot Password token is expired'), $this->Auth->redirectUrl());
         }
         $this->set(compact('userId', 'token'));
         if ($this->request->is(['post', 'put'])) {
