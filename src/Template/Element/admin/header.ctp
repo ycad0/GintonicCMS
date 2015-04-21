@@ -3,7 +3,7 @@
 use Cake\Core\Configure;
 ?>
 <header class="header">
-    <?php if ($this->Session->read('Auth.User.role') == 'admin'): ?>
+    <?php if ($this->request->session()->read('Auth.User.role') == 'admin'): ?>
         <div class="admin-special-header container-fluid no-padding navbar-inverse">
             <div class="navbar-header">
                 <?php
@@ -48,14 +48,14 @@ use Cake\Core\Configure;
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-user"></i>
-                        <span><?php echo $this->Session->read('Auth.User.first') . ' ' . $this->Session->read('Auth.User.last') ?> <i class="caret"></i></span>
+                        <span><?php echo $this->request->session()->read('Auth.User.first') . ' ' . $this->request->session()->read('Auth.User.last') ?> <i class="caret"></i></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header bg-danger">
-                            <?php echo $this->Html->image($this->File->getFileUrl($this->Session->read('Auth.User.file.filename')), ['class' => 'img-circle']); ?>
+                            <?php echo $this->Html->image($this->File->getFileUrl($this->request->session()->read('Auth.User.file.filename')), ['class' => 'img-circle']); ?>
                             <p>
-                                <?php echo $this->Session->read('Auth.User.first') . ' ' . $this->Session->read('Auth.User.last'); ?>
+                                <?php echo $this->request->session()->read('Auth.User.first') . ' ' . $this->request->session()->read('Auth.User.last'); ?>
                             </p>
                         </li>
                         <!-- Menu Body -->
@@ -67,7 +67,7 @@ use Cake\Core\Configure;
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <?php echo $this->Html->link('Profile', array('plugin' => 'GintonicCMS', 'controller' => 'users', 'action' => 'view', $this->Session->read('Auth.User.id')), array('class' => 'btn btn-default btn-flat')); ?>
+                                <?php echo $this->Html->link('Profile', array('plugin' => 'GintonicCMS', 'controller' => 'users', 'action' => 'view', $this->request->session()->read('Auth.User.id')), array('class' => 'btn btn-default btn-flat')); ?>
                             </div>
                             <div class="pull-right">
                                 <?php echo $this->Html->link('Sign out', array('plugin' => 'GintonicCMS', 'controller' => 'users', 'action' => 'signout'), array('class' => 'btn btn-default btn-flat')) ?>

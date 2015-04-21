@@ -21,7 +21,7 @@
             </button>
         </div>
         <div class="collapse navbar-collapse" id="user-menu">
-            <?php if($this->Session->check('Auth.User')): ?>
+            <?php if($this->request->session()->check('Auth.User')): ?>
             <ul class="nav navbar-nav">
                 <li>
                     <?php echo $this->Html->link(
@@ -40,10 +40,10 @@
             </ul>
             <?php endif; ?>
             <ul class="nav navbar-nav navbar-right">
-                <?php if($this->Session->check('Auth.User')): ?>
+                <?php if($this->request->session()->check('Auth.User')): ?>
                 <li class="dropdown">
                     <?php echo $this->Html->link(
-                        ($this->Session->read('Auth.User.first').' '.$this->Session->read('Auth.User.last')).'<span class="caret"></span>',
+                        ($this->request->session()->read('Auth.User.first').' '.$this->request->session()->read('Auth.User.last')).'<span class="caret"></span>',
                         '#',
                         [
                             'escape'=>false,
@@ -55,7 +55,7 @@
                     ); ?>
                     <ul class="dropdown-menu" role="menu">
                         <li>
-                            <?php if($this->Session->read('Auth.User.role') == 'admin'): ?>
+                            <?php if($this->request->session()->read('Auth.User.role') == 'admin'): ?>
                                 <?php echo $this->Html->link(
                                     __('Administration'),
                                     [
@@ -75,7 +75,7 @@
                                     'plugin'=>'GintonicCMS',
                                     'controller'=>'Users',
                                     'action'=>'edit',
-                                    $this->Session->read('Auth.User.id')
+                                    $this->request->session()->read('Auth.User.id')
                                 ],
                                 ['escape'=>false]
                             ); ?>

@@ -17,7 +17,7 @@ $this->end();
             </div>
             <div class="box-body clearfix">
                 <div class="col-md-4">
-                    <?php echo $this->Html->image($this->Custom->getFileUrl($user['file']['filename']), array('class' => 'img-responsive img-thumbnail')); ?>
+                    <?php echo $this->Html->image($this->File->getFileUrl($user['file']['filename']), array('class' => 'img-responsive img-thumbnail')); ?>
                 </div>
                 <div class="col-md-8">
                     <div class="col-md-2 col-sm-3">

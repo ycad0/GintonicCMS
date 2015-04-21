@@ -36,7 +36,7 @@ echo $this->Require->req('files/filepicker');
                             <th><?php echo $this->Paginator->sort('filename'); ?></th>
                             <th><?php echo $this->Paginator->sort('ext', 'Extension'); ?></th>
                             <th><?php echo $this->Paginator->sort('size'); ?></th>
-                            <?php if ($this->Session->read('Auth.User.role') == 'admin') : ?>
+                            <?php if ($this->request->session()->read('Auth.User.role') == 'admin') : ?>
                                 <th><?php echo $this->Paginator->sort('User.first', 'Owner'); ?></th>
                             <?php endif; ?>
                             <th><?php echo $this->Paginator->sort('created', 'Added'); ?></th>
