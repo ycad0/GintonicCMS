@@ -143,6 +143,7 @@ class UsersController extends AppController
             if ($this->Users->save($user)) {
                 $this->Users->signupMail($this->request->data['email']);
                 $this->FlashMessage->setSuccess(__('Please check your e-mail to validate your account'));
+                $this->Auth->setUser($user->toArray());
                 return $this->redirect($this->Auth->redirectUrl());
             }
             $this->FlashMessage->setWarning(__('Error creating your account, please contact an administrator'));
@@ -156,7 +157,6 @@ class UsersController extends AppController
 
         $user = $this->Auth->user();
         if (!empty($user)) {
-            $this->FlashMessage->setWarning(__('You are already signed in.'));
             return $this->redirect($this->Auth->redirectUrl());
         }
         if ($this->request->is(['post', 'put'])) {
@@ -190,11 +190,6 @@ class UsersController extends AppController
 
     public function signout()
     {
-        /*$user = $this->Auth->user();
-        if (!empty($user)) {
-            $this->FlashMessage->setWarning(__('You are not logged in.'));
-            return $this->redirect($this->Auth->logout());
-        }*/
         $this->Cookie->forgetMe();
         $this->request->session()->destroy();
         $this->FlashMessage->setSuccess(__('You are now logged out.'));
