@@ -1,4 +1,5 @@
 # GintonicCMS plugin for CakePHP
+[![Build Status](https://travis-ci.org/gintonicweb/GintonicCMS.svg)](https://travis-ci.org/gintonicweb/GintonicCMS)
 
 CMS based on CakePHP 3, Bootstrap 3, and RequireJS 2
 
