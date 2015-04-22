@@ -43,7 +43,10 @@ class UsersController extends AppController
 
     public function view() {
         if (!$this->request->session()->check('Auth.User.id')) {
-            $this->FlashMessage->setWarning(__('Please Login to view this page.'));
+            $this->Flash->set(__('Please Login to view this page.'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-waning']
+            ]);
             return $this->redirect($this->Auth->redirectUrl());
         }
         $user = $this->Users->safeRead(['Users.id' => $this->request->session()->read('Auth.User.id')]);
@@ -56,27 +59,42 @@ class UsersController extends AppController
         $user = $this->Users->newEntity($this->request->data);
         if ($this->request->is('post')) {
             if ($this->Users->save($user)) {
-                $this->FlashMessage->setSuccess(__('The user has been saved.'));
+                $this->Flash->set(__('The user has been saved successfully.'), [
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-success']
+                ]);
                 return $this->redirect(['controller' => 'users', 'action' => 'admin_index']);
             }
-            $this->FlashMessage->setWarning(__('Unable to add the user.'));
+            $this->Flash->set(__('Unable to add user.'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
+            ]);
         }
         $this->set('user', $user);
     }
 
     public function edit() {
         if (!$this->request->session()->check('Auth.User.id')) {
-            $this->FlashMessage->setWarning(__('You are not a authorised person to access this.'));
+            $this->Flash->set(__('You are not a authorised to access this page.'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
+            ]);
             return $this->redirect($this->request->referer());
         }
         $user = $this->Users->safeRead(['Users.id' => $this->request->session()->read('Auth.User.id')], true);
         if ($this->request->is(['post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {
-                $this->FlashMessage->setSuccess(__('User has been updated.'));
+                $this->Flash->set(__('User has been updated.'), [
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-success']
+                ]);
                 return $this->redirect(['action' => 'profile']);
             }
-            $this->FlashMessage->setWarning(__('The user could not be saved. Please, try again.'));
+            $this->Flash->set(__('Error saving the user.'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
+            ]);
         }
         $this->set(compact('user'));
     }
@@ -87,10 +105,16 @@ class UsersController extends AppController
         if ($this->request->is(['post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {
-                $this->FlashMessage->setSuccess(__('User has been updated.'));
+                $this->Flash->set(__('User has been updated.'), [
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-success']
+                ]);
                 return $this->redirect(['action' => 'admin_index']);
             }
-            $this->FlashMessage->setWarning(__('The user could not be saved. Please, try again.'));
+            $this->Flash->set(__('Error saving the user'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
+            ]);
         }
         $this->set(compact('user'));
         $this->render('/Users/edit');
@@ -135,18 +159,27 @@ class UsersController extends AppController
         $this->render('GintonicCMS.signup', 'GintonicCMS.bare');
         $user = $this->Auth->user();
         if (!empty($user)) {
-            $this->FlashMessage->setWarning(__('You are already signed in.'));
+            $this->Flash->set(__('You are already signed in.'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-warning']
+            ]);
             return $this->redirect($this->Auth->redirectUrl());
         }
         $user = $this->Users->newEntity($this->request->data);
         if ($this->request->is(['post', 'put'])) {
             if ($this->Users->save($user)) {
                 $this->Users->signupMail($this->request->data['email']);
-                $this->FlashMessage->setSuccess(__('Please check your e-mail to validate your account'));
+                $this->Flash->set(__('Please check your e-mail to validate your account'), [
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-warning']
+                ]);
                 $this->Auth->setUser($user->toArray());
                 return $this->redirect($this->Auth->redirectUrl());
             }
-            $this->FlashMessage->setWarning(__('Error creating your account, please contact an administrator'));
+            $this->Flash->set(__('Error creating your account, please contact an administrator'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
+            ]);
         }
         $this->set('user', $user);
     }
@@ -164,9 +197,9 @@ class UsersController extends AppController
             if ($user) {
                 $this->loadModel('GintonicCMS.Files');
                 $user['file'] = $this->Files->find()
-                        ->where(['Files.id' => $user['file_id']])
-                        ->select(['id', 'filename'])
-                        ->first();
+                    ->where(['Files.id' => $user['file_id']])
+                    ->select(['id', 'filename'])
+                    ->first();
                 if (!empty($user['file'])) {
                     $user['file'] = $user['file']->toArray();
                 } else {
@@ -176,15 +209,18 @@ class UsersController extends AppController
                 if (isset($this->request->data['remember'])) {
                     $this->Cookie->rememberMe($this->request->session()->read('Auth'));
                 }
-                // User needs to be validated
-                $message = 'Login successful.';
                 if (empty($user['validated'])) {
-                    $message = 'Login successful. Please validate your email address.';
+                    $this->Flash->set(__('Login successful. Please validate your email address.'), [
+                        'element' => 'GintonicCMS.alert',
+                        'params' => ['class' => 'alert-warning']
+                    ]);
                 }                
-                $this->FlashMessage->setSuccess(__($message));
                 return $this->redirect($this->Auth->redirectUrl());
             }
-            $this->FlashMessage->setWarning(__('Your username or password is incorrect.'));
+            $this->Flash->set(__('Your username or password is incorrect.'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-warning']
+            ]);
         }
     }
 
@@ -192,14 +228,20 @@ class UsersController extends AppController
     {
         $this->Cookie->forgetMe();
         $this->request->session()->destroy();
-        $this->FlashMessage->setSuccess(__('You are now logged out.'));
+        $this->Flash->set(__('You are now logged out.'), [
+            'element' => 'GintonicCMS.alert',
+            'params' => ['class' => 'alert-info']
+        ]);
         return $this->redirect($this->Auth->logout());
     }
 
     function profile() 
     {
         if (!$this->request->session()->check('Auth.User.id')) {
-            $this->FlashMessage->setWarning(__('You are not logged in.'));
+            $this->Flash->set(__('You are not logged in..'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
+            ]);
             return $this->redirect($this->Auth->logout());
         }
     }
@@ -208,19 +250,31 @@ class UsersController extends AppController
         if ($userId || $token) {
             $user = $this->Users->safeRead(['Users.id' => $userId]);
             if (!empty($user['validated'])) {
-                $this->FlashMessage->setWarning(__('Your email address is already validated, please use email and password to login'));
+                $this->Flash->set(__('Your email address is already validated, please use email and password to login'), [
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-info']
+                ]);
                 return $this->redirect($this->Auth->redirectUrl());
             } elseif (!empty($user)) {
                 $user = $this->Users->confirmation($userId, $token);
                 $this->Auth->setUser($user->toArray());
-                $this->FlashMessage->setSuccess(__('Email address successfuly validated'));
+                $this->Flash->set(__('Email address successfuly validated'), [
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-sucess']
+                ]);
                 return $this->redirect(['plugin' => 'GintonicCMS', 'controller' => 'users', 'action' => 'profile']);
             } else {
-                $this->FlashMessage->setWarning(__('The authorization link provided is erroneous, please contact an administrator'));
+                $this->Flash->set(__('The authorization link provided is erroneous, please contact an administrator'), [
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-danger']
+                ]);
                 return $this->redirect($this->Auth->redirectUrl());
             }
         }
-        $this->FlashMessage->setWarning(__('Please check your e-mail for validation link'));
+        $this->Flash->set(__('Please check your e-mail for validation link'), [
+            'element' => 'GintonicCMS.alert',
+            'params' => ['class' => 'alert-warning']
+        ]);
         return $this->redirect($this->Auth->redirectUrl());
     }
 
@@ -229,18 +283,30 @@ class UsersController extends AppController
         if (!empty($this->request->data)) {
             $userDetail = $this->Users->get($this->request->session()->read('Auth.User.id'));
             if ($this->request->data['new_password'] != $this->request->data['confirm_password']) {
-                $this->FlashMessage->setWarning(__('Confirm Password entered does not match.'));
+                $this->Flash->set(__('Confirm Password entered does not match.'), [
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-danger']
+                ]);
             } elseif ($this->request->data['new_password'] == "") {
-                $this->FlashMessage->setWarning(__('New Password Must Not Blank'));
+                $this->Flash->set(__('New Password Must Not Blank'), [
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-danger']
+                ]);
             } else {
                 $this->request->data['id'] = $this->request->session()->read('Auth.User.id');
                 $this->request->data['password'] = $this->request->data['new_password'];
                 $users = $this->Users->patchEntity($userDetail, $this->request->data);
                 if ($this->Users->save($users)) {
-                    $this->FlashMessage->setSuccess(__('Password has been updated Successfully.'));
+                    $this->Flash->set(__('Password has been updated Successfully.'), [
+                        'element' => 'GintonicCMS.alert',
+                        'params' => ['class' => 'alert-success']
+                    ]);
                     return $this->redirect(['controller' => 'users', 'action' => 'profile']);
                 } else {
-                    $this->FlashMessage->setWarning(__('Unable to Change Password, Please try again.'));
+                    $this->Flash->set(__('Unable to Change Password, Please try again.'), [
+                        'element' => 'GintonicCMS.alert',
+                        'params' => ['class' => 'alert-danger']
+                    ]);
                 }
             }
         }
@@ -251,16 +317,25 @@ class UsersController extends AppController
         if ($userId && $token) {
             $arrResponse = $this->Users->checkForgotPassword($userId, $token);
             if ($arrResponse['status'] == 'fail') {
-                $this->FlashMessage->setWarning(__($arrResponse['message']));
+                $this->Flash->set(__($arrResponse['message']), [
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-warning']
+                ]);
                 return $this->redirect($this->Auth->redirectUrl());
             }
         } else {
-            $this->FlashMessage->setWarning(__('Forgot Password token is expired'), $this->Auth->redirectUrl());
+            $this->Flash->set(__('Forgot Password token is expired'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
+            ]);
         }
         $this->set(compact('userId', 'token'));
         if ($this->request->is(['post', 'put'])) {
             if ($this->request->data['new_password'] != $this->request->data['confirm_password']) {
-                $this->FlashMessage->setWarning(__('New Password and Confirm Password must be same'));
+                $this->Flash->set(__('New Password and Confirm Password must be same'), [
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-danger']
+                ]);
             } else {
                 $this->request->data['id'] = $userId;
                 $this->request->data['password'] = $this->request->data['new_password'];
@@ -268,7 +343,10 @@ class UsersController extends AppController
                 $this->request->data['token_creation'] = date("Y-m-d H:i:s");
                 $users = $this->Users->newEntity($this->request->data);
                 $this->Users->save($users);
-                $this->FlashMessage->setSuccess(__('Your password has been updated successfully'));
+                $this->Flash->set(__('Your password has been updated successfully'), [
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-success']
+                ]);
                 return $this->redirect($this->Auth->redirectUrl());
             }
         }
@@ -280,9 +358,15 @@ class UsersController extends AppController
             $arrResponse = $this->Users->ResendVerification($this->request->data['email']);
             if (!empty($arrResponse)) {
                 if ($arrResponse['status'] == 'fail') {
-                    $this->FlashMessage->setWarning(__($arrResponse['message']));
+                    $this->Flash->set(__($arrResponse['message']), [
+                        'element' => 'GintonicCMS.alert',
+                        'params' => ['class' => 'alert-warning']
+                    ]);
                 } else {
-                    $this->FlashMessage->setSuccess(__($arrResponse['message']));
+                    $this->Flash->set(__($arrResponse['message']), [
+                        'element' => 'GintonicCMS.alert',
+                        'params' => ['class' => 'alert-success']
+                    ]);
                     return $this->redirect($this->Auth->redirectUrl());
                 }
             }
@@ -293,16 +377,25 @@ class UsersController extends AppController
     {
         //Check For Already Logged In
         if ($this->Auth->user()) {
-            $this->FlashMessage->setWarning(__('You are already login.'));
+            $this->Flash->set(__('You are already signed in.'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-warning']
+            ]);
             return $this->redirect($this->Auth->redirectUrl());
         }
         if ($this->request->is(['post','put'])) {
             $arrResponse = $this->Users->ForgotPasswordEmail($this->request->data['email']);
             if (!empty($arrResponse)) {
                 if ($arrResponse['status'] == 'fail') {
-                    $this->FlashMessage->setWarning($arrResponse['message']);
+                    $this->Flash->set(__($arrResponse['message']), [
+                        'element' => 'GintonicCMS.alert',
+                        'params' => ['class' => 'alert-warning']
+                    ]);
                 } else {
-                    $this->FlashMessage->setSuccess($arrResponse['message']);
+                    $this->Flash->set(__($arrResponse['message']), [
+                        'element' => 'GintonicCMS.alert',
+                        'params' => ['class' => 'alert-success']
+                    ]);
                     return $this->redirect($this->Auth->redirectUrl());
                 }
             }
@@ -313,19 +406,31 @@ class UsersController extends AppController
     {
         $user = $this->Auth->user();
         if (!empty($user)) {
-            $this->FlashMessage->setWarning(__('You are not login.'));
+            $this->Flash->set(__('You are not signed in.'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-warning']
+            ]);
             return $this->redirect($this->Auth->redirectUrl());
         }
         $user = $this->Users->get($id);
         if (!$user) {
-            $this->FlashMessage->setWarning(__('Invalid user'));
+            $this->Flash->set(__('Invalid user'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
+            ]);
             return $this->redirect($this->request->referer());
         }
         if ($this->Users->delete($user)) {
-            $this->FlashMessage->setSuccess(__('Users deleted'));
+            $this->Flash->set(__('Users deleted'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-success']
+            ]);
             return $this->redirect(['action' => 'admin_index']);
         }
-        $this->FlashMessage->setWarning(__('Users was not deleted'));
+        $this->Flash->set(__('Error deleting users'), [
+            'element' => 'GintonicCMS.alert',
+            'params' => ['class' => 'alert-danger']
+        ]);
         return $this->redirect(['action' => 'admin_index']);
     }
 
@@ -333,7 +438,10 @@ class UsersController extends AppController
         if($this->request->session()->read('Auth.User.role') == 'admin'){
             $this->request->session()->write('Site.layout','GintonicCMS.'.$layout);
         }else{
-            $this->FlashMessage->setWarning(__('You are not authorised user to access this.'));
+            $this->Flash->set(__('You are not authorised user to access this.'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
+            ]);
 }
         return $this->redirect(['plugin'=>'GintonicCMS','controller'=>'users','action'=>'profile']);
     }

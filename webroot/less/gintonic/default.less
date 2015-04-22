@@ -5,6 +5,7 @@
 
 /* Sticky footer styles
 -------------------------------------------------- */
+
 html {
   position: relative;
   min-height: 100%;
@@ -24,6 +25,15 @@ body {
 }
 
 
+
+/* Bugfixes
+-------------------------------------------------- */
+
+// haven't figured out why this is needed
+.modal-backdrop.in{
+    z-index:0 !important;
+}
+
 /* Custom site css
 -------------------------------------------------- */
 
@@ -39,4 +49,18 @@ code {
 }
 img.site-logo{
    width: 60%; 
+}
+
+/* Utilities
+-------------------------------------------------- */
+
+.floating-flash{
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+.inner-flash{
+    margin: 0 auto;
 }

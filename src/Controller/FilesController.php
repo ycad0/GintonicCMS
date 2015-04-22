@@ -35,7 +35,10 @@ class FilesController extends AppController
     function add()
     {
         if(!$this->request->session()->check('Auth.User.id')){
-            $this->FlashMessage->setWarning(__('You are not logged in.'));
+            $this->Flash->set(__('You are not signed in.'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
+            ]);
             return $this->redirect(['plugin'=>'GintonicCMS','controller'=>'Users','action'=>'signin']);
         }
         $file = $this->Files->newEntity($this->request->data);
@@ -101,7 +104,10 @@ class FilesController extends AppController
     public function delete($id)
     {
         if(!$this->request->session()->check('Auth.User.id')){
-            $this->FlashMessage->setWarning(__('You are not logged in.'));
+            $this->Flash->set(_('You are not signed in.'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
+            ]);
             return $this->redirect(['plugin'=>'GintonicCMS','controller'=>'Users','action'=>'signin']);
         }
         $file = $this->Files->get($id);
@@ -116,7 +122,10 @@ class FilesController extends AppController
     public function index()
     {
         if(!$this->request->session()->check('Auth.User.id')){
-            $this->FlashMessage->setWarning(__('You are not logged in.'));
+            $this->Flash->set(__('You are not signed in.'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
+            ]);
             return $this->redirect(['plugin'=>'GintonicCMS','controller'=>'Users','action'=>'signin']);
         }
         $arrConditions = array();
@@ -135,7 +144,10 @@ class FilesController extends AppController
     public function admin_index($userId = 0)
     {
         if($this->request->session()->read('Auth.User.role') != 'admin'){
-            $this->FlashMessage->setWarning(__('You are not logged in.'));
+            $this->Flash->set(__('You are not signed in.'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
+            ]);
             return $this->redirect(['plugin'=>'GintonicCMS','controller'=>'Users','action'=>'signin']);
         }
         $arrConditions = array();
@@ -160,7 +172,10 @@ class FilesController extends AppController
     public function download($filename)
     {
         if(!$this->request->session()->check('Auth.User.id')){
-            $this->FlashMessage->setWarning(__('You are not logged in.'));
+            $this->Flash->set(__('You are not signed in.'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
+            ]);
             return $this->redirect(['plugin'=>'GintonicCMS','controller'=>'Users','action'=>'signin']);
         }
         $filename = WWW_ROOT . 'files' . DS . 'uploads' . DS . $filename;
