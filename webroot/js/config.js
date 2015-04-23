@@ -13,6 +13,9 @@ requirejs.config({
         //lib 
         lib: baseUrl+'gintonic_c_m_s/js/lib',
         
+        //Messages
+        messages: baseUrl + 'gintonic_c_m_s/js/messages',
+        
         //Photo Album
         AlbumPhotos: baseUrl + 'gintonic_c_m_s/js/AlbumPhotos',
         
