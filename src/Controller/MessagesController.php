@@ -230,6 +230,59 @@ class MessagesController extends AppController {
         }
         return $jsonData;
     }
+    
+    public function mailbox() {
+        
+        $userId = $this->request->session()->read('Auth.User.id');
+
+        $threadIds = $this->ThreadParticipants->find('all')
+                ->where(['ThreadParticipants.user_id' => $userId])
+                ->combine('id', 'thread_id');
+        $participantsIds = [];
+        $messages = [];
+        $threads = [];
+        if (!empty($threadIds)) {
+            $participantsIds = $this->ThreadParticipants->find('all')
+                    ->where(['ThreadParticipants.user_id !=' => $userId, 'thread_id IN' => $threadIds->toArray()])
+                    ->combine('id', 'user_id');
+            if (!empty($participantsIds)) {
+
+                $messages = $this->Messages->find('all')
+                        ->where(['Messages.user_id IN ' => $participantsIds->toArray(), 'thread_id IN ' => $threadIds->toArray()])
+                        ->contain(['Sender' => ['Files']])
+                        ->group(['Messages.user_id'])
+                        ->order(['Messages.created' => 'asc']);
+            }
+        }
+        $this->set(compact('messages'));
+    }
+    
+    public function mailbox_view($recipientId = null) {
+        
+        if(empty($recipientId)){
+            
+            $this->Flash->set(__('Invalid Recipient.!!!'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
+            ]);
+            $this->redirect(['plugin' => false, 'controller' => 'proball_messages', 'action' => 'index']);
+        }
+        
+        $userId = $this->request->session()->read('Auth.User.id');
+        $threadId = $this->Threads->getThread($userId, $recipientId);
+        $threadParticipantId = $this->ThreadParticipants->getThreadParticipant($threadId, $userId);
+        $threadRecipientId = $this->ThreadParticipants->getThreadParticipant($threadId, $recipientId);
+        $chats = $this->Messages->find()
+                ->where(['Messages.thread_id' => $threadId])
+                ->contain(['Sender' => ['Files']])
+                ->order(['Messages.created' => 'asc'])
+                ->all();
+        $recipientDetail = $this->Users->find()
+                            ->where(['Users.id' => $recipientId])
+                            ->select(['id','first', 'last'])
+                            ->first();
+        $this->set(compact('chats','userId','recipientDetail'));
+    }
 }
 
 ?>
