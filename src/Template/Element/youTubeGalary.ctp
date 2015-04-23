@@ -6,7 +6,7 @@ $videoField = !empty($videoField) ? $videoField : 'url'; // Height of iFrame.
 $class = floor(12 / $chunk);
 $class = 'col-md-'.$class.' col-sm-'.$class;
 ?>
-<div class="row row-padded-lg">
+<div class="row">
     <div class="col-md-12">
         <?php if ($owner): ?>
             <?=
