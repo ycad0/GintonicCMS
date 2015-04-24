@@ -15,7 +15,7 @@ define('CAKE_CORE_INCLUDE_PATH', ROOT . 'vendor' . DS . 'cakephp' . DS . 'cakeph
 define('CORE_PATH', ROOT . 'vendor' . DS . 'cakephp' . DS . 'cakephp' . DS);
 define('CAKE', CORE_PATH . 'src' . DS);
 define('TESTS', ROOT . 'tests');
-define('APP', ROOT . 'tests' . DS . 'app' . DS);
+define('APP', ROOT . 'tests' . DS);
 define('APP_DIR', 'app');
 define('WEBROOT_DIR', 'webroot');
 define('WWW_ROOT', dirname(APP) . DS . 'webroot' . DS);
