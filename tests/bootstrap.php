@@ -66,3 +66,5 @@ Cake\Datasource\ConnectionManager::config('test', [
 ]);
 
 Plugin::load('GintonicCMS', ['path' => ROOT]);
+Cake\Routing\DispatcherFactory::add('Routing');
+Cake\Routing\DispatcherFactory::add('ControllerFactory');
