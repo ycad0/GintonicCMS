@@ -2,7 +2,7 @@
 use Cake\I18n\Time;
 use Cake\View\Helper\UrlHelper;
 
-$this->Helpers()->load('BoostCake.Form');
+$this->Helpers()->load('GintonicCMS.Form');
 $this->Helpers()->load('GintonicCMS.Require');
 
 echo $this->Require->req('messages/messages');

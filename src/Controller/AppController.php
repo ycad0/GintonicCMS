@@ -11,8 +11,8 @@ class AppController extends BaseController
         'GintonicCMS.Require',
         'GintonicCMS.User',
         'GintonicCMS.File',
-        'Form' => ['className' => 'BoostCake.Form'],
-        'Paginator' => ['className' => 'BoostCake.Paginator'],
+        'Form' => ['className' => 'GintonicCMS.Form'],
+        'Paginator' => ['className' => 'GintonicCMS.Paginator'],
     ];
     
     function initialize() 
