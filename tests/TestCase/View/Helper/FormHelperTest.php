@@ -58,21 +58,21 @@ class FormHelperTest extends TestCase
         ], $result);
     }
 
-    public function testCheckbox()
-    {
-        $this->Form->create(null);
-        $result = $this->Form->input('name', ['type' => 'checkbox']);
-        $this->assertHtml([
-            ['div' => ['class' => 'form-group ']],
-            ['div' => ['class' => 'checkbox']],
-            'label' => ['for' => 'name'],
-            ['input' => ['name' => 'name', 'type' => 'checkbox', 'value' => '1', 'id' => 'name']],
-            'Name',
-            '/label',
-            '/div',
-            '/div',
-        ], $result);
-    }
+    //public function testCheckbox()
+    //{
+    //    $this->Form->create(null);
+    //    $result = $this->Form->input('name', ['type' => 'checkbox']);
+    //    $this->assertHtml([
+    //        ['div' => ['class' => 'form-group ']],
+    //        ['div' => ['class' => 'checkbox']],
+    //        'label' => ['for' => 'name'],
+    //        ['input' => ['name' => 'name', 'type' => 'checkbox', 'value' => '1', 'id' => 'name']],
+    //        'Name',
+    //        '/label',
+    //        '/div',
+    //        '/div',
+    //    ], $result);
+    //}
 
     public function testSelectMultipleCheckbox()
     {
