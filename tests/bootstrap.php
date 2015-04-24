@@ -20,7 +20,7 @@ define('APP_DIR', 'app');
 define('WEBROOT_DIR', 'webroot');
 define('WWW_ROOT', dirname(APP) . DS . 'webroot' . DS);
 define('TMP', sys_get_temp_dir() . DS);
-define('CONFIG', APP . 'config' . DS);
+define('CONFIG', ROOT . 'tests' . DS . 'config' . DS);
 define('CACHE', TMP);
 define('LOGS', TMP);
 require_once CORE_PATH . 'config/bootstrap.php';
