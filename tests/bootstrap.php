@@ -27,23 +27,7 @@ require_once CORE_PATH . 'config/bootstrap.php';
 date_default_timezone_set('UTC');
 mb_internal_encoding('UTF-8');
 Configure::write('debug', true);
-Configure::write('App', [
-    'namespace' => 'App',
-    'encoding' => 'UTF-8',
-    'base' => false,
-    'baseUrl' => false,
-    'dir' => 'src',
-    'webroot' => WEBROOT_DIR,
-    'www_root' => WWW_ROOT,
-    'fullBaseUrl' => 'http://localhost',
-    'imageBaseUrl' => 'img/',
-    'jsBaseUrl' => 'js/',
-    'cssBaseUrl' => 'css/',
-    'paths' => [
-        'plugins' => [dirname(APP) . DS . 'plugins' . DS],
-        'templates' => [APP . 'Template' . DS]
-    ]
-]);
+Cake\Core\Configure::write('App', ['namespace' => 'GintonicCMS\Test\App']);
 Cache::config([
     '_cake_core_' => [
         'engine' => 'File',
