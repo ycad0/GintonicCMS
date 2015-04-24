@@ -1,5 +1,5 @@
 <?php
-namespace BoostCake\View\Widget;
+namespace GintonicCMS\View\Widget;
 
 use Cake\View\Widget\WidgetInterface;
 
