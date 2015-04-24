@@ -35,8 +35,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Cake\\Test\\": "vendor/cakephp/cakephp/tests"
-            "GintonicCMS\\Test\\": "tests",
+            "Cake\\Test\\": "vendor/cakephp/cakephp/tests",
+            "GintonicCMS\\Test\\": "tests"
         }
     }
 }
