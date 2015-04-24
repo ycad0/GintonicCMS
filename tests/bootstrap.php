@@ -56,4 +56,13 @@ Cache::config([
         'serialize' => true
     ]
 ]);
+
+if (!getenv('db_dsn')) {
+    putenv('db_dsn=sqlite:///:memory:');
+}
+Cake\Datasource\ConnectionManager::config('test', [
+    'url' => getenv('db_dsn'),
+    'timezone' => 'UTC'
+]);
+
 Plugin::load('GintonicCMS', ['path' => ROOT]);
