@@ -16,11 +16,11 @@ class AlbumsTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
-        'Albums' => 'plugin.gintonic_c_m_s.albums',
-        'Files' => 'plugin.gintonic_c_m_s.files',
-        'Users' => 'plugin.gintonic_c_m_s.users'
-    ];
+    //public $fixtures = [
+    //    'Albums' => 'plugin.gintonic_c_m_s.albums',
+    //    'Files' => 'plugin.gintonic_c_m_s.files',
+    //    'Users' => 'plugin.gintonic_c_m_s.users'
+    //];
 
     /**
      * setUp method

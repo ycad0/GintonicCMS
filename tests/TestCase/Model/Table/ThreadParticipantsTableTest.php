@@ -16,13 +16,13 @@ class ThreadParticipantsTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
-        'ThreadParticipants' => 'plugin.gintonic_c_m_s.thread_participants',
-        'Threads' => 'plugin.gintonic_c_m_s.threads',
-        'Users' => 'plugin.gintonic_c_m_s.users',
-        'Files' => 'plugin.gintonic_c_m_s.files',
-        'Albums' => 'plugin.gintonic_c_m_s.albums'
-    ];
+    //public $fixtures = [
+    //    'ThreadParticipants' => 'plugin.gintonic_c_m_s.thread_participants',
+    //    'Threads' => 'plugin.gintonic_c_m_s.threads',
+    //    'Users' => 'plugin.gintonic_c_m_s.users',
+    //    'Files' => 'plugin.gintonic_c_m_s.files',
+    //    'Albums' => 'plugin.gintonic_c_m_s.albums'
+    //];
 
     /**
      * setUp method

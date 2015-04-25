@@ -16,15 +16,15 @@ class MessagesTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
-        'Messages' => 'plugin.gintonic_c_m_s.messages',
-        'Sender' => 'plugin.gintonic_c_m_s.sender',
-        'Files' => 'plugin.gintonic_c_m_s.files',
-        'Users' => 'plugin.gintonic_c_m_s.users',
-        'Albums' => 'plugin.gintonic_c_m_s.albums',
-        'Threads' => 'plugin.gintonic_c_m_s.threads',
-        'MessageReadStatus' => 'plugin.gintonic_c_m_s.message_read_status'
-    ];
+    //public $fixtures = [
+    //    'Messages' => 'plugin.gintonic_c_m_s.messages',
+    //    'Sender' => 'plugin.gintonic_c_m_s.sender',
+    //    'Files' => 'plugin.gintonic_c_m_s.files',
+    //    'Users' => 'plugin.gintonic_c_m_s.users',
+    //    'Albums' => 'plugin.gintonic_c_m_s.albums',
+    //    'Threads' => 'plugin.gintonic_c_m_s.threads',
+    //    'MessageReadStatus' => 'plugin.gintonic_c_m_s.message_read_status'
+    //];
 
     /**
      * setUp method

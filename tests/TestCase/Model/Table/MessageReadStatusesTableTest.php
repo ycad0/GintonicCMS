@@ -16,10 +16,10 @@ class MessageReadStatusesTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
-        'MessageReadStatuses' => 'plugin.gintonic_c_m_s.message_read_statuses',
-        'Messages' => 'plugin.gintonic_c_m_s.messages'
-    ];
+    //public $fixtures = [
+    //    'MessageReadStatuses' => 'plugin.gintonic_c_m_s.message_read_statuses',
+    //    'Messages' => 'plugin.gintonic_c_m_s.messages'
+    //];
 
     /**
      * setUp method
