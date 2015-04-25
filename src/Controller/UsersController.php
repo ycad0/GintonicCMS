@@ -18,7 +18,9 @@ class UsersController extends AppController
             'signout',
             'confirmation',
             'forgot_password',
-            'reset_password'
+            'reset_password',
+            'update_avatar',
+            'profile'
         ]);
     }
 
@@ -31,14 +33,6 @@ class UsersController extends AppController
             'limit' => 5
         );
         $this->set('users', $this->paginate('Users'));
-    }
-
-
-    public function admin_view($userId = null)
-    {
-        $user = $this->Users->safeRead(['Users.id' => $userId]);
-        $this->set(compact('user'));
-        $this->render('/Users/view');
     }
 
     public function view() {
@@ -228,7 +222,7 @@ class UsersController extends AppController
     {
         $this->Cookie->forgetMe();
         $this->request->session()->destroy();
-        $this->Flash->set(__('You are now logged out.'), [
+        $this->Flash->set(__('You are now signed out.'), [
             'element' => 'GintonicCMS.alert',
             'params' => ['class' => 'alert-info']
         ]);
@@ -238,7 +232,7 @@ class UsersController extends AppController
     function profile() 
     {
         if (!$this->request->session()->check('Auth.User.id')) {
-            $this->Flash->set(__('You are not logged in..'), [
+            $this->Flash->set(__('You are not signed in'), [
                 'element' => 'GintonicCMS.alert',
                 'params' => ['class' => 'alert-danger']
             ]);
@@ -438,7 +432,7 @@ class UsersController extends AppController
         if($this->request->session()->read('Auth.User.role') == 'admin'){
             $this->request->session()->write('Site.layout','GintonicCMS.'.$layout);
         }else{
-            $this->Flash->set(__('You are not authorised user to access this.'), [
+            $this->Flash->set(__('Insufficient permissions'), [
                 'element' => 'GintonicCMS.alert',
                 'params' => ['class' => 'alert-danger']
             ]);

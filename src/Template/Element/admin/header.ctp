@@ -3,52 +3,29 @@
 use Cake\Core\Configure;
 ?>
 <header class="header">
-    <?php if ($this->request->session()->read('Auth.User.role') == 'admin'): ?>
-        <div class="admin-special-header container-fluid no-padding navbar-inverse">
-            <div class="navbar-header">
-                <?php
-                echo $this->Html->link(
-                        'Admin Panel', ['controller' => 'users', 'action' => 'profile'], ['escape' => false, 'class' => ['logo navbar-inverse']]
-                );
-                ?>
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-admin-navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <div class="collapse navbar-collapse navbar-right" id="bs-admin-navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <?php
-                        echo $this->Html->link(
-                                __('Visit Site') . '&nbsp;<i class="fa fa-sign-in">&nbsp;</i>', ['plugin' => 'GintonicCMS', 'controller' => 'users', 'action' => 'change_layout'], ['escape' => false]
-                        );
-                        ?>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    <?php endif; ?>
-    <?php
-    echo $this->Html->link(
-            $this->Html->image('GintonicCMS.gintonic-white.png', ['alt' => Configure::read('site_name')]), ['controller' => 'admins', 'action' => 'index'], ['escape' => false, 'class' => 'logo']
-    );
-    ?>
+    <?php echo $this->Html->link(
+        $this->Html->image(
+            'GintonicCMS.gintonic-white.png',
+            ['alt' => Configure::read('site_name')]
+        ),
+        ['controller' => 'admins', 'action' => 'index'],
+        ['escape' => false, 'class' => 'logo']
+    ); ?>
     <nav class="navbar navbar-static-top" role="navigation">
-        <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </a>
-        <div class="navbar-right">
-            <ul class="nav navbar-nav">					
+        <div class="container-fluid">
+            <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <ul class="nav navbar-nav navbar-right">					
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-user"></i>
-                        <span><?php echo $this->request->session()->read('Auth.User.first') . ' ' . $this->request->session()->read('Auth.User.last') ?> <i class="caret"></i></span>
+                        <span>
+                            <?php echo $this->request->session()->read('Auth.User.email'); ?> <i class="caret"></i>
+                        </span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->

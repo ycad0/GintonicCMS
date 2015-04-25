@@ -1,16 +1,20 @@
 <?php
+use Cake\I18n\Time;
+
 $this->assign('pagetitle', __('Users') . '<small>' . __('User Management') . '</small>');
 $this->Html->addCrumb(__('Users'));
 $this->start('top_links');
-echo $this->Html->link('<i class="fa fa-plus">&nbsp;</i> Add User', ['action' => 'admin_add'], ['class' => 'btn btn-primary btn-sm', 'escape' => false]);
 $this->end();
 $this->Helpers()->load('GintonicCMS.Require');
 ?>
 <div class="row">
+    <div class="col-md-12">
+        <?php echo $this->Html->link('<i class="fa fa-plus">&nbsp;</i> Add User', ['action' => 'admin_add'], ['class' => 'btn btn-primary btn-sm pull-right', 'escape' => false]);?>
+    </div>
     <div class="col-xs-12">
-        <div class="box box-primary">           
+        <div class="box box-primary">
             <div class="box-footer clearfix">
-                <?php echo $this->element('paginationtop'); ?>
+                <?php echo $this->element('paginationtop'); ?>                
             </div>
             <div class="box-body table-responsive no-padding">
                 <table class="table table-hover table-bordered">
@@ -50,13 +54,9 @@ $this->Helpers()->load('GintonicCMS.Require');
                                     <td class="actions text-center">
                                         <span class='text-left'>
                                             <?php
-                                            echo $this->Html->link('<i class="fa fa-pencil">&nbsp;</i> ', ['action' => 'admin_edit', $user->id], ['escape' => false, 'title' => 'Click here to edit this user']);
-                                            echo '&nbsp;&nbsp;';
-                                            echo $this->Html->link('<i class="fa fa-th">&nbsp;</i> ', ['action' => 'admin_view', $user->id], ['escape' => false, 'title' => 'Click here to view this user']);
-                                            echo '&nbsp;&nbsp;';
-                                            echo $this->Html->link('<i class="fa fa-file">&nbsp;</i>', array('controller' => 'files', 'action' => 'admin_index', $user->id), array('title' => 'Click here to view file uploaded by ' . $user->first, 'escape' => false));
-                                            echo '&nbsp;&nbsp;';
-                                            echo $this->Html->link('<i class="fa fa-trash-o">&nbsp;</i> ', ['action' => 'admin_delete', $user->id], ['role' => 'button', 'escape' => false, 'title' => 'Delete this user','confirm' => __('Are you sure? You want to delete this user.')]);
+                                            echo $this->Html->link('<i class="fa fa-pencil btn btn-primary"></i> ', ['action' => 'admin_edit', $user->id], ['escape' => false, 'title' => 'Click here to edit this user']);
+                                            echo $this->Html->link('<i class="fa fa-file btn btn-primary"></i> ', array('controller' => 'files', 'action' => 'admin_index', $user->id), array('title' => 'Click here to view file uploaded by ' . $user->first, 'escape' => false));
+                                            echo $this->Html->link('<i class="fa fa-times btn btn-primary"></i> ', ['action' => 'admin_delete', $user->id], ['role' => 'button', 'escape' => false, 'title' => 'Delete this user','confirm' => __('Are you sure? You want to delete this user.')]);
                                             ?>
                                         </span>
                                     </td>
