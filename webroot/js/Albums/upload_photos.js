@@ -3,7 +3,7 @@ define(['jquery', 'basepath'], function($, basepath) {
     return function(id, path) {
         $.ajax({
             type: "POST",
-            url: basepath + "gintonic_c_m_s/AlbumPhotos/upload_photos/",
+            url: basepath + "gintonic_c_m_s/Albums/upload_photos/",
             dataType: 'json',
             data: {
                 id: $('#user-id').val(),
@@ -39,7 +39,7 @@ define(['jquery', 'basepath'], function($, basepath) {
         function loadFiles(fileIds){
             
             $.ajax({
-                url: basepath + "gintonic_c_m_s/AlbumPhotos/loadFiles/",
+                url: basepath + "gintonic_c_m_s/Albums/loadFiles/",
                 type: 'POST',
                 data: {
                     fileIds: fileIds,

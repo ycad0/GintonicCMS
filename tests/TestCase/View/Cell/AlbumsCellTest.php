@@ -2,12 +2,12 @@
 namespace GintonicCMS\Test\TestCase\View\Cell;
 
 use Cake\TestSuite\TestCase;
-use GintonicCMS\View\Cell\AlbumPhotosCell;
+use GintonicCMS\View\Cell\AlbumsCell;
 
 /**
- * GintonicCMS\View\Cell\AlbumPhotosCell Test Case
+ * GintonicCMS\View\Cell\AlbumsCell Test Case
  */
-class AlbumPhotosCellTest extends TestCase
+class AlbumsCellTest extends TestCase
 {
 
     /**
@@ -20,7 +20,7 @@ class AlbumPhotosCellTest extends TestCase
         parent::setUp();
         $this->request = $this->getMock('Cake\Network\Request');
         $this->response = $this->getMock('Cake\Network\Response');
-        $this->AlbumPhotos = new AlbumPhotosCell($this->request, $this->response);
+        $this->Albums = new AlbumsCell($this->request, $this->response);
     }
 
     /**
@@ -30,7 +30,7 @@ class AlbumPhotosCellTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->AlbumPhotos);
+        unset($this->Albums);
 
         parent::tearDown();
     }

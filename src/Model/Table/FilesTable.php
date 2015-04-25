@@ -31,7 +31,7 @@ class FilesTable extends Table
             'propertyName' => 'user',
         ]);
         
-        $this->hasMany('GintonicCMS.AlbumPhotos');
+        $this->hasMany('GintonicCMS.Albums');
     }
 
     public function moveUploaded($tmpFile, $userId, $dirName, $count) 

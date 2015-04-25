@@ -10,7 +10,7 @@ define(['jquery', 'basepath'], function ($, basepath) {
             fileName = $(this).data('filename');
 
             $.ajax({
-                url: basepath + "gintonic_c_m_s/AlbumPhotos/delete_image/",
+                url: basepath + "gintonic_c_m_s/Albums/delete_image/",
                 type: 'POST',
                 dataType: 'json',
                 data: {

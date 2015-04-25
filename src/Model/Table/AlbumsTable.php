@@ -6,7 +6,7 @@ use Cake\ORM\Table;
 use Cake\Core\Configure;
 use Cake\I18n\Time;
 
-class AlbumPhotosTable extends Table {
+class AlbumsTable extends Table {
     
     public function initialize(array $config)
     {

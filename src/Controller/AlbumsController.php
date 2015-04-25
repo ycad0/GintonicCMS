@@ -5,7 +5,7 @@ namespace GintonicCMS\Controller;
 use GintonicCMS\Controller\AppController;
 use Cake\Network\Response;
 
-class AlbumPhotosController extends AppController {
+class AlbumsController extends AppController {
     
     public function isAuthorized($user = null) {
         
@@ -17,8 +17,8 @@ class AlbumPhotosController extends AppController {
         
         $this->loadModel('Users');
         $loggedInUserId = $this->request->session()->read('Auth.User.id');
-        $album = $this->AlbumPhotos->find('all')
-                    ->where(['AlbumPhotos.user_id' => $userId])
+        $album = $this->Albums->find('all')
+                    ->where(['Albums.user_id' => $userId])
                     ->contain(['Files' => ['fields' => ['Files.id','Files.filename','Files.dir']]]);
         
         $this->set(compact('loggedInUserId','album','userId'));
@@ -42,8 +42,8 @@ class AlbumPhotosController extends AppController {
                 'user_id' => $userId,
                 'file_id' => $fileId
             );
-            $album = $this->AlbumPhotos->newEntity($albumData);
-            if($this->AlbumPhotos->save($album)){
+            $album = $this->Albums->newEntity($albumData);
+            if($this->Albums->save($album)){
                 
                 $message = __('Photo uploaded successfully.');
                 $success = true;
@@ -62,8 +62,8 @@ class AlbumPhotosController extends AppController {
         $message = __('Unable to delete image. Please try again...');
         $success = false;
         if(!empty($this->request->data['id']) && !empty($this->request->data['fileId'])){
-            $image = $this->AlbumPhotos->get($this->request->data['id']);
-            if($this->AlbumPhotos->delete($image)){
+            $image = $this->Albums->get($this->request->data['id']);
+            if($this->Albums->delete($image)){
                 $message = __('Image has been successfulyl deleted');
                 $success = true;
                 $this->loadModel('GintonicCMS.Files');
@@ -85,12 +85,12 @@ class AlbumPhotosController extends AppController {
             $userId = $this->request->data['userId'];
             $loggedInUserId = $this->request->data['loggedInUserId'];
             
-            $album = $this->AlbumPhotos->find('all')
-                    ->where(['AlbumPhotos.file_id' => $this->request->data['fileIds']])
+            $album = $this->Albums->find('all')
+                    ->where(['Albums.file_id' => $this->request->data['fileIds']])
                     ->contain(['Files' => ['fields' => ['Files.id','Files.filename','Files.dir']]]);
             
             $this->set(compact('album','userId','loggedInUserId'));
         }
-        $this->render('GintonicCMS.Element/AlbumPhotos/photo_galary');
+        $this->render('GintonicCMS.Element/Albums/photo_galary');
     }
 }
