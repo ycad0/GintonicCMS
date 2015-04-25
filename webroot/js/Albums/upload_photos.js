@@ -10,29 +10,11 @@ define(['jquery', 'basepath'], function($, basepath) {
                 file_id: id,
             },
             success: function(response, status) {
-                //$('#userphoto').attr('src', response.file);
                 if (response.success) {
-                    /*$('#contact-alert').html(
-                            '<div class="alert alert-dismissable alert-success">' +
-                            '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + response.message +
-                            '</div>'
-                            );*/
                     loadFiles(id);                    
-                } else {
-                    /*$('#contact-alert').html(
-                            '<div class="alert alert-dismissable alert-danger">' +
-                            '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + response.message +
-                            '</div>'
-                            );*/
                 }
             },
             error: function(response, status) {
-                /*$('#contact-alert').html(
-                        '<div class="alert alert-dismissable alert-danger">' +
-                        '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
-                        '<strong>Error:</strong> Something going wrong on server. Please try latter!!!' +
-                        '</div>'
-                        );*/
             }
         });
         
@@ -48,10 +30,6 @@ define(['jquery', 'basepath'], function($, basepath) {
                 },
                 success: function (response) {
                     $('[data-photogalary]').append(response);
-                    //$('[data-photogalary]').last('div').children('[data-delete-image]').bind('click');
-                },
-                error: function (response) {
-                    
                 }
             });
         }

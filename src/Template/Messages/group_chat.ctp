@@ -18,7 +18,7 @@ echo $this->Require->req('messages/messages');
                     $isGroupAdmin = ($this->request->session()->read('Auth.User.id') == $groupAdminDetail['id']);
                     if($isGroupAdmin){
                         echo '<span class="text-danger">You are group admin</span>';
-                        echo $this->Form->create('Message', ['id' => 'GroupChatForm','url'=>['plugin'=>'GintonicCMS','controller'=>'messages','action'=>'set_group_chat',$activeGroupID], 'class' => 'gorupChatForm']);
+                        echo $this->Form->create('Message', ['id' => 'GroupChatForm','url'=>['plugin'=>'GintonicCMS','controller'=>'messages','action'=>'setGroupChat',$activeGroupID], 'class' => 'gorupChatForm']);
                         echo $this->Form->input('user_list',['label'=>false,'class'=>'user-tokens form-control tokenfield','data-value'=>$groupUsersJson]);
                         echo $this->Form->submit(__('Done'), ['class' => 'btn btn-sm btn-primary']);
                         echo $this->Form->end();

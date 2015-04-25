@@ -2,14 +2,17 @@
 
 namespace GintonicCMS\Model\Table;
 
-use Cake\ORM\Table;
 use Cake\I18n\Time;
+use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 
-class ThreadsTable extends Table {
-
-    public function initialize(array $config) {
-        
+class ThreadsTable extends Table
+{
+    /**
+     * TODO: doccomment
+     */
+    public function initialize(array $config)
+    {
         parent::initialize($config);
         $this->primaryKey('id');
 
@@ -24,19 +27,22 @@ class ThreadsTable extends Table {
 
         $this->addAssociations([
             'belongsTo' => ['Users' => [
-                    'className' => 'GintonicCMS.Users',
-                    'foreignKey' => 'user_id',
-                    'propertyName' => 'user_thread'
-                ]],
+                'className' => 'GintonicCMS.Users',
+                'foreignKey' => 'user_id',
+                'propertyName' => 'user_thread'
+            ]],
             'hasMany' => ['ThreadParticipants' => [
-                    'className' => 'Messages.ThreadParticipants',
-                    'propertyName' => 'thread_participants'
-                ]]
+                'className' => 'Messages.ThreadParticipants',
+                'propertyName' => 'thread_participants'
+            ]]
         ]);
     }
 
-    function getThread($userId = null, $recipientId = null, $threadUserIds = []) {
-        
+    /**
+     * TODO: doccomment
+     */
+    public function getThread($userId = null, $recipientId = null, $threadUserIds = [])
+    {
         $this->ThreadParticipants = TableRegistry::get('Messages.ThreadParticipants');
         $participantsUsers = [$userId, $recipientId];
         if (empty($recipientId) && !empty($threadUserIds)) {
@@ -44,15 +50,15 @@ class ThreadsTable extends Table {
             $participantsUsers = $threadUserIds;
         }
         $threadQuery = $this->ThreadParticipants->find()
-                ->where(['ThreadParticipants.user_id IN' => $participantsUsers]);
+            ->where(['ThreadParticipants.user_id IN' => $participantsUsers]);
 
         $threads = $threadQuery->select([
-                    'ThreadParticipants.thread_id',
-                    'count' => $threadQuery->func()->count('ThreadParticipants.thread_id')
-                ])
-                ->group('ThreadParticipants.thread_id')
-                ->having(['count' => count($participantsUsers)])
-                ->toArray();
+            'ThreadParticipants.thread_id',
+            'count' => $threadQuery->func()->count('ThreadParticipants.thread_id')
+        ])
+        ->group('ThreadParticipants.thread_id')
+        ->having(['count' => count($participantsUsers)])
+        ->toArray();
         
         if (empty($threads) && empty($recipientId) && empty($threadUserIds)) {
             return 0;
@@ -72,15 +78,18 @@ class ThreadsTable extends Table {
         return $threadId;
     }
 
-    function getGroups($userId = null) {
-        
+    /**
+     * TODO: doccomment
+     */
+    public function getGroups($userId = null)
+    {
         $threads = $this->find('list', ['keyField' => 'id', 'valueField' => 'id'])
-                ->where(['Threads.thread_participant_count >' => 2])
-                ->toArray();
+            ->where(['Threads.thread_participant_count >' => 2])
+            ->toArray();
         $this->ThreadParticipants = TableRegistry::get('Messages.ThreadParticipants');
         $threadIds = $this->ThreadParticipants->find('list', ['keyField' => 'thread_id', 'valueField' => 'thread_id'])
-                ->where(['ThreadParticipants.thread_id IN' => $threads, 'ThreadParticipants.user_id' => $userId])
-                ->toArray();
+            ->where(['ThreadParticipants.thread_id IN' => $threads, 'ThreadParticipants.user_id' => $userId])
+            ->toArray();
         $groups = array();
         $count = 0;
         foreach ($threadIds as $threadId) {
@@ -89,17 +98,19 @@ class ThreadsTable extends Table {
         return $groups;
     }
 
-    function getGroupAdmin($threadId = null) {
-        
+    /**
+     * TODO: doccomment
+     */
+    public function getGroupAdmin($threadId = null)
+    {
         $userData = $this->find()
-                ->where(['Threads.id' => $threadId])
-                ->contain(['Users' => function($userQuery) {
-                        return $userQuery
-                                ->select(['id', 'first', 'last', 'email']);
-                }])
-                ->first()
-                ->toArray();
+            ->where(['Threads.id' => $threadId])
+            ->contain(['Users' => function ($userQuery) {
+                    return $userQuery
+                            ->select(['id', 'first', 'last', 'email']);
+            }])
+            ->first()
+            ->toArray();
         return $userData['user_thread'];
     }
 }
-?>

@@ -14,7 +14,7 @@ echo $this->Require->req('messages/messages');
             <div class="col-md-7  col-sm-7 message-div">
                 <?php
                 if(isset($isGroupChat)){
-                    echo $this->Form->create('Message', ['id' => 'GroupChatForm','url'=>['plugin'=>'GintonicCMS','controller'=>'messages','action'=>'set_group_chat'], 'class' => 'gorupChatForm']);
+                    echo $this->Form->create('Message', ['id' => 'GroupChatForm','url'=>['plugin'=>'GintonicCMS','controller'=>'messages','action'=>'setGroupChat'], 'class' => 'gorupChatForm']);
                     echo $this->Form->input('user_list',['label'=>false,'class'=>'form-control tokenfield']);
                     echo $this->Form->submit(__('Done'), ['class' => 'btn btn-sm btn-primary']);
                     echo $this->Form->end();

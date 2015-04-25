@@ -6,9 +6,13 @@ use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 
-class MessageReadStatusesTable extends Table {
-    
-    public function initialize(array $config) {
+class MessageReadStatusesTable extends Table
+{
+    /**
+     * TODO: docbloc
+     */
+    public function initialize(array $config)
+    {
         parent::initialize($config);
         
         $this->belongsTo('Messages', [

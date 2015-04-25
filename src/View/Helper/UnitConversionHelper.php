@@ -4,14 +4,18 @@ namespace GintonicCMS\View\Helper;
 
 use Cake\View\Helper\HtmlHelper;
 
-class UnitConversionHelper extends HtmlHelper {
+class UnitConversionHelper extends HtmlHelper
+{
 
     public $helpers = ['Html'];
 
-    public function convertLength($value = null, $fromUnit = null, $toUnit = null) {
-
+    /**
+     * TODO: doccomment
+     */
+    public function convertLength($value = null, $fromUnit = null, $toUnit = null)
+    {
         $valid = $this->__checkInputs($value, $fromUnit, $toUnit);
-        if(!$valid['success']){
+        if (!$valid['success']) {
             return $valid['value'];
         }
         
@@ -27,10 +31,13 @@ class UnitConversionHelper extends HtmlHelper {
         }
     }
 
-    public function convertMass($value = null, $fromUnit = null, $toUnit = null) {
-        
+    /**
+     * TODO: doccomment
+     */
+    public function convertMass($value = null, $fromUnit = null, $toUnit = null)
+    {
         $valid = $this->__checkInputs($value, $fromUnit, $toUnit);
-        if(!$valid['success']){
+        if (!$valid['success']) {
             return $valid['value'];
         }
         
@@ -44,11 +51,13 @@ class UnitConversionHelper extends HtmlHelper {
             default:
                 break;
         }
-        
     }
 
-    private function __checkInputs($value = null, $fromUnit = null, $toUnit = null) {
-
+    /**
+     * TODO: doccomment
+     */
+    private function __checkInputs($value = null, $fromUnit = null, $toUnit = null)
+    {
         $response = [
             'value' => $value,
             'success' => true
@@ -70,7 +79,11 @@ class UnitConversionHelper extends HtmlHelper {
         return $response;
     }
 
-    private function __convertFromInch($value, $toUnit) {
+    /**
+     * TODO: doccomment
+     */
+    private function __convertFromInch($value, $toUnit)
+    {
         switch ($toUnit) {
 
             case 'feet':
@@ -83,16 +96,17 @@ class UnitConversionHelper extends HtmlHelper {
         }
     }
     
-    private function __convertFromKg($value, $toUnit) {
-        
+    /**
+     * TODO: doccomment
+     */
+    private function __convertFromKg($value, $toUnit)
+    {
         switch ($toUnit) {
 
             case 'lbs':
 
-                return round($value * 2.2046, 2).' lbs';
+                return round($value * 2.2046, 2) . ' lbs';
                 break;
         }
     }
-
 }
-?>

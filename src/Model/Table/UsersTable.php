@@ -2,18 +2,20 @@
 
 namespace GintonicCMS\Model\Table;
 
-use Cake\ORM\Table;
-use Cake\Network\Session;
-use Cake\Validation\Validator;
+use Cake\Auth\DefaultPasswordHasher;
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
-use Cake\Network\Email\Email;
 use Cake\I18n\Time;
-use Cake\Auth\DefaultPasswordHasher;
+use Cake\Network\Email\Email;
+use Cake\Network\Session;
+use Cake\ORM\Table;
+use Cake\Validation\Validator;
 
 class UsersTable extends Table
 {
-
+    /**
+     * TODO: doccomment
+     */
     public function validationDefault(Validator $validator)
     {
         return $validator
@@ -23,14 +25,17 @@ class UsersTable extends Table
                 'unique' => [
                     'rule' => ['validateUnique'],
                     'provider' => 'table',
-                    'message'=>__('Email adress already exists.')
+                    'message' => __('Email adress already exists.')
                 ]
             ])
             ->requirePresence('password')
-            ->notEmpty('password',['message'=>__('Please enter password.')]);
+            ->notEmpty('password', ['message' => __('Please enter password.')]);
     }
     
-    public function initialize(array $config) 
+    /**
+     * TODO: doccomment
+     */
+    public function initialize(array $config)
     {
         parent::initialize($config);
         $this->primaryKey('id');
@@ -43,7 +48,7 @@ class UsersTable extends Table
             ]
         ]);
         $this->addAssociations([
-            'belongsTo' => ['Files'=>[
+            'belongsTo' => ['Files' => [
                 'className' => 'GintonicCMS.Files',
                 'foreignKey' => 'file_id',
                 'propertyName' => 'file'
@@ -51,28 +56,39 @@ class UsersTable extends Table
         ]);
     }
     
-    public function isValidated($email) {
-        $user = $this->safeRead(['email'=>$email]);
+    /**
+     * TODO: doccomment
+     */
+    public function isValidated($email)
+    {
+        $user = $this->safeRead(['email' => $email]);
         if (!isset($user)) {
             return false;
         }
         return $user->validated;
     }
     
-    public function signupMail($email) 
+    /**
+     * TODO: doccomment
+     */
+    public function signupMail($email)
     {
-        $user = $this->safeRead(['email'=>$email]);
-        if(!empty($user)){
+        $user = $this->safeRead(['email' => $email]);
+        if (!empty($user)) {
             unset($user->password);
             $user->token = md5(uniqid(rand(), true));
-            $user->token_creation = date("Y-m-d H:i:s");;
+            $user->token_creation = date("Y-m-d H:i:s");
+            ;
             $this->save($user);
             $this->sendSignupMail($user);
         }
         return true;
     }
     
-    public function sendSignupMail($user) 
+    /**
+     * TODO: doccomment
+     */
+    public function sendSignupMail($user)
     {
         $email = new Email();
         $email->profile('default');
@@ -83,27 +99,32 @@ class UsersTable extends Table
              ->from(Configure::read('admin_mail'))
              ->subject('Account validation');
         return $email->send();
-        
     }
     
-    public function safeRead($conditions = null,$withPassword = false) 
+    /**
+     * TODO: doccomment
+     */
+    public function safeRead($conditions = null, $withPassword = false)
     {
         $this->data = $this->find()
             ->where([$conditions])
-            ->contain(['Files'=>['fields'=>['Files.id','Files.filename']]])
+            ->contain(['Files' => ['fields' => ['Files.id', 'Files.filename']]])
             ->first();
-        if(empty($this->data['file'])){
-            $this->data['file']= ['id'=>0,'filename'=>'default'];
+        if (empty($this->data['file'])) {
+            $this->data['file'] = ['id' => 0, 'filename' => 'default'];
         }
-        if (isset($this->data->password) && empty($withPassword)){
+        if (isset($this->data->password) && empty($withPassword)) {
             unset($this->data->password);
         }
         return $this->data;
     }
     
-    public function confirmation($userId, $token) 
+    /**
+     * TODO: doccomment
+     */
+    public function confirmation($userId, $token)
     {
-        $user = $this->safeRead(['Users.id'=>$userId]);
+        $user = $this->safeRead(['Users.id' => $userId]);
         if (!$user) {
             return false;
         }
@@ -117,10 +138,16 @@ class UsersTable extends Table
         return $user;
     }
     
-    public function ForgotPasswordEmail($email) 
+    /**
+     * TODO: doccomment
+     */
+    public function forgotPasswordEmail($email)
     {
-        $user = $this->safeRead(['email'=>$email]);
-        $arrResponse = array('status' => 'fail', 'message' => 'Unable to send forgot password email, Please try again');
+        $user = $this->safeRead(['email' => $email]);
+        $response = [
+            'status' => 'fail',
+            'message' => 'Unable to send forgot password email, Please try again'
+        ];
         if (empty($user)) {
             return array('status' => 'fail', 'message' => 'No matching email found');
         }
@@ -130,63 +157,102 @@ class UsersTable extends Table
 
         $this->save($user);
         if ($this->sendForgotPasswordEmail($user)) {
-            $arrResponse = array('status' => 'success', 'message' => 'Please check your e-mail for forgot password');
+            $response = [
+                'status' => 'success',
+                'message' => 'Please check your e-mail for forgot password'
+            ];
         }
-        return $arrResponse;
+        return $response;
     }
 
-    public function sendForgotPasswordEmail($user) 
+    /**
+     * TODO: doccomment
+     */
+    public function sendForgotPasswordEmail($user)
     {
         $email = new Email('default');
         $email->viewVars(array('userId' => $user->id, 'token' => $user->token));
         $email->template('GintonicCMS.forgot_password')
-                ->emailFormat('html')
-                ->to($user->email)
-                ->from([Configure::read('admin_mail') => Configure::read('site_name')])
-                ->subject('Forgot Password');
+            ->emailFormat('html')
+            ->to($user->email)
+            ->from([Configure::read('admin_mail') => Configure::read('site_name')])
+            ->subject('Forgot Password');
         return $email->send();
     }
     
+    /**
+     * TODO: doccomment
+     */
     public function findCustomPassword($password)
     {
         return (new DefaultPasswordHasher)->hash($password);
     }
 
-    public function checkForgotPassword($userId, $token) 
+    /**
+     * TODO: doccomment
+     */
+    public function checkForgotPassword($userId, $token)
     {
-        $arrResponse = array('status' => 'fail', 'message' => 'Invalid forgot password token');
-        $user = $this->safeRead(['Users.id'=>$userId]);
+        $response = [
+            'status' => 'fail',
+            'message' => 'Invalid forgot password token'
+        ];
+        $user = $this->safeRead(['Users.id' => $userId]);
         if (!empty($user) && $user->token == $token) {
             $time = new Time($this->data->token_creation);
             if (!$time->wasWithinLast('+1 day')) {
-                $arrResponse = array('status' => 'fail', 'message' => 'Forgot Password token is expired');
+                $response = [
+                    'status' => 'fail',
+                    'message' => 'Forgot Password token is expired'
+                ];
             } else {
-                $arrResponse = array('status' => 'success', 'message' => 'Valid Token');
+                $response = [
+                    'status' => 'success',
+                    'message' => 'Valid Token'
+                ];
             }
         }
-        return $arrResponse;
+        return $response;
     }
 
-    public function ResendVerification($email) 
+    /**
+     * TODO: doccomment
+     */
+    public function resendVerification($email)
     {
-        $user = $this->safeRead(['email'=>$email]);
+        $user = $this->safeRead(['email' => $email]);
         if (empty($user)) {
-            return array('status' => 'fail', 'message' => 'No matching email found. Please try with correct email address.');
+            return [
+                'status' => 'fail',
+                'message' => 'No matching email found. Please try with correct email address.'
+            ];
         } elseif (!empty($user['validated'])) {
-            return array('status' => 'fail', 'message' => 'Your email address is already validated, please use email and password to login');
+            return [
+                'status' => 'fail',
+                'message' => 'Your email address is already validated, please use email and password to login'
+            ];
         } else {
             $user['token'] = md5(uniqid(rand(), true));
             $user['token_creation'] = date("Y-m-d H:i:s");
             $this->save($user);
-            $this->ResendVerificationEmail($user);
-            return array('status' => 'success', 'message' => __('The email was resent. Please check your inbox.'));
+            $this->resendVerificationEmail($user);
+            return [
+                'status' => 'success',
+                'message' => __('The email was resent. Please check your inbox.')
+            ];
         }
     }
 
-    public function ResendVerificationEmail($user) 
+    /**
+     * TODO: doccomment
+     */
+    public function resendVerificationEmail($user)
     {
         $email = new Email('default');
-        $email->viewVars(array('userId' => $user->id, 'token' => $user->token,'user'=>$user));
+        $email->viewVars([
+            'userId' => $user->id,
+            'token' => $user->token, 'user' => $user
+        ]);
         $email->template('GintonicCMS.resend_code')
             ->emailFormat('html')
             ->to($user->email)
@@ -194,6 +260,4 @@ class UsersTable extends Table
             ->subject('Account validation');
         return $email->send();
     }
-    
 }
-?>

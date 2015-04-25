@@ -39,8 +39,10 @@ class FormHelper extends BaseForm
             'labelWidth' => 3,
             'fieldWidth' => 9,
         ];
-        $this->_defaultConfig['templates'] = array_merge($this->_defaultConfig['templates'],
-            $this->_bootstrapTemplates);
+        $this->_defaultConfig['templates'] = array_merge(
+            $this->_defaultConfig['templates'],
+            $this->_bootstrapTemplates
+        );
         parent::__construct($View, $config);
 
         $this->addWidget('radio', ['GintonicCMS\View\Widget\RadioWidget', 'label']);
@@ -108,11 +110,14 @@ class FormHelper extends BaseForm
         return parent::checkbox($fieldName, $options);
     }
 
+    /**
+     * TODO: doccomment
+     */
     protected function _formStyleOptions($options)
     {
         $options = $options + [
-                'formStyle' => null
-            ];
+            'formStyle' => null
+        ];
 
         $formStyle = $options['formStyle'];
         unset($options['formStyle']);

@@ -2,17 +2,21 @@
 
 namespace GintonicCMS\Model\Table;
 
-use Cake\ORM\Table;
-use Cake\Network\Session;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
 use Cake\Filesystem\File;
 use Cake\Filesystem\Folder;
 use Cake\I18n\Time;
-use Cake\Datasource\EntityInterface;
-use Cake\Event\Event;
+use Cake\Network\Session;
 use Cake\ORM\Entity;
+use Cake\ORM\Table;
 
-class FilesTable extends Table 
-{   
+class FilesTable extends Table
+{
+
+    /**
+     * TODO: doccomment
+     */
     public function initialize(array $config)
     {
         //for the default add the created and modified
@@ -34,7 +38,10 @@ class FilesTable extends Table
         $this->hasMany('GintonicCMS.Albums');
     }
 
-    public function moveUploaded($tmpFile, $userId, $dirName, $count) 
+    /**
+     * TODO: doccomment
+     */
+    public function moveUploaded($tmpFile, $userId, $dirName, $count)
     {
         // fetch data
         $fileInfo['user_id'] = $userId;
@@ -52,17 +59,22 @@ class FilesTable extends Table
         return $fileInfo;
     }
 
-    // This function creates/define what path and filename to give before storing it
-    public function createFileName($ext, $userId, $count) 
+    /**
+     * TODO: doccomment
+     * This function creates/define what path and filename to give before storing it
+     */
+    public function createFileName($ext, $userId, $count)
     {
         $count = empty($count) ? '' : ('_' . $count);
         return date("d_m_Y_G.i.s") . '_' . $userId . $count . '.' . $ext;
     }
 
-    public function getPath($filename, $dirName = null) 
+    /**
+     * TODO: doccomment
+     */
+    public function getPath($filename, $dirName = null)
     {
-        if (empty($dirName)) 
-        {
+        if (empty($dirName)) {
             $path = WWW_ROOT . 'files' . DS . 'uploads' . DS;
         } else {
             $path = WWW_ROOT . 'files' . DS . 'uploads' . DS . $dirName . DS;
@@ -72,18 +84,24 @@ class FilesTable extends Table
         return $path . $filename;
     }
 
-    public function getUrl($filename=null,$fileId = null) 
+    /**
+     * TODO: doccomment
+     */
+    public function getUrl($filename = null, $fileId = null)
     {
-        if(!empty($fileId)){
+        if (!empty($fileId)) {
             $file = $this->get($fileId);
             return 'files/uploads/' . $file->filename;
         }
         return 'files/uploads/' . $filename;
     }
 
-    public function deleteFile($filename,$fileId = null) 
+    /**
+     * TODO: doccomment
+     */
+    public function deleteFile($filename, $fileId = null)
     {
-        if(!empty($fileId)){
+        if (!empty($fileId)) {
             $oldFile = $this->get($fileId);
             $this->delete($oldFile);
         }
@@ -91,5 +109,4 @@ class FilesTable extends Table
         $file->delete();
         $file->close();
     }
-
 }

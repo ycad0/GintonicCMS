@@ -1,15 +1,18 @@
 <?php
 namespace GintonicCMS\Controller;
 
-use GintonicCMS\Controller\AppController;
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
-use Cake\Core\Configure;
+use GintonicCMS\Controller\AppController;
 
 class UsersController extends AppController
 {
 
-    public function beforeFilter(Event $event) 
+    /**
+     * TODO: blockquote
+     */
+    public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
         $this->Auth->allow([
@@ -24,18 +27,11 @@ class UsersController extends AppController
         ]);
     }
 
-    public function admin_index()
+    /**
+     * TODO: blockquote
+     */
+    public function view()
     {
-        $arrConditions = ['Users.role <> ' => 'admin'];
-        $this->paginate = array(
-            'conditions' => $arrConditions,
-            'order' => array('Users.created' => 'desc'),
-            'limit' => 5
-        );
-        $this->set('users', $this->paginate('Users'));
-    }
-
-    public function view() {
         if (!$this->request->session()->check('Auth.User.id')) {
             $this->Flash->set(__('Please Login to view this page.'), [
                 'element' => 'GintonicCMS.alert',
@@ -43,31 +39,17 @@ class UsersController extends AppController
             ]);
             return $this->redirect($this->Auth->redirectUrl());
         }
-        $user = $this->Users->safeRead(['Users.id' => $this->request->session()->read('Auth.User.id')]);
+        $user = $this->Users->safeRead([
+            'Users.id' => $this->request->session()->read('Auth.User.id')
+        ]);
         $this->set(compact('user'));
     }
 
-    public function admin_add()
+    /**
+     * TODO: blockquote
+     */
+    public function edit()
     {
-        $this->request->data["validated"] = 1;
-        $user = $this->Users->newEntity($this->request->data);
-        if ($this->request->is('post')) {
-            if ($this->Users->save($user)) {
-                $this->Flash->set(__('The user has been saved successfully.'), [
-                    'element' => 'GintonicCMS.alert',
-                    'params' => ['class' => 'alert-success']
-                ]);
-                return $this->redirect(['controller' => 'users', 'action' => 'admin_index']);
-            }
-            $this->Flash->set(__('Unable to add user.'), [
-                'element' => 'GintonicCMS.alert',
-                'params' => ['class' => 'alert-danger']
-            ]);
-        }
-        $this->set('user', $user);
-    }
-
-    public function edit() {
         if (!$this->request->session()->check('Auth.User.id')) {
             $this->Flash->set(__('You are not a authorised to access this page.'), [
                 'element' => 'GintonicCMS.alert',
@@ -75,7 +57,10 @@ class UsersController extends AppController
             ]);
             return $this->redirect($this->request->referer());
         }
-        $user = $this->Users->safeRead(['Users.id' => $this->request->session()->read('Auth.User.id')], true);
+        $user = $this->Users->safeRead(
+            ['Users.id' => $this->request->session()->read('Auth.User.id')],
+            true
+        );
         if ($this->request->is(['post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {
@@ -93,28 +78,10 @@ class UsersController extends AppController
         $this->set(compact('user'));
     }
 
-    public function admin_edit($userId = 0) {
-        
-        $user = $this->Users->safeRead(['Users.id' => $userId], true);
-        if ($this->request->is(['post', 'put'])) {
-            $user = $this->Users->patchEntity($user, $this->request->data);
-            if ($this->Users->save($user)) {
-                $this->Flash->set(__('User has been updated.'), [
-                    'element' => 'GintonicCMS.alert',
-                    'params' => ['class' => 'alert-success']
-                ]);
-                return $this->redirect(['action' => 'admin_index']);
-            }
-            $this->Flash->set(__('Error saving the user'), [
-                'element' => 'GintonicCMS.alert',
-                'params' => ['class' => 'alert-danger']
-            ]);
-        }
-        $this->set(compact('user'));
-        $this->render('/Users/edit');
-    }
-
-    public function update_avatar($userId = null, $fileId =null)
+    /**
+     * TODO: blockquote
+     */
+    public function updateAvatar($userId = null, $fileId = null)
     {
         if (!empty($this->request->data['id'])) {
             $userId = $this->request->data['id'];
@@ -136,7 +103,7 @@ class UsersController extends AppController
             $file = $this->Files->get($fileId);
             echo json_encode(array(
                 'message' => __('Profile photo has been change successfully.'),
-                'success' => True,
+                'success' => true,
                 'file' => '/' . $this->Files->getUrl($file->filename),
             ));
         } else {
@@ -148,6 +115,9 @@ class UsersController extends AppController
         exit;
     }
 
+    /**
+     * TODO: blockquote
+     */
     public function signup()
     {
         $this->render('GintonicCMS.signup', 'GintonicCMS.bare');
@@ -178,6 +148,9 @@ class UsersController extends AppController
         $this->set('user', $user);
     }
 
+    /**
+     * TODO: blockquote
+     */
     public function signin()
     {
         $this->render('GintonicCMS.signin', 'GintonicCMS.bare');
@@ -208,7 +181,7 @@ class UsersController extends AppController
                         'element' => 'GintonicCMS.alert',
                         'params' => ['class' => 'alert-warning']
                     ]);
-                }                
+                }
                 return $this->redirect($this->Auth->redirectUrl());
             }
             $this->Flash->set(__('Your username or password is incorrect.'), [
@@ -218,6 +191,9 @@ class UsersController extends AppController
         }
     }
 
+    /**
+     * TODO: blockquote
+     */
     public function signout()
     {
         $this->Cookie->forgetMe();
@@ -229,7 +205,10 @@ class UsersController extends AppController
         return $this->redirect($this->Auth->logout());
     }
 
-    function profile() 
+    /**
+     * TODO: blockquote
+     */
+    public function profile()
     {
         if (!$this->request->session()->check('Auth.User.id')) {
             $this->Flash->set(__('You are not signed in'), [
@@ -240,7 +219,11 @@ class UsersController extends AppController
         }
     }
 
-    public function confirmation($userId = null, $token = null) {
+    /**
+     * TODO: blockquote
+     */
+    public function confirmation($userId = null, $token = null)
+    {
         if ($userId || $token) {
             $user = $this->Users->safeRead(['Users.id' => $userId]);
             if (!empty($user['validated'])) {
@@ -256,7 +239,11 @@ class UsersController extends AppController
                     'element' => 'GintonicCMS.alert',
                     'params' => ['class' => 'alert-sucess']
                 ]);
-                return $this->redirect(['plugin' => 'GintonicCMS', 'controller' => 'users', 'action' => 'profile']);
+                return $this->redirect([
+                    'plugin' => 'GintonicCMS',
+                    'controller' => 'users',
+                    'action' => 'profile'
+                ]);
             } else {
                 $this->Flash->set(__('The authorization link provided is erroneous, please contact an administrator'), [
                     'element' => 'GintonicCMS.alert',
@@ -272,7 +259,10 @@ class UsersController extends AppController
         return $this->redirect($this->Auth->redirectUrl());
     }
 
-    public function change_password()
+    /**
+     * TODO: blockquote
+     */
+    public function changePassword()
     {
         if (!empty($this->request->data)) {
             $userDetail = $this->Users->get($this->request->session()->read('Auth.User.id'));
@@ -306,7 +296,10 @@ class UsersController extends AppController
         }
     }
 
-    public function reset_password($userId = null, $token = null) 
+    /**
+     * TODO: blockquote
+     */
+    public function resetPassword($userId = null, $token = null)
     {
         if ($userId && $token) {
             $arrResponse = $this->Users->checkForgotPassword($userId, $token);
@@ -346,10 +339,13 @@ class UsersController extends AppController
         }
     }
 
-    public function resend_verification() 
+    /**
+     * TODO: blockquote
+     */
+    public function resendVerification()
     {
         if ($this->request->is(['post', 'put'])) {
-            $arrResponse = $this->Users->ResendVerification($this->request->data['email']);
+            $arrResponse = $this->Users->resendVerification($this->request->data['email']);
             if (!empty($arrResponse)) {
                 if ($arrResponse['status'] == 'fail') {
                     $this->Flash->set(__($arrResponse['message']), [
@@ -367,7 +363,10 @@ class UsersController extends AppController
         }
     }
 
-    public function forgot_password() 
+    /**
+     * TODO: blockquote
+     */
+    public function forgotPassword()
     {
         //Check For Already Logged In
         if ($this->Auth->user()) {
@@ -377,8 +376,8 @@ class UsersController extends AppController
             ]);
             return $this->redirect($this->Auth->redirectUrl());
         }
-        if ($this->request->is(['post','put'])) {
-            $arrResponse = $this->Users->ForgotPasswordEmail($this->request->data['email']);
+        if ($this->request->is(['post', 'put'])) {
+            $arrResponse = $this->Users->forgotPasswordEmail($this->request->data['email']);
             if (!empty($arrResponse)) {
                 if ($arrResponse['status'] == 'fail') {
                     $this->Flash->set(__($arrResponse['message']), [
@@ -395,50 +394,4 @@ class UsersController extends AppController
             }
         }
     }
-
-    public function admin_delete($id = null) 
-    {
-        $user = $this->Auth->user();
-        if (!empty($user)) {
-            $this->Flash->set(__('You are not signed in.'), [
-                'element' => 'GintonicCMS.alert',
-                'params' => ['class' => 'alert-warning']
-            ]);
-            return $this->redirect($this->Auth->redirectUrl());
-        }
-        $user = $this->Users->get($id);
-        if (!$user) {
-            $this->Flash->set(__('Invalid user'), [
-                'element' => 'GintonicCMS.alert',
-                'params' => ['class' => 'alert-danger']
-            ]);
-            return $this->redirect($this->request->referer());
-        }
-        if ($this->Users->delete($user)) {
-            $this->Flash->set(__('Users deleted'), [
-                'element' => 'GintonicCMS.alert',
-                'params' => ['class' => 'alert-success']
-            ]);
-            return $this->redirect(['action' => 'admin_index']);
-        }
-        $this->Flash->set(__('Error deleting users'), [
-            'element' => 'GintonicCMS.alert',
-            'params' => ['class' => 'alert-danger']
-        ]);
-        return $this->redirect(['action' => 'admin_index']);
-    }
-
-    function change_layout($layout = 'default'){
-        if($this->request->session()->read('Auth.User.role') == 'admin'){
-            $this->request->session()->write('Site.layout','GintonicCMS.'.$layout);
-        }else{
-            $this->Flash->set(__('Insufficient permissions'), [
-                'element' => 'GintonicCMS.alert',
-                'params' => ['class' => 'alert-danger']
-            ]);
 }
-        return $this->redirect(['plugin'=>'GintonicCMS','controller'=>'users','action'=>'profile']);
-    }
-}
-
-?>

@@ -38,7 +38,7 @@ use Cake\Core\Configure;
                         <!-- Menu Body -->
                         <li class="user-body">
                             <div class="col-xs-12 text-center">
-                                <?php echo $this->Html->link('Change Password', array('plugin' => 'GintonicCMS', 'controller' => 'users', 'action' => 'change_password')); ?>
+                                <?php echo $this->Html->link('Change Password', array('plugin' => 'GintonicCMS', 'controller' => 'users', 'action' => 'changePassword')); ?>
                             </div>
                         </li>
                         <!-- Menu Footer-->

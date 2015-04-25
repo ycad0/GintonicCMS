@@ -8,5 +8,3 @@ class Message extends Entity
 {
     protected $_accessible = ['*' => true];
 }
-
-?>

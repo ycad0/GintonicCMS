@@ -30,7 +30,7 @@ use Cake\I18n\Time;
                                                 echo $this->Html->link($name, [
                                                     'plugin' => 'GintonicCMS',
                                                     'controller' => 'messages',
-                                                    'action' => 'mailbox_view',
+                                                    'action' => 'mailboxView',
                                                     $message->Sender->id
                                                 ], ['escape' => false]
                                             );?>

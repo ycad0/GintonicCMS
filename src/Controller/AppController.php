@@ -14,8 +14,11 @@ class AppController extends BaseController
         'Form' => ['className' => 'GintonicCMS.Form'],
         'Paginator' => ['className' => 'GintonicCMS.Paginator'],
     ];
-    
-    function initialize() 
+
+    /**
+     * TODO: blockcomment
+     */
+    public function initialize()
     {
         $this->loadComponent('Flash');
         $this->loadComponent('GintonicCMS.Cookie');
@@ -23,20 +26,14 @@ class AppController extends BaseController
         parent::initialize();
     }
     
-    function isAuthorized($user = null)
+    /**
+     * TODO: blockcomment
+     */
+    public function isAuthorized($user = null)
     {
-        if(!empty($user) && $user['role'] == 'admin'){
+        if (!empty($user) && $user['role'] == 'admin') {
             return true;
         }
         return parent::isAuthorized($user);
     }
-    
-    function __set_layout()
-    {
-        if(!$this->request->session()->check('Site.layout')){
-            $this->request->session()->write('Site.layout',Configure::read('Site.layout'));
-        }
-        $this->layout = $this->request->session()->read('Site.layout');
-    }
-    
 }

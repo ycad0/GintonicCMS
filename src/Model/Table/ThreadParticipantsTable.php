@@ -2,13 +2,17 @@
 
 namespace GintonicCMS\Model\Table;
 
-use Cake\ORM\Table;
 use Cake\Network\Session;
+use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 
-class ThreadParticipantsTable extends Table {
-
-    public function initialize(array $config) {
+class ThreadParticipantsTable extends Table
+{
+    /**
+     * TODO: doccomment
+     */
+    public function initialize(array $config)
+    {
         parent::initialize($config);
         $this->primaryKey('id');
         $this->addBehavior('Timestamp', [
@@ -40,8 +44,11 @@ class ThreadParticipantsTable extends Table {
         ]);
     }
 
-    public function getThreadParticipant($threadId = null, $userId = null, $recipientId = null) {
-        
+    /**
+     * TODO: doccomment
+     */
+    public function getThreadParticipant($threadId = null, $userId = null, $recipientId = null)
+    {
         $userIds = array();
         if (!empty($userId)) {
             $userIds[$userId] = $userId;
@@ -58,8 +65,11 @@ class ThreadParticipantsTable extends Table {
         return 0;
     }
 
-    function getThreadOfUsers($threadId = null) {
-        
+    /**
+     * TODO: doccomment
+     */
+    public function getThreadOfUsers($threadId = null)
+    {
         $userList = $this->find()
                 ->where(['ThreadParticipants.thread_id' => $threadId])
                 ->combine('user_id', 'user_id')
@@ -70,7 +80,4 @@ class ThreadParticipantsTable extends Table {
                 ->toArray();
         return $userList;
     }
-
 }
-
-?>

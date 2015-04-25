@@ -8,6 +8,9 @@ class PaginatorHelper extends \Cake\View\Helper\PaginatorHelper
 
     public $helpers = ['Html', 'Url', 'Number'];
 
+    /**
+     * TODO: doccomment
+     */
     protected $_bootstrapTemplates = [
         'current' => '<li class="active"><span>{{text}} <span class="sr-only">(current)</span></span></li>',
         'ellipsis' => '<li class="ellipsis"><span>...</span></li>',
@@ -21,16 +24,15 @@ class PaginatorHelper extends \Cake\View\Helper\PaginatorHelper
      */
     public function __construct(View $View, array $config = [])
     {
-        $this->_defaultConfig['templates'] = array_merge($this->_defaultConfig['templates'],
-            $this->_bootstrapTemplates);
+        $this->_defaultConfig['templates'] = array_merge(
+            $this->_defaultConfig['templates'],
+            $this->_bootstrapTemplates
+        );
         parent::__construct($View, $config);
     }
 
     /**
-     * Construct the widgets and binds the default context providers
-     *
-     * @param \Cake\View\View $View The View this helper is being attached to.
-     * @param array $config Configuration settings for the helper.
+     * TODO: doccomment
      */
     public function pagination(array $options = [])
     {

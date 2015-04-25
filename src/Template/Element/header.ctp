@@ -20,7 +20,7 @@
     endforeach;
     if (empty($isProhibitUser)) {
         foreach ($userGroups as $groupId => $groupName):
-            echo $this->Html->link($this->Html->image('/Messages/img/user-group.png', ['class' => 'img-circle img-responsive center-block']) . '<span>' . $groupName . '</span>', ['plugin' => 'GintonicCMS', 'controller' => 'messages', 'action' => 'group_chat', $groupId], ['escape' => false, 'class' => (isset($activeGroupID) && ($activeGroupID == $groupId)) ? 'bg-danger' : '']);
+            echo $this->Html->link($this->Html->image('/Messages/img/user-group.png', ['class' => 'img-circle img-responsive center-block']) . '<span>' . $groupName . '</span>', ['plugin' => 'GintonicCMS', 'controller' => 'messages', 'action' => 'groupChat', $groupId], ['escape' => false, 'class' => (isset($activeGroupID) && ($activeGroupID == $groupId)) ? 'bg-danger' : '']);
         endforeach;
         echo $this->Html->link($this->Html->image('/Messages/img/user-add.png', ['class' => 'img-circle img-responsive center-block']) . '<span> Add User</span>', ['plugin' => 'GintonicCMS', 'controller' => 'messages', 'action' => 'compose', 0, 'group'], ['escape' => false]);
     }

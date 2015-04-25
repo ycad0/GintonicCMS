@@ -2,12 +2,15 @@
 
 namespace GintonicCMS\Model\Table;
 
-use Cake\ORM\Table;
 use Cake\Core\Configure;
 use Cake\I18n\Time;
+use Cake\ORM\Table;
 
-class AlbumsTable extends Table {
-    
+class AlbumsTable extends Table
+{
+    /**
+     * TODO: docblock
+     */
     public function initialize(array $config)
     {
         //for the default add the created and modified
@@ -24,10 +27,5 @@ class AlbumsTable extends Table {
             'foreignKey' => 'file_id',
             'propertyName' => 'file',
         ]);
-    }
-    
-    public function testr(){
-        debug('df');
-        exit;
     }
 }

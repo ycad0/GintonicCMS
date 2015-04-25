@@ -20,7 +20,7 @@ echo $this->Require->req('users/resend_code');
                         '/',
                         ['escape'=>false]
                 );
-                echo $this->Form->create('Users', ['class' => 'form-signin','url'=>['controller'=>'Users','action'=>'resend_verification'], 'id' => 'UserResendVerificationForm', 'novalidate' => 'novalidate']);
+                echo $this->Form->create('Users', ['class' => 'form-signin','url'=>['controller'=>'Users','action'=>'resendVerification'], 'id' => 'UserResendVerificationForm', 'novalidate' => 'novalidate']);
                 echo $this->Flash->render();
                 echo $this->Form->input('email', ['label' => 'Email', 'class' => 'form-control', 'placeholder' => 'Email Address', 'required', 'autofocus']);
                 echo $this->Form->submit(__('Resend Code'), ['class' => 'btn btn-lg btn-primary btn-block']);
