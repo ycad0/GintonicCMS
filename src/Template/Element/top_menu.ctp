@@ -1,13 +1,12 @@
-<?php use Cake\Core\Configure; ?>
 <div class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
             <?php echo $this->Html->link(
                 $this->Html->image(
-                    Configure::read('site_logo_url'),
+                    'GintonicCMS.logo.png'
                     [
                         "class" => "img-responsive profile-img navbar-img",
-                        "alt" => Configure::read('site_name')
+                        "alt" => 'GintonicCMS'
                     ]
                 ),
                 '/',
@@ -61,7 +60,7 @@
                                     [
                                         'plugin'=>'GintonicCMS',
                                         'controller'=>'Users',
-                                        'action' => 'change_layout',
+                                        'action' => 'index',
                                         'admin'
                                     ],
                                     ['escape' => false]

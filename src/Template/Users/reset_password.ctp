@@ -6,27 +6,57 @@ use Cake\Core\Configure;
         <div class="col-sm-6 col-md-4 col-md-offset-4">
             <h1 class="text-center login-title">Reset your password</h1>
             <div class="account-wall">
-                <?php
-                echo $this->Html->link(
-                        $this->Html->image(
-                                Configure::read('site_logo_url'), [
-                                    "class" => "img-responsive profile-img site-logo",
-                                    "alt" => Configure::read('site_name')
-                                ]
-                        ),
-                        '/',
-                        ['escape'=>false]
-                );
-                echo $this->Form->create('Users', ['class' => 'form-signin','url'=>['controller'=>'Users','action'=>'reset_password',$userId,$token], 'id' => 'UserLoginForm', 'novalidate' => 'novalidate']);
-                echo $this->Flash->render();
-                echo $this->Form->input('new_password', ['label' => false,'type'=>'password', 'class' => 'form-control', 'placeholder' => 'New Password', 'required', 'autofocus','style'=>['margin-bottom:0px;']]);
-                echo $this->Form->input('confirm_password', ['label' => false,'type'=>'password', 'class' => 'form-control', 'placeholder' => 'Confirm Password', 'required', 'autofocus','style'=>['margin-bottom:0px;','oninput'=>'checkPassword(this)']]);
-                echo $this->Form->submit(__('Reset Password'), ['class' => 'btn btn-lg btn-primary btn-block']);
-                ?>
+                <?= $this->Html->link(
+                    'GintonicCMS.logo.png', 
+                    [
+                        "class" => "img-responsive profile-img site-logo",
+                        "alt" => 'GintonicCMS'
+                    ]), 
+                    '/', 
+                    ['escape'=>false]
+                );?>
+                <?= $this->Form->create('Users', [
+                    'class' => 'form-signin',
+                    'url'=>[
+                        'controller'=>'Users',
+                        'action'=>'reset_password',
+                        $userId,
+                        $token
+                    ], 
+                    'id' => 'UserLoginForm',
+                    'novalidate' => 'novalidate'
+                ]);?>
+                <?= $this->Flash->render();
+                <?= $this->Form->input('new_password', [
+                    'label' => false,
+                    'type'=>'password',
+                    'class' => 'form-control',
+                    'placeholder' => 'New Password',
+                    'required',
+                    'autofocus',
+                    'style'=>['margin-bottom:0px;']
+                ]);?>
+                <?= $this->Form->input('confirm_password', [
+                    'label' => false,
+                    'type'=>'password',
+                    'class' => 'form-control',
+                    'placeholder' => 'Confirm Password',
+                    'required',
+                    'autofocus',
+                    'style'=>['margin-bottom:0px;','oninput'=>'checkPassword(this)']
+                ]);?>
+                <?= $this->Form->submit(
+                    __('Reset Password'),
+                    ['class' => 'btn btn-lg btn-primary btn-block']
+                ); ?>
                 <span class="clearfix"></span>
-                <?php echo $this->Form->end();?>
+                <?= $this->Form->end();?>
             </div>
-            <?php echo $this->Html->link(__('Already have an account?'), ['controller' => 'Users', 'action' => 'signin'], ['escape' => false,'class'=>'text-center new-account']); ?>
+            <?= $this->Html->link(
+                __('Already have an account?'),
+                ['controller' => 'Users', 'action' => 'signin'], 
+                ['escape' => false,'class'=>'text-center new-account']
+            ); ?>
         </div>
     </div>
 </div>
