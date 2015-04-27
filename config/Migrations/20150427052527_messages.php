@@ -1,7 +1,7 @@
 <?php
 use Phinx\Migration\AbstractMigration;
 
-class AddFieldToTable extends AbstractMigration
+class Messages extends AbstractMigration
 {
     /**
      * Change Method.

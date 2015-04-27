@@ -1,7 +1,7 @@
 <?php
 use Phinx\Migration\AbstractMigration;
 
-class AddFieldToTable extends AbstractMigration
+class RenameAlbumPhotos extends AbstractMigration
 {
     /**
      * Change Method.
