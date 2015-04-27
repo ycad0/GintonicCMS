@@ -22,7 +22,7 @@ class UserHelper extends HtmlHelper
     public function avatar(array $user, array $options = [])
     {
         if (empty($user['file']['filepath'])) {
-            $default = 'GintonicCMS.avatar.png';
+            $default = 'GintonicCMS.avatar.jpg';
             if (!is_null(Configure::read('default_avatar'))) {
                 $default = Configure::read('default_avatar');
             }

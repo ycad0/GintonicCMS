@@ -11,7 +11,7 @@ use GintonicCMS\Controller\AppController;
 class FilesController extends AppController
 {
     public $helpers = array('Number', 'Time');
-    
+
     /**
      * TODO: blockcomment
      */
@@ -27,6 +27,7 @@ class FilesController extends AppController
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
+        $this->layout = 'admin';
         if ($this->RequestHandler->responseType() == 'json') {
             $this->RequestHandler->setContent('json', 'application/json');
         }

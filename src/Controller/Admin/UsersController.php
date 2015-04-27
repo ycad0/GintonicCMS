@@ -11,6 +11,14 @@ class UsersController extends AppController
     /**
      * TODO: blockquote
      */
+    public function beforeFilter(Event $event)
+    {
+        $this->layout = 'admin';
+    }
+
+    /**
+     * TODO: blockquote
+     */
     public function index()
     {
         $arrConditions = ['Users.role <> ' => 'admin'];

@@ -12,9 +12,9 @@
         <?= $this->fetch('script') ?>
     </head>
     <body class="wysihtml5-supported  pace-done skin-blue">
-        <?= $this->element('GintonicCMS.admin/header')?>
+        <?= $this->element('GintonicCMS.Admin/header')?>
         <div class="wrapper row-offcanvas row-offcanvas-left">
-            <?= $this->element('GintonicCMS.admin/left')?>
+            <?= $this->element('GintonicCMS.Admin/left')?>
             <aside class="right-side">
                 <section class="content-header">
                     <h1 style="float: left"><?= $this->fetch('pagetitle');?></h1>
