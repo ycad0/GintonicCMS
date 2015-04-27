@@ -6,7 +6,7 @@ use Cake\Core\Configure;
 use Cake\I18n\Time;
 use Cake\ORM\Table;
 
-class AlbumPhotosTable extends Table
+class AlbumsTable extends Table
 {
     /**
      * TODO: docblock
