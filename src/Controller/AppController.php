@@ -23,6 +23,7 @@ class AppController extends BaseController
         $this->loadComponent('Flash');
         $this->loadComponent('GintonicCMS.Cookie');
         parent::initialize();
+        $cacheBust = $this->Auth->redirectUrl();
     }
     
     /**

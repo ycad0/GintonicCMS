@@ -153,8 +153,6 @@ class UsersController extends AppController
      */
     public function signin()
     {
-        $this->render('GintonicCMS.signin', 'GintonicCMS.bare');
-
         $user = $this->Auth->user();
         if (!empty($user)) {
             return $this->redirect($this->Auth->redirectUrl());
@@ -189,6 +187,8 @@ class UsersController extends AppController
                 'params' => ['class' => 'alert-warning']
             ]);
         }
+
+        $this->render('GintonicCMS.signin', 'GintonicCMS.bare');
     }
 
     /**
