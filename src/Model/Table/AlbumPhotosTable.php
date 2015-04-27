@@ -6,14 +6,13 @@ use Cake\Core\Configure;
 use Cake\I18n\Time;
 use Cake\ORM\Table;
 
-class AlbumsTable extends Table
+class AlbumPhotosTable extends Table
 {
     /**
      * TODO: docblock
      */
     public function initialize(array $config)
     {
-        //for the default add the created and modified
         $this->addBehavior('Timestamp', [
             'events' => [
                 'Model.beforeSave' => [
