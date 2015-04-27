@@ -3,7 +3,7 @@
         <div class="navbar-header">
             <?php echo $this->Html->link(
                 $this->Html->image(
-                    'GintonicCMS.logo.png'
+                    'GintonicCMS.logo.png',
                     [
                         "class" => "img-responsive profile-img navbar-img",
                         "alt" => 'GintonicCMS'

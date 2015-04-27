@@ -13,7 +13,6 @@ class AlbumsTable extends Table
      */
     public function initialize(array $config)
     {
-        //for the default add the created and modified
         $this->addBehavior('Timestamp', [
             'events' => [
                 'Model.beforeSave' => [
