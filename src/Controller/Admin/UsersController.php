@@ -1,5 +1,5 @@
 <?php
-namespace GintonicCMS\Controller;
+namespace GintonicCMS\Controller\Admin;
 
 use Cake\Core\Configure;
 use Cake\Event\Event;

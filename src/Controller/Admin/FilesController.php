@@ -1,5 +1,5 @@
 <?php
-namespace GintonicCMS\Controller;
+namespace GintonicCMS\Controller\Admin;
 
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
