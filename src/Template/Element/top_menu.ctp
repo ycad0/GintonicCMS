@@ -94,10 +94,9 @@
                     </ul>
                 </li>
                 <?php else: ?>
-                    <li>
+                    <li class="connect">
                         <a href="/signin">Sign in</a>
-                    </li>
-                    <li>
+                        |
                         <a href="/signup">Sign up</a>
                     </li>
                 <?php endif; ?>
