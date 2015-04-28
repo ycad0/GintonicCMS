@@ -34,7 +34,7 @@ echo $this->Require->req('admin/admin');
                     [
                         'plugin'=>'GintonicCMS',
                         'controller' => 'users',
-                        'action' => 'admin_index'
+                        'action' => 'index'
                     ], 
                     ['escape' => false]
                 ); ?>
@@ -45,7 +45,7 @@ echo $this->Require->req('admin/admin');
                     [
                         'plugin'=>'GintonicCMS',
                         'controller' => 'files',
-                        'action' => 'admin_index'
+                        'action' => 'index'
                     ], 
                     ['escape' => false]
                 ); ?>

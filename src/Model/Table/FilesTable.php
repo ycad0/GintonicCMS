@@ -109,4 +109,51 @@ class FilesTable extends Table
         $file->delete();
         $file->close();
     }
+    
+    public function checkFileExist($fileName = null)
+    {
+        $fileName = WWW_ROOT . 'files' . DS . 'uploads' . DS . $fileName;
+        if (file_exists($fileName) && !is_dir($fileName)) {
+            return $fileName;
+        }
+        return false;
+    }
+    
+    public function updateFileName($data) {
+        
+        $arrResponse = ['status' => 'fail'];
+        $files = $this->newEntity($data);
+        if (!empty($data)) {
+            $arrResponse = [
+                'status' => 'success',
+                'id' => $data['id'],
+                'value' => $data['title']
+            ];
+            $files = $this->patchEntity($files, $data);
+            $this->save($files);
+        }
+        return $arrResponse;
+    }
+    
+    public function deleteUserFiles($fileId = null)
+    {
+        $response = [
+            'message' => __('Error occure while deletinf the file.'),
+            'class' => 'alert-danger'
+        ];
+        if(!empty($fileId)) {
+        
+            $file = $this->get($fileId);
+            if ($this->delete($file)) {
+                
+                $this->deleteFile($file->filename);
+                $response = [
+                    'message' => __('File has been deleted successfully.'),
+                    'class' => 'alert-success'
+                ];
+            }
+        }
+        return $response;
+        
+    }
 }
