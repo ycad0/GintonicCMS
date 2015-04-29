@@ -1,8 +1,9 @@
-define(['jquery', 'basepath', 'jqueryvalidate', 'wysiwyg', 'messages/bootstrap-tokenfield.min'], function ($, basepath) {
+define(['jquery', 'basepath', 'jqueryvalidate', 'wysiwyg', 'proball/bootstrap-tokenfield.min'], function ($, basepath) {
     var $ = require('jquery');
     var jqueryvalidate = require('jqueryvalidate');
     var wysiwyg = require('wysiwyg');
-    var tokens = require('messages/bootstrap-tokenfield.min');
+    var tokens = require('proball/bootstrap-tokenfield.min');
+    //var tokens = require('messages/bootstrap-tokenfield.min');
 
     $(document).ready(function () {
         $('.wysiwyg').wysihtml5();
