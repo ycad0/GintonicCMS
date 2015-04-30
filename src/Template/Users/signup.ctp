@@ -15,7 +15,7 @@
                     'templates'=>['submitContainer' => '<div class="submit form-group">{{content}}</div>'],
                     'class' => 'form-signin form-horizontal','id'=>'UserSignupForm'
                 ]);?>
-                // TODO: Check what's up with parsley, require is outside here
+                <?php // TODO: Check what's up with parsley, require is outside here ?>
                 <?= $this->Form->input('first',[
                     'class'=>'form-control',
                     'placeholder'=>__('First Name'),
@@ -26,7 +26,7 @@
                     'placeholder'=>__('Last Name'),
                     'id'=>'signup-last'
                 ]);?>
-                // TODO: and it's on the inside here
+                <?php // TODO: and it's on the inside here ?>
                 <?= $this->Form->input('email',[
                     'class'=>'form-control',
                     'placeholder'=>__('Email'),
