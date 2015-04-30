@@ -74,7 +74,7 @@ class FilesController extends AppController
     public function download($filename)
     {
         $fileLocation = $this->Files->checkFileExist($filename);
-        if ($fileLocation) {            
+        if ($fileLocation) {
             $this->autoRender = false;
             return $this->response->file($fileLocation, ['download' => true]);
         }

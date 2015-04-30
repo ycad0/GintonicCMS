@@ -162,7 +162,7 @@ class MessagesController extends AppController
      */
     public function groupChat($threadId = null)
     {
-        if (empty($threadId)) {            
+        if (empty($threadId)) {
             $this->Flash->set(__('Invalid Group.'), [
                'element' => 'GintonicCMS.alert',
                'params' => ['class' => 'alert-danger']

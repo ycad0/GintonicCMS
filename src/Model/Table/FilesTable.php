@@ -110,8 +110,8 @@ class FilesTable extends Table
         $file->close();
     }
     
-    /*
-     * TODO: write doccomment
+    /**
+     * TODO: doccomment
      */
     public function checkFileExist($fileName = null)
     {
@@ -122,8 +122,8 @@ class FilesTable extends Table
         return false;
     }
     
-    /*
-     * TODO: write doccomment
+    /**
+     * TODO: doccomment
      */
     public function updateFileName($data)
     {
@@ -141,8 +141,8 @@ class FilesTable extends Table
         return $arrResponse;
     }
     
-    /*
-     * TODO: write doccomment
+    /**
+     * TODO: doccomment
      */
     public function deleteUserFiles($fileId = null)
     {
@@ -152,7 +152,7 @@ class FilesTable extends Table
         ];
         if (!empty($fileId)) {
             $file = $this->get($fileId);
-            if ($this->delete($file)) {                
+            if ($this->delete($file)) {
                 $this->deleteFile($file->filename);
                 $response = [
                     'message' => __('File has been deleted successfully.'),
@@ -160,6 +160,6 @@ class FilesTable extends Table
                 ];
             }
         }
-        return $response;      
+        return $response;
     }
 }

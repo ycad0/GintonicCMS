@@ -17,7 +17,7 @@ class MailboxCell extends Cell
      */
     protected $_validCellOptions = [];
 
-    /*
+    /**
      * TODO: write doccomment
      */
     public function display()
