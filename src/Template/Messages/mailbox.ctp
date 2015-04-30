@@ -8,7 +8,7 @@ use Cake\I18n\Time;
             <h2> Inbox </h2>
         </div>
         <div class="col-md-12">
-            <?php if (!empty($messages->toArray())): ?>
+            <?php if ($messages->count()): ?>
                 <table class="table table-hover table-bordered">
                     <?php foreach ($messages as $key => $message): ?>
                         <tr>
