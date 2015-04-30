@@ -159,8 +159,7 @@ class FilesController extends AppController
     public function download($filename)
     {
         $fileLocation = $this->Files->checkFileExist($filename);
-        if($fileLocation) {
-            
+        if ($fileLocation) {
             $this->autoRender = false;
             return $this->response->file($fileLocation, ['download' => true]);
         }
@@ -178,7 +177,7 @@ class FilesController extends AppController
     {
         $this->layout = false;
         $response = $this->Files->updateFileName($this->request->data);
-        echo json_encode($response,JSON_NUMERIC_CHECK);
+        echo json_encode($response, JSON_NUMERIC_CHECK);
         exit;
     }
 }

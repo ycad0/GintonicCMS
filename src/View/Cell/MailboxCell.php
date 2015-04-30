@@ -17,10 +17,8 @@ class MailboxCell extends Cell
      */
     protected $_validCellOptions = [];
 
-    /**
-     * Default display method.
-     *
-     * @return void
+    /*
+     * TODO: write doccomment
      */
     public function display()
     {
@@ -37,7 +35,6 @@ class MailboxCell extends Cell
         $messages = [];
         $threads = [];
         if (!empty($threadIds)) {
-
             $participantsIds = $this->ThreadParticipants->find('all')
                     ->where([
                         'ThreadParticipants.user_id !=' => $userId,
@@ -47,14 +44,11 @@ class MailboxCell extends Cell
                     ->contain(['MessageReadStatuses'])
                     ->combine('id', 'user_id');
             if (!empty($participantsIds)) {
-
                 $messages = $this->Messages->find('all')
-                        ->where(
-                                [
-                                    'Messages.user_id IN ' => $participantsIds->toArray(),
-                                    'thread_id IN ' => $threadIds->toArray()
-                                ]
-                        )
+                        ->where([
+                            'Messages.user_id IN ' => $participantsIds->toArray(),
+                            'thread_id IN ' => $threadIds->toArray()
+                        ])
                         ->contain(['Sender' => ['Files']])
                         ->group(['Messages.user_id'])
                         ->order(['Messages.created' => 'asc']);

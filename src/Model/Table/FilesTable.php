@@ -110,6 +110,9 @@ class FilesTable extends Table
         $file->close();
     }
     
+    /*
+     * TODO: write doccomment
+     */
     public function checkFileExist($fileName = null)
     {
         $fileName = WWW_ROOT . 'files' . DS . 'uploads' . DS . $fileName;
@@ -119,8 +122,11 @@ class FilesTable extends Table
         return false;
     }
     
-    public function updateFileName($data) {
-        
+    /*
+     * TODO: write doccomment
+     */
+    public function updateFileName($data)
+    {
         $arrResponse = ['status' => 'fail'];
         $files = $this->newEntity($data);
         if (!empty($data)) {
@@ -135,17 +141,18 @@ class FilesTable extends Table
         return $arrResponse;
     }
     
+    /*
+     * TODO: write doccomment
+     */
     public function deleteUserFiles($fileId = null)
     {
         $response = [
             'message' => __('Error occure while deletinf the file.'),
             'class' => 'alert-danger'
         ];
-        if(!empty($fileId)) {
-        
+        if (!empty($fileId)) {
             $file = $this->get($fileId);
-            if ($this->delete($file)) {
-                
+            if ($this->delete($file)) {                
                 $this->deleteFile($file->filename);
                 $response = [
                     'message' => __('File has been deleted successfully.'),
@@ -153,7 +160,6 @@ class FilesTable extends Table
                 ];
             }
         }
-        return $response;
-        
+        return $response;      
     }
 }

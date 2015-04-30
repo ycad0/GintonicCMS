@@ -116,11 +116,18 @@ class UsersController extends AppController
         ]);
         return $this->redirect(['action' => 'index']);
     }
+    
+    /**
+     * TODO: write doccomment
+     */
     public function profile()
     {
         $this->render('/Users/profile');
     }
     
+    /**
+     * TODO: write doccomment
+     */
     public function signout()
     {
         $this->Cookie->forgetMe();

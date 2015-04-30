@@ -68,11 +68,13 @@ class FilesController extends AppController
         $this->render('/Files/index');
     }
     
+    /**
+     * TODO: write doccomment
+     */
     public function download($filename)
     {
         $fileLocation = $this->Files->checkFileExist($filename);
-        if($fileLocation) {
-            
+        if ($fileLocation) {            
             $this->autoRender = false;
             return $this->response->file($fileLocation, ['download' => true]);
         }
@@ -83,6 +85,9 @@ class FilesController extends AppController
         $this->redirect($this->referer());
     }
     
+    /**
+     * TODO: write doccomment
+     */
     public function update()
     {
         $this->layout = false;
@@ -91,6 +96,9 @@ class FilesController extends AppController
         exit;
     }
     
+    /**
+     * TODO: write doccomment
+     */
     public function delete($fileId)
     {
         $response = $this->Files->deleteUserFiles($fileId);
