@@ -37,6 +37,7 @@ class ThreadParticipantsTable extends Table
                     'propertyName' => 'User'
                 ]
             ],
+            'hasOne' => ['MessageReadStatuses']
         ]);
 
         $this->addBehavior('CounterCache', [

@@ -67,4 +67,37 @@ class FilesController extends AppController
         $this->set('files', $this->paginate('Files'));
         $this->render('/Files/index');
     }
+    
+    public function download($filename)
+    {
+        $fileLocation = $this->Files->checkFileExist($filename);
+        if($fileLocation) {
+            
+            $this->autoRender = false;
+            return $this->response->file($fileLocation, ['download' => true]);
+        }
+        $this->Flash->set(__('File Not Found.!!!'), [
+            'element' => 'GintonicCMS.alert',
+            'params' => ['class' => 'alert-danger']
+        ]);
+        $this->redirect($this->referer());
+    }
+    
+    public function update()
+    {
+        $this->layout = false;
+        $response = $this->Files->updateFileName($this->request->data);
+        echo json_encode($response);
+        exit;
+    }
+    
+    public function delete($fileId)
+    {
+        $response = $this->Files->deleteUserFiles($fileId);
+        $this->Flash->set($response['message'], [
+            'element' => 'GintonicCMS.alert',
+            'params' => ['class' => $response['class']]
+        ]);
+        $this->redirect(['action' => 'index']);
+    }
 }

@@ -1,9 +1,7 @@
 <?php
 namespace GintonicCMS\Controller;
 
-use Cake\Core\Configure;
 use Cake\Event\Event;
-use Cake\ORM\TableRegistry;
 use GintonicCMS\Controller\AppController;
 
 class UsersController extends AppController

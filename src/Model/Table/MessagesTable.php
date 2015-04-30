@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
 class MessagesTable extends Table
 {
 
-    public $uses = array('Messages.SentMessages');
+    public $uses = array('GintonicCMS.SentMessages');
  
     /**
      * TODO: doccomment
@@ -78,7 +78,7 @@ class MessagesTable extends Table
             'status' => false,
             'message' => 'Unable to sent Message',
             'redirect' => Router::url([
-                'plugin' => 'Messages',
+                'plugin' => 'GintonicCMS',
                 'controller' => 'messages',
                 'action' => 'compose',
                 $reqData['recipient_id']
@@ -113,7 +113,7 @@ class MessagesTable extends Table
             'status' => false,
             'message' => 'Unable to sent Message',
             'redirect' => Router::url([
-                'plugin' => 'Messages',
+                'plugin' => 'GintonicCMS',
                 'controller' => 'messages',
                 'action' => 'groupChat',
                 $reqData['thread_id']

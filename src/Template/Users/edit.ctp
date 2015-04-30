@@ -2,12 +2,6 @@
 $this->assign('pagetitle', __('Edit user') . '<small>' . __('User Management') . '</small>');
 $this->Html->addCrumb(__('User Management'), ['controller' => 'users', 'action' => 'admin_index']);
 $this->Html->addCrumb(__('Edit user'));
-$this->start('top_links');
-if($this->request->session()->read('Auth.User.role') == 'admin'){
-    echo $this->Html->link('<i class="fa fa-plus">&nbsp;</i> Add User', ['action' => 'admin_add'], ['class' => 'btn btn-primary btn-sm', 'escape' => false, 'title' => 'Click here to add new user']);
-    echo $this->Html->link('<i class="fa fa-th">&nbsp;</i> View User', ['action' => 'admin_view', $user->id], ['class' => 'btn btn-primary btn-sm', 'escape' => false, 'title' => 'Click here to view this user']);
-}
-$this->end();
 
 $this->Helpers()->load('GintonicCMS.Require');
 echo $this->Require->req('users/reset_password');

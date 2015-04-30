@@ -86,7 +86,8 @@ class UsersController extends AppController
     public function delete($id = null)
     {
         $user = $this->Auth->user();
-        if (!empty($user)) {
+        
+        if (empty($user)) {
             $this->Flash->set(__('You are not signed in.'), [
                 'element' => 'GintonicCMS.alert',
                 'params' => ['class' => 'alert-warning']
@@ -94,6 +95,7 @@ class UsersController extends AppController
             return $this->redirect($this->Auth->redirectUrl());
         }
         $user = $this->Users->get($id);
+        
         if (!$user) {
             $this->Flash->set(__('Invalid user'), [
                 'element' => 'GintonicCMS.alert',
@@ -113,5 +115,20 @@ class UsersController extends AppController
             'params' => ['class' => 'alert-danger']
         ]);
         return $this->redirect(['action' => 'index']);
+    }
+    public function profile()
+    {
+        $this->render('/Users/profile');
+    }
+    
+    public function signout()
+    {
+        $this->Cookie->forgetMe();
+        $this->request->session()->destroy();
+        $this->Flash->set(__('You are now signed out.'), [
+            'element' => 'GintonicCMS.alert',
+            'params' => ['class' => 'alert-info']
+        ]);
+        return $this->redirect($this->Auth->logout());
     }
 }

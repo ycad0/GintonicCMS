@@ -118,21 +118,13 @@ class FilesController extends AppController
     /**
      * TODO: blockcomment
      */
-    public function delete($id)
+    public function delete($fileId)
     {
-        if (!$this->request->session()->check('Auth.User.id')) {
-            $this->Flash->set(_('You are not signed in.'), [
-                'element' => 'GintonicCMS.alert',
-                'params' => ['class' => 'alert-danger']
-            ]);
-            return $this->redirect(['plugin' => 'GintonicCMS', 'controller' => 'Users', 'action' => 'signin']);
-        }
-        $file = $this->Files->get($id);
-        if ($this->Files->delete($file)) {
-            //Delete File
-            $this->Files->deleteFile($file->filename);
-            $this->Flash->success(__('File has been deleted'));
-        }
+        $response = $this->Files->deleteUserFiles($fileId);
+        $this->Flash->set($response['message'], [
+            'element' => 'GintonicCMS.alert',
+            'params' => ['class' => $response['class']]
+        ]);
         $this->redirect(['action' => 'index']);
     }
 
@@ -166,20 +158,16 @@ class FilesController extends AppController
      */
     public function download($filename)
     {
-        if (!$this->request->session()->check('Auth.User.id')) {
-            $this->Flash->set(__('You are not signed in.'), [
-                'element' => 'GintonicCMS.alert',
-                'params' => ['class' => 'alert-danger']
-            ]);
-            return $this->redirect(['plugin' => 'GintonicCMS', 'controller' => 'Users', 'action' => 'signin']);
-        }
-        $filename = WWW_ROOT . 'files' . DS . 'uploads' . DS . $filename;
-        if (file_exists($filename) && !is_dir($filename)) {
+        $fileLocation = $this->Files->checkFileExist($filename);
+        if($fileLocation) {
+            
             $this->autoRender = false;
-            return $this->response->file($filename, ['download' => true]);
-            exit;
+            return $this->response->file($fileLocation, ['download' => true]);
         }
-        $this->Flash->warning(__('File Not Found'));
+        $this->Flash->set(__('File Not Found.!!!'), [
+            'element' => 'GintonicCMS.alert',
+            'params' => ['class' => 'alert-danger']
+        ]);
         $this->redirect($this->referer());
     }
     
@@ -189,18 +177,8 @@ class FilesController extends AppController
     public function update()
     {
         $this->layout = false;
-        $arrResponse = ['status' => 'fail'];
-        $files = $this->Files->newEntity($this->request->data);
-        if (!empty($this->request->data)) {
-            $arrResponse = [
-                'status' => 'success',
-                'id' => $this->request->data['id'],
-                'value' => $this->request->data['title']
-            ];
-            $files = $this->Files->patchEntity($files, $this->request->data);
-            $this->Files->save($files);
-        }
-        echo json_encode($arrResponse);
+        $response = $this->Files->updateFileName($this->request->data);
+        echo json_encode($response,JSON_NUMERIC_CHECK);
         exit;
     }
 }
