@@ -29,7 +29,7 @@ requirejs.config({
         files:  baseUrl+'gintonic_c_m_s/js/files',
         
         // wysiwyg
-        wysiwyg: baseUrl + 'gintonic_c_m_s/js/lib/bootstrap-wysiwyg',
+        //wysiwyg: baseUrl + 'gintonic_c_m_s/js/lib/bootstrap-wysiwyg',
         
         // Libs
         jquery:             '//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min',

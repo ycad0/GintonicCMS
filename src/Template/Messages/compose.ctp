@@ -11,7 +11,7 @@ echo $this->Require->req('messages/messages');
         <!--<h1><?php echo __('Messages'); ?></h1>-->
         <?php echo $this->element('GintonicCMS.header',['recipientID'=>(isset($recipient['id'])?$recipient['id']:''),'isProhibitUser'=>(isset($isProhibitUser)?$isProhibitUser:'')]); ?>
         <div class="col-md-12  col-sm-12">
-            <div class="col-md-7  col-sm-7 message-div">
+            <div class="col-md-12  col-sm-12 message-div">
                 <?php
                 if(isset($isGroupChat)){
                     echo $this->Form->create('Message', ['id' => 'GroupChatForm','url'=>['plugin'=>'GintonicCMS','controller'=>'messages','action'=>'setGroupChat'], 'class' => 'gorupChatForm']);

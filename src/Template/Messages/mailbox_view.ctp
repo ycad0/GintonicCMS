@@ -31,7 +31,11 @@ use Cake\I18n\Time;
                                 ?>
                                 <div class="col-md-12 col-sm-12">
                                     <div class="col-md-1 col-sm-1 <?= $class ?>">
-                                        <?= $this->Html->image($this->File->getFileUrl($chat->Sender->file->filename, $chat->Sender->file->dir), ['style' => 'width: 50px; height: 50px']); ?>
+                                        <?php
+                                        if(!empty($chat->Sender->file->filename)):
+                                            echo $this->Html->image($this->File->getFileUrl($chat->Sender->file->filename, $chat->Sender->file->dir), ['style' => 'width: 50px; height: 50px']);
+                                        endif;
+                                        ?>
                                     </div>
                                     <div class="col-md-11 col-sm-11 <?= $textClass ?>">
                                         <h4>
