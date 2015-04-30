@@ -16,10 +16,7 @@ use Cake\I18n\Time;
                                 <div class="col-md-12 col-sm-12">
                                     <div class="col-md-1 col-sm-1 ">
                                         <?= $this->Html->image(
-                                            $this->File->getFileUrl(
-                                                $message->Sender->file->filename,
-                                                $message->Sender->file->dir
-                                            ), 
+                                            $message->Sender->file->filename,
                                             ['style' => 'width: 50px; height: 50px'] // TODO: move this into stylesheet
                                         );?>
                                     </div>

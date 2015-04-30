@@ -45,6 +45,10 @@ class FilesController extends AppController
      */
     public function add()
     {
+        // TODO: this whole action is gibberish
+        // TODO: wow wow wow wow, security breach below!!!!! We can't let users
+        // chose a path in the front-end and save files anywhere they want! O_O
+        debug('This method contains a security breach and cannot be used in it\'s current state.');exit;
         if (!$this->request->session()->check('Auth.User.id')) {
             $this->Flash->set(__('You are not signed in.'), [
                 'element' => 'GintonicCMS.alert',
@@ -63,6 +67,7 @@ class FilesController extends AppController
             $count = count($this->request->data['tmpFile']) > 1 ? 0:'';
             $flag = true;
             $title = $this->request->data['title'];
+
             $dirName = isset($this->request->data['dir'])?$this->request->data['dir']:"";
             $fileIds = $fileNames = [];
             foreach ($this->request->data['tmpFile'] as $key => $name) {

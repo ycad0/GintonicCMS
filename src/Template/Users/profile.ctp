@@ -9,7 +9,7 @@ $this->end();
         <div class="col-sm-8 col-md-6 col-md-offset-3">
             <div class="account-wall user-profile">
                 <?php echo $this->Html->image(
-                    $this->File->getFileUrl($this->request->session()->read('Auth.User.file.filename')),
+                    $this->request->session()->read('Auth.User.file.filename'),
                     ['class'=>'img-responsive center-block' , 'style' => 'width:300px;height:300px;']
                 ); ?>
                 <h1 class="text-center login-title">

@@ -12,9 +12,8 @@ use Cake\I18n\Time;
                             <?php
                             if (!empty($message->Sender->file->filename)):
                                 echo $this->Html->image(
-                                        $this->File->getFileUrl(
-                                                $message->Sender->file->filename, $message->Sender->file->dir
-                                        ), ['style' => 'width: 50px; height: 50px']
+                                    $message->Sender->file->filename,
+                                    ['style' => 'width: 50px; height: 50px']
                                 );
                             endif;
                             ?>
