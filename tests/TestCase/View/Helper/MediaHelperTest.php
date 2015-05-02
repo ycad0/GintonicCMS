@@ -3,12 +3,12 @@ namespace GintonicCMS\Test\TestCase\View\Helper;
 
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
-use GintonicCMS\View\Helper\FileHelper;
+use GintonicCMS\View\Helper\MediaHelper;
 
 /**
- * GintonicCMS\View\Helper\FileHelper Test Case
+ * GintonicCMS\View\Helper\MediaHelper Test Case
  */
-class FileHelperTest extends TestCase
+class MediaHelperTest extends TestCase
 {
 
     /**
@@ -20,7 +20,7 @@ class FileHelperTest extends TestCase
     {
         parent::setUp();
         $view = new View();
-        $this->File = new FileHelper($view);
+        $this->File = new MediaHelper($view);
     }
 
     /**
@@ -33,16 +33,6 @@ class FileHelperTest extends TestCase
         unset($this->File);
 
         parent::tearDown();
-    }
-
-    /**
-     * Test getFileUrl method
-     *
-     * @return void
-     */
-    public function testGetFileUrl()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
     }
 
     /**

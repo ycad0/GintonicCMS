@@ -10,7 +10,7 @@ use Cake\Core\Configure;
         ),
         ['controller' => 'admins', 'action' => 'index'],
         ['escape' => false, 'class' => 'logo']
-    ); ?>
+    );?>
     <nav class="navbar navbar-static-top" role="navigation">
         <div class="container-fluid">
             <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
@@ -30,7 +30,9 @@ use Cake\Core\Configure;
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header bg-danger">
-                            <?php echo $this->Html->image($this->File->getFileUrl($this->request->session()->read('Auth.User.file.filename')), ['class' => 'img-circle']); ?>
+                            <?= $this->Html->image('GintonicCMS.avatar.jpg', [
+                                'class' => 'img-circle'
+                            ]);?>
                             <p>
                                 <?php echo $this->request->session()->read('Auth.User.first') . ' ' . $this->request->session()->read('Auth.User.last'); ?>
                             </p>
@@ -38,16 +40,40 @@ use Cake\Core\Configure;
                         <!-- Menu Body -->
                         <li class="user-body">
                             <div class="col-xs-12 text-center">
-                                <?php echo $this->Html->link('Change Password', array('plugin' => 'GintonicCMS', 'controller' => 'users', 'action' => 'changePassword')); ?>
+                                <?php echo $this->Html->link(
+                                    'Change Password',
+                                    [
+                                        'plugin' => 'GintonicCMS',
+                                        'controller' => 'users',
+                                        'action' => 'changePassword'
+                                    ]
+                                ); ?>
                             </div>
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <?php echo $this->Html->link('Profile', array('plugin' => 'GintonicCMS', 'controller' => 'users', 'action' => 'view', $this->request->session()->read('Auth.User.id')), array('class' => 'btn btn-default btn-flat')); ?>
+                                <?php echo $this->Html->link(
+                                    'Profile', 
+                                    [
+                                        'plugin' => 'GintonicCMS',
+                                        'controller' => 'users',
+                                        'action' => 'view',
+                                        $this->request->session()->read('Auth.User.id')
+                                    ], 
+                                    ['class' => 'btn btn-default btn-flat']
+                                );?>
                             </div>
                             <div class="pull-right">
-                                <?php echo $this->Html->link('Sign out', array('plugin' => 'GintonicCMS', 'controller' => 'users', 'action' => 'signout'), array('class' => 'btn btn-default btn-flat')) ?>
+                                <?php echo $this->Html->link(
+                                    'Sign out', 
+                                    [
+                                        'controller' => 'users',
+                                        'action' => 'signout',
+                                        'prefix' => false
+                                    ],
+                                    ['class' => 'btn btn-default btn-flat']
+                                ); ?>
                             </div>
                         </li>
                     </ul>

@@ -2,13 +2,8 @@
 
 namespace GintonicCMS\Model\Table;
 
-use Cake\Datasource\EntityInterface;
-use Cake\Event\Event;
 use Cake\Filesystem\File;
 use Cake\Filesystem\Folder;
-use Cake\I18n\Time;
-use Cake\Network\Session;
-use Cake\ORM\Entity;
 use Cake\ORM\Table;
 
 class FilesTable extends Table
@@ -20,6 +15,14 @@ class FilesTable extends Table
     public function initialize(array $config)
     {
         //for the default add the created and modified
+        $this->addBehavior('GintonicCMS.File', [
+            'uploadDir' => 'files/uploads',
+            'allowedTypes' => [
+                'image/jpeg'
+            ],
+            'fileNameFunction' => 'convertName',
+        ]);
+        
         $this->addBehavior('Timestamp', [
             'events' => [
                 'Model.beforeSave' => [
@@ -36,27 +39,6 @@ class FilesTable extends Table
         ]);
         
         $this->hasMany('GintonicCMS.Albums');
-    }
-
-    /**
-     * TODO: doccomment
-     */
-    public function moveUploaded($tmpFile, $userId, $dirName, $count)
-    {
-        // fetch data
-        $fileInfo['user_id'] = $userId;
-        $fileInfo['size'] = $tmpFile['tmpFile']['size'];
-        $fileInfo['type'] = $tmpFile['tmpFile']['type'];
-        $fileInfo['title'] = $tmpFile['title'];
-        $fileInfo['ext'] = pathinfo($tmpFile['tmpFile']['name'], PATHINFO_EXTENSION);
-        $fileInfo['filename'] = $this->createFileName($fileInfo['ext'], $userId, $count);
-
-        // move file
-        $file = fopen($tmpFile['tmpFile']['tmp_name'], "rb");
-        $data = fread($file, $fileInfo['size']);
-        file_put_contents($this->getPath($fileInfo['filename'], $dirName), $data);
-
-        return $fileInfo;
     }
 
     /**
@@ -161,5 +143,10 @@ class FilesTable extends Table
             }
         }
         return $response;
+    }
+    
+    public function convertName($title, $ext, $userId)
+    {
+        return sha1($title). '_' . $userId . '.' . $ext;
     }
 }

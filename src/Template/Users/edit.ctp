@@ -25,10 +25,10 @@ echo $this->Require->req('files/filepicker');
     <div class="col-md-4">
         <div id = "upload-alert"></div>
         <div id="modal-loader"></div>
-        <?php
-        echo $this->Html->image($this->File->getFileUrl($user['file']['filename']), array('class' => 'img-responsive img-thumbnail', 'id' => 'userphoto'));
-        
-        ?>
+        <?= $this->Html->image(
+            $user['file']['filename'], 
+            ['class' => 'img-responsive img-thumbnail', 'id' => 'userphoto']
+        ); ?>
         <button type="button" class="btn btn-default upload" data-loading-text="Loading..." data-upload-callback="users/update_avatar">Change Avatar</button>
     </div>
     <div class="col-md-8">

@@ -43,94 +43,6 @@ class FilesController extends AppController
     /**
      * TODO: blockcomment
      */
-    public function add()
-    {
-        if (!$this->request->session()->check('Auth.User.id')) {
-            $this->Flash->set(__('You are not signed in.'), [
-                'element' => 'GintonicCMS.alert',
-                'params' => ['class' => 'alert-danger']
-            ]);
-            return $this->redirect(['plugin' => 'GintonicCMS', 'controller' => 'Users', 'action' => 'signin']);
-        }
-        $file = $this->Files->newEntity($this->request->data);
-        $this->layout = 'ajax';
-        if ($this->request->is(['post', 'put'])) {
-            if (isset($this->request->data['callBack'])) {
-                $this->set('callbackModule', $this->request->data['callBack']);
-                unset($this->request->data['callBack']);
-            }
-            $totalFiles = count($this->request->data['tmpFile']);
-            $count = count($this->request->data['tmpFile']) > 1 ? 0:'';
-            $flag = true;
-            $title = $this->request->data['title'];
-            $dirName = isset($this->request->data['dir'])?$this->request->data['dir']:"";
-            $fileIds = $fileNames = [];
-            foreach ($this->request->data['tmpFile'] as $key => $name) {
-                $tmpFileArray['title'] = !empty($count)?($title . '_' . $count):$title;
-                $tmpFileArray['tmpFile'] = $name;
-                if (is_uploaded_file($tmpFileArray['tmpFile']['tmp_name'])) {
-                    $this->request->data = $this->Files->moveUploaded(
-                        $tmpFileArray,
-                        $this->Auth->user('id'),
-                        $dirName,
-                        $count
-                    );
-                    $this->request->data['dir'] = $dirName;
-                    $file = $this->Files->newEntity($this->request->data);
-                    unset($file->tmpFile);
-                    if ($result = $this->Files->save($file)) {
-                        $fileIds[] = $result->id;
-                        $fileNames[] = $this->request->data['filename'];
-                        $flag = true;
-                    } else {
-                        $flag = false;
-                    }
-                }
-                $count++;
-            }
-            if ($totalFiles == 1) {
-                $fileId = $fileIds[0];
-                $fileName = $fileNames[0];
-                $this->set(compact('fileId', 'fileName', 'totalFiles'));
-            } else {
-                $commaSepratedFileId = implode(', ', $fileIds);
-                $commaSepratedFileName = implode(', ', $fileNames);
-                $this->set(compact('commaSepratedFileId', 'commaSepratedFileName', 'totalFiles'));
-            }
-            $this->render('completed');
-        }
-        $this->set(compact('file'));
-    }
-
-    /**
-     * TODO: blockcomment
-     */
-    public function getRow($id)
-    {
-        $this->layout = 'ajax';
-        $fileIds = explode(', ', $id);
-        foreach ($fileIds as $key => $id) {
-                $files[] = $this->Files->get($id);
-        }
-        $this->set('files', $files);
-    }
-
-    /**
-     * TODO: blockcomment
-     */
-    public function delete($fileId)
-    {
-        $response = $this->Files->deleteUserFiles($fileId);
-        $this->Flash->set($response['message'], [
-            'element' => 'GintonicCMS.alert',
-            'params' => ['class' => $response['class']]
-        ]);
-        $this->redirect(['action' => 'index']);
-    }
-
-    /**
-     * TODO: blockcomment
-     */
     public function index()
     {
         if (!$this->request->session()->check('Auth.User.id')) {
@@ -153,6 +65,65 @@ class FilesController extends AppController
         $this->set('files', $this->paginate('Files'));
     }
     
+    /**
+     * TODO: blockcomment
+     */
+    public function add()
+    {
+        if (!$this->request->session()->check('Auth.User.id')) {
+            $this->Flash->set(__('You are not signed in.'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
+            ]);
+            return $this->redirect(['plugin' => 'GintonicCMS', 'controller' => 'Users', 'action' => 'signin']);
+        }
+        
+        $file = $this->Files->newEntity($this->request->data);
+        $this->layout = 'ajax';
+        
+        if ($this->request->is(['post', 'put'])) {
+            if (isset($this->request->data['callBack'])) {
+                $this->set('callbackModule', $this->request->data['callBack']);
+                unset($this->request->data['callBack']);
+            }
+            
+            $response = $this->Files->upload($this->request->data, $this->Auth->user());
+            
+            $fileId = $response['fileId'];
+            $fileName = $response['fileName'];
+            
+            $this->set(compact('fileId', 'fileName'));
+            $this->render('completed');
+        }
+        $this->set(compact('file'));
+    }
+
+    /**
+     * TODO: blockcomment
+     */
+    public function getRow($id)
+    {
+        $this->layout = 'ajax';
+        $fileIds = explode(', ', $id);
+        foreach ($fileIds as $key => $id) {
+            $files[] = $this->Files->get($id);
+        }
+        $this->set('files', $files);
+    }
+
+    /**
+     * TODO: blockcomment
+     */
+    public function delete($fileId)
+    {
+        $response = $this->Files->deleteUserFiles($fileId);
+        $this->Flash->set($response['message'], [
+            'element' => 'GintonicCMS.alert',
+            'params' => ['class' => $response['class']]
+        ]);
+        $this->redirect(['action' => 'index']);
+    }
+
     /**
      * TODO: blockcomment
      */

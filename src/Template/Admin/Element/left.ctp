@@ -10,7 +10,7 @@ echo $this->Require->req('admin/admin');
                     'class' => 'img-circle'
                 ]);?>
             </div>
-            <div class="pull-left info">
+            <div class="info">
                 <span>
                     <?= $this->request->session()->read('Auth.User.email');?>
                 </span>

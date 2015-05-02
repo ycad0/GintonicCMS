@@ -2,7 +2,7 @@
 
 use Cake\I18n\Time;
 ?>
-<?php if (!empty($messages->toArray())): ?>
+<?php if ($messages->count()): ?>
     <table class="table table-hover table-bordered">
         <?php foreach ($messages as $key => $message): ?>
             <tr>
@@ -12,9 +12,8 @@ use Cake\I18n\Time;
                             <?php
                             if (!empty($message->Sender->file->filename)):
                                 echo $this->Html->image(
-                                        $this->File->getFileUrl(
-                                                $message->Sender->file->filename, $message->Sender->file->dir
-                                        ), ['style' => 'width: 50px; height: 50px']
+                                    $message->Sender->file->filename,
+                                    ['style' => 'width: 50px; height: 50px']
                                 );
                             endif;
                             ?>
