@@ -12,7 +12,9 @@ requirejs.config({
         
         //lib 
         lib: baseUrl+'gintonic_c_m_s/js/lib',
-        
+        //Stripe
+        stripe: baseUrl + 'gintonic_c_m_s/js/stripe',
+		
         //Messages
         messages: baseUrl + 'gintonic_c_m_s/js/messages',
         
@@ -46,6 +48,7 @@ requirejs.config({
         bootstrap : ["jquery"],
         jqueryvalidate : ["jquery"],
         wysiwyg : ["jquery"],
+        stripe : ["jquery"]
     },   
     optimize: "none"    
 });

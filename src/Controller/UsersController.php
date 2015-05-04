@@ -25,6 +25,11 @@ class UsersController extends AppController
         ]);
     }
 
+    public function isAuthorized($user = null) {
+        return true;
+        parent::isAuthorized($user);
+    }
+
     /**
      * TODO: blockquote
      */
@@ -79,7 +84,7 @@ class UsersController extends AppController
     /**
      * TODO: blockquote
      */
-    public function updateAvatar($userId = null, $fileId = null)
+    public function update_avatar($userId = null, $fileId = null)
     {
         if (!empty($this->request->data['id'])) {
             $userId = $this->request->data['id'];

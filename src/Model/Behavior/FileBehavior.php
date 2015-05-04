@@ -5,9 +5,19 @@ namespace GintonicCMS\Model\Behavior;
 use Cake\Filesystem\File;
 use Cake\ORM\Behavior;
 use Cake\ORM\TableRegistry;
+use Cake\Event\Event;
+use ArrayObject;
 
 class FileBehavior extends Behavior
 {
+    public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
+    {
+        exit;
+         if (isset($data['file']) && isset($data['file']['filename'])) {
+            $config = $this->config();
+            $data['file']['path'] = $config['uploadDir'] . '/' . $data['file']['filename'];
+        }
+    }
     /**
      * TODO: write document
      */
