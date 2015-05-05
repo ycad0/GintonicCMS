@@ -30,7 +30,6 @@ use Cake\I18n\Time;
                             </tr>
                             <?php
                         } else {
-                            //debug($transactions->toArray());
                             foreach ($transactions as $transaction) {
                                 ?>
                                 <tr>

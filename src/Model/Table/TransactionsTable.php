@@ -7,7 +7,6 @@ use Cake\ORM\Table;
 class TransactionsTable extends Table
 {
     /**
-     * 
      * TODO: write comment.
      */
     public function initialize(array $config)
@@ -40,11 +39,32 @@ class TransactionsTable extends Table
     /**
      * TODO: write comment
      */
+    public function getTransaction($conditions = null)
+    {
+        return $this->find()
+                        ->where($conditions)
+                        ->contain([
+                            'Users' => function($query){
+                                return $query
+                                        ->select(['Users.id', 'Users.first', 'Users.last']);
+                            },
+                            'TransactionTypes' => function($query){
+                                return $query
+                                        ->select(['TransactionTypes.name']);
+                            }
+                        ])
+                        ->order(['Transactions.created' => 'desc']);
+    }
+    
+    /**
+     * TODO: write comment
+     */
     public function addTransaction($arrDetail = [], $userId = null)
     {
         if(empty($userId)){
             $userId = 0;
         }
+        
         $arrTransaction = [
             'user_id' => $userId,
             'transaction_type_id' => $arrDetail['transaction_type_id'],
@@ -53,12 +73,18 @@ class TransactionsTable extends Table
             'currency' => $arrDetail['stripe']->currency,
             'transaction_id' => $arrDetail['stripe']->id,
             'customer_id' => $arrDetail['stripe']->customer,
-            'email' => $arrDetail['stripe']['source']->name,
-            'brand' => $arrDetail['stripe']['source']->brand,
-            'last4' => $arrDetail['stripe']['source']->last4,
             'paid' => $arrDetail['stripe']->paid,
             'captured' => (isset($arrDetail['stripe']->captured)?$arrDetail['stripe']->captured:''),
         ];
+        if(!empty($arrDetail['stripe']['source'])){
+            $arrTransaction['email'] = $arrDetail['stripe']['source']->name;
+            $arrTransaction['brand'] = $arrDetail['stripe']['source']->brand;
+            $arrTransaction['paid'] = $arrDetail['stripe']['source']->last4;
+        } elseif(!empty($arrDetail['stripe']['card'])) {
+            $arrTransaction['email'] = $arrDetail['stripe']['card']->name;
+            $arrTransaction['brand'] = $arrDetail['stripe']['card']->brand;
+            $arrTransaction['paid'] = $arrDetail['stripe']['card']->last4;
+        }
         if(isset($arrDetail['plan_id'])){
             $arrTransaction['plan_id']=$arrDetail['plan_id'];
         }

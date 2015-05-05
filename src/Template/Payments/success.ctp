@@ -13,8 +13,9 @@ use Cake\Core\Configure;
         <div class="col-md-12">
             <?php
                 $userName = 'Anonymous';
-                if(isset($transactionDetail['User']['first']) || isset($transactionDetail['User']['last'])){
-                    $userName = $transactionDetail['User']['first'] . ' ' . $transactionDetail['User']['last'];
+                $userInfo = $this->request->session()->read('Auth.User');
+                if(!empty($userInfo)){
+                    $userName = $userInfo['first'] . ' ' . $userInfo['last'];
                 }
             ?>
             <h4><?php echo 'Name : ' . $userName; ?></h4>

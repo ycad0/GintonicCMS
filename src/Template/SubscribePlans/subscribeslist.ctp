@@ -4,7 +4,7 @@
             <div class="col-md-8"><h3 class="title"><?php echo __('Subscribe Now') ?></h3></div>
             <div class="col-md-4 text-right">
                 <?php 
-                    echo $this->Html->link('My Subscribes',array('plugin' => 'gtw_stripe', 'controller' => 'subscribe_plans', 'action' => 'user_subscribe'),array('class'=>'btn btn-default'));
+                    echo $this->Html->link('My Subscribes',array('plugin' => 'GintonicCMS', 'controller' => 'subscribe_plans', 'action' => 'user_subscribe'),array('class'=>'btn btn-default'));
                 ?>
             </div>
         </div>
@@ -21,18 +21,15 @@
             <?php foreach ($plans as $key => $plan) { ?>
             <tr>
                 <td>
-                    Subscribe this plan ($<?php echo $plan['SubscribePlan']['amount']?> per <?php echo $plan['SubscribePlan']['interval_count']. ' '.$plan['SubscribePlan']['plan_interval'] ?>)
+                    Subscribe this plan ($<?php echo $plan->amount?> per <?php echo $plan->interval_count. ' '.$plan->plan_interval ?>)
                 </td>
                 <td width="10%" class="text-center">
                     <?php
-                    echo $this->element('GtwStripe.subscribe', array('options' => array(
-                            'description' => $plan['SubscribePlan']['name'],
-                            'amount' => $plan['SubscribePlan']['amount'],
+                    echo $this->element('GintonicCMS.subscribe', array('options' => array(
+                            'description' => $plan->name,
+                            'amount' => $plan->amount,
                             'label' => __('Subscribe Now'),
-                            'success-url' =>''
-//                            'success-url' => $this->Html->url(array('plugin' => false, 'action' => 'view', $goods['Egood']['slug'], 'type' => 'success'), true),
-//                            'fail-url' => $this->Html->url(array('plugin' => false, 'action' => 'view', $goods['Egood']['slug'], 'type' => 'fail'), true),
-                    ),'plan_id'=>$plan['SubscribePlan']['plan_id'],'subscribe_id'=>(isset($arrSubscribePlans[$plan['SubscribePlan']['plan_id']])?$arrSubscribePlans[$plan['SubscribePlan']['plan_id']]:null)));
+                    ),'plan_id'=>$plan->plan_id,'subscribe_id'=>(isset($arrSubscribePlans[$plan->plan_id])?$arrSubscribePlans[$plan->plan_id]:null)));
                     ?>
                 </td>
             </tr>

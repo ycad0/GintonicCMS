@@ -2,9 +2,7 @@
     <div class="row">
         <div class="col-md-12">
             <h1>
-                <?php
-                echo $planDetail->plan_id . ' plan (' . $planDetail->name . ') users';
-                ?>
+                <?= $title?>
             </h1>
             <table class="table table-hover table-striped table-bordered">
                 <thead>
@@ -25,17 +23,17 @@
                         <?php
                     } else {
                         $srNo = 1;
-                        foreach ($planUsers['SubscribePlanUser'] as $key => $planUser) {
+                        foreach ($planUsers->SubscribePlanUsers as $key => $planUser) {
                             ?>
                             <tr>
                                 <td><?php echo $srNo++; ?></td>
                                 <td><?php echo (isset($userList[$planUser['user_id']]) ? $userList[$planUser['user_id']] : ''); ?></td>
                                 <td><?php echo $planUser['status']; ?></td>
-                                <td><?php echo $this->Time->format('Y-m-d H:i:s', $planUser['last_charged']); ?></td>
-                                <td><?php echo $this->Time->format('Y-m-d H:i:s', $planUser['modified']); ?></td>
+                                <td><?php echo $planUser['last_charged']; ?></td>
+                                <td><?php echo $planUser['modified']; ?></td>
                                 <td class="text-center">
                                     <?php
-                                    echo $this->Html->link('View Transactions', array('plugin' => 'gtw_stripe', 'controller' => 'subscribe_plans', 'action' => 'myplantransaction', $planUsers['SubscribePlan']['plan_id'], $planUser['user_id']), array('class' => 'btn btn-info'));
+                                    echo $this->Html->link('View Transactions', array('plugin' => 'GintonicCMS', 'controller' => 'subscribe_plans', 'action' => 'myplantransaction', $planUsers['plan_id'], $planUser['user_id']), array('class' => 'btn btn-info'));
                                     ?>
                                 </td>
                             </tr>
