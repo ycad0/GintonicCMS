@@ -163,7 +163,6 @@ class SubscribePlansController extends AppController
      */
     public function user_subscribe()
     {
-        $this->__setStripe();
         $this->loadModel('GintonicCMS.UserCustomers');
         $this->loadModel('GintonicCMS.Transactions');
         $userId = $this->request->session()->read('Auth.User.id');
@@ -192,7 +191,6 @@ class SubscribePlansController extends AppController
      */
     public function unsubscribe_user($subscribeId = null)
     {
-        $this->__setStripe();
         if (!empty($subscribeId)) {
             $userId = $this->request->session()->read('Auth.User.id');
             $this->loadModel('GintonicCMS.UserCustomers');

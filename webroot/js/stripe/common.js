@@ -1,7 +1,7 @@
 define(function(require) {
     // Dependencies
     var $ = require('jquery');
-
+    
     $('#payment-form').on('submit', function(e) {
         e.preventDefault();
         //make charge

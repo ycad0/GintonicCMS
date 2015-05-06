@@ -82,17 +82,10 @@ class PaymentsController extends AppController
                 $amount = $this->request->session()->read($amountKey);
                 try {
                     // Create a Customer
-                    $customer = Stripe\Customer::create([
-                                'email' => $this->request->data['stripeEmail'],
-                                'card' => $this->request->data['stripeToken']
-                    ]);
+                    $customer = $this->__createCustomer($this->request->data['stripeEmail'], $this->request->data['stripeToken']);
 
                     // Charge the Customer instead of the card
-                    $charge = Stripe\Charge::create([
-                                'customer' => $customer->id,
-                                'amount' => $amount,
-                                'currency' => Configure::read('Stripe.currency')
-                    ]);
+                    $charge = $this->__createCharge($customer->id, $amount);
 
                     $arrDetail = [
                         'transaction_type_id' => 1,
@@ -217,10 +210,7 @@ class PaymentsController extends AppController
                 return $userCustomer->customer_id;
             } else {
                 if (!empty($stripeEmail) && !empty($stripeToken)) {
-                    $customer = Stripe\Customer::create([
-                                'email' => $stripeEmail,
-                                'card' => $stripeToken
-                    ]);
+                    $customer = $this->__createCustomer($stripeEmail, $stripeToken);
                     $arrCustomer = [
                         'user_id' => $userId,
                         'customer_id' => $customer->id,
@@ -282,19 +272,14 @@ class PaymentsController extends AppController
      */
     public function confirm_payment()
     {
-        if (!empty($this->request->data['stripeToken']) && !empty($this->request->data['payment'])) {
+        if (!empty($this->request->data['stripeToken'])) {
             try {
                 $userId = $this->request->session()->read('Auth.User.id');
-                $customer = Stripe\Customer::create([
-                    'email' => $this->request->data['payment']['email'],
-                    'card' => $this->request->data['stripeToken']
-                ]);
-
-                $charge = Stripe_Charge::create([
-                    'customer' => $customer->id,
-                    'amount' => ((float) $this->request->data['payment']['amount']) * 100,
-                    'currency' => Configure::read('Stripe.currency')
-                ]);
+                
+                $customer = $this->__createCustomer($this->request->data['email'], $this->request->data['stripeToken']);
+                
+                $charge = $this->__createCharge($customer->id, ((float) $this->request->data['amount']) * 100);
+                
                 $arrDetail = [
                     'transaction_type_id' => 1,
                     'fixed_price' => 1,
@@ -308,17 +293,17 @@ class PaymentsController extends AppController
                         'element' => 'GintonicCMS.alert',
                         'params' => ['class' => 'alert-success']
                     ]);
-                    if (!empty($this->request->data['payment']['success_url'])) {
+                    if (!empty($this->request->data['success_url'])) {
                         $this->loadComponent('GintonicCMS.Transac');
-                        $redirectUrl = $this->request->data['payment']['success_url'] . '?transaction=' . $this->Transac->setLastTransaction($transaction);
+                        $redirectUrl = $this->request->data['success_url'] . '?transaction=' . $this->Transac->setLastTransaction($transaction);
                     }
                 } else {
                     $this->Flash->set(__('Unable to process your payment request, Please try again.'), [
                         'element' => 'GintonicCMS.alert',
                         'params' => ['class' => 'alert-danger']
                     ]);
-                    if (!empty($this->request->data['payment']['fail_url'])) {
-                        $redirectUrl = $this->request->data['payment']['fail_url'];
+                    if (!empty($this->request->data['fail_url'])) {
+                        $redirectUrl = $this->request->data['fail_url'];
                     }
                 }
                 return $this->redirect($redirectUrl);
@@ -350,4 +335,32 @@ class PaymentsController extends AppController
         return false;
     }
 
+    /**
+     * 
+     * @param string $email
+     * @param string $token
+     * @return mix return customer object.
+     */
+    private function __createCustomer($email, $token)
+    {
+        return Stripe\Customer::create([
+            'email' => $email,
+            'card' => $token
+        ]);
+    }
+    
+    /**
+     * 
+     * @param string $customerId
+     * @param integer $amount
+     * @return mix return charge object.
+     */
+    private function __createCharge($customerId, $amount)
+    {
+        return Stripe\Charge::create([
+            'customer' => $customerId,
+            'amount' => $amount,
+            'currency' => Configure::read('Stripe.currency')
+        ]);
+    }
 }

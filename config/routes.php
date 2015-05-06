@@ -20,6 +20,7 @@ Router::scope('/', ['plugin' => 'GintonicCMS'], function ($routes) {
     $routes->connect('/payments/fail/*', ['controller' => 'Payments', 'action'=>'fail']);
     $routes->connect('/payments/callback_subscribes/*', ['controller' => 'Payments', 'action'=>'callback_subscribes']);
     $routes->connect('/payments/subscribe/*', ['controller' => 'Payments', 'action'=>'subscribe']);
+    $routes->connect('/payments/confirm_payment/*', ['controller' => 'payments', 'action'=>'confirm_payment']);
     
     $routes->connect('/subscribe_plans', ['controller' => 'SubscribePlans', 'action'=>'index']);
     $routes->connect('/subscribe_plans/delete/*', ['controller' => 'SubscribePlans', 'action'=>'delete']);
