@@ -5,7 +5,7 @@
                 <?= (isset($title) ? 'Edit' : 'Add') ?> Subscribe Plan
             </h1>
             <?php
-            echo $this->Form->create('SubscribePlan', array('url' => array('controller' => 'subscribe_plans', 'action' => 'create_plans', (isset($title) ? $this->request->params['pass'][0] : '')), 'inputDefaults' => array('div' => 'col-md-12 form-group', 'class' => 'form-control'), 'class' => 'form-horizontal', 'id' => 'PlanAddForm', 'novalidate' => 'novalidate'));
+            echo $this->Form->create('SubscribePlan', array('url' => array('controller' => 'subscribe_plans', 'action' => 'createPlans', (isset($title) ? $this->request->params['pass'][0] : '')), 'inputDefaults' => array('div' => 'col-md-12 form-group', 'class' => 'form-control'), 'class' => 'form-horizontal', 'id' => 'PlanAddForm', 'novalidate' => 'novalidate'));
             $ds = (isset($title) ? 'disabled' : '');
             echo $this->Form->input('plan_id', array('label' => 'Plan id', $ds, 'type' => 'text'));
             echo $this->Form->input('name', array('label' => 'Plan Name',));

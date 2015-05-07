@@ -3,8 +3,8 @@
 namespace GintonicCMS\Controller;
 
 use App\Controller\AppController;
-use Cake\Event\Event;
 use Cake\Core\Configure;
+use Cake\Event\Event;
 use Cake\Routing\Router;
 use Stripe;
 
@@ -13,7 +13,7 @@ class SubscribePlansController extends AppController
     /**
      * TODO: Write Comments.
      */
-    function beforeFilter(Event $event)
+    public function beforeFilter(Event $event)
     {
         $this->__setStripe();
     }
@@ -44,7 +44,7 @@ class SubscribePlansController extends AppController
         if (!empty($planId)) {
             $plan = $this->SubscribePlans->get($planId);
             if ($this->SubscribePlans->delete($plan)) {
-                $this->plan_delete($plan->plan_id);
+                $this->planDelete($plan->plan_id);
                 $this->Flash->set(__('Plan has been deleted successfully.'), [
                     'element' => 'GintonicCMS.alert',
                     'params' => ['class' => 'alert-success']
@@ -62,9 +62,9 @@ class SubscribePlansController extends AppController
     /**
      * TODO: Write Comments.
      */
-    public function plan_delete($plan_id)
+    public function planDelete($planId)
     {
-        $plan = Stripe\Plan::retrieve($plan_id);
+        $plan = Stripe\Plan::retrieve($planId);
         $plan->delete();
         return;
     }
@@ -72,7 +72,7 @@ class SubscribePlansController extends AppController
     /**
      * TODO: Write Comments.
      */
-    public function create_plans($planId = null)
+    public function createPlans($planId = null)
     {
         $this->__setStripe();
 
@@ -81,7 +81,7 @@ class SubscribePlansController extends AppController
             $name = $this->request->data['name'];
 
             if (empty($planId)) {
-                $plan_id = $this->request->data['plan_id'];
+                $newPlanId = $this->request->data['plan_id'];
                 $amount = $this->request->data['amount'];
                 $interval = $this->request->data['plan_interval'];
                 $intervalCount = $this->request->data['interval_count'];
@@ -91,11 +91,11 @@ class SubscribePlansController extends AppController
 
                 foreach ($plans['data'] as $key => $plan) {
                     $plan = $plan->__toArray();
-                    if (empty($planId) && $plan['id'] == $plan_id) {
+                    if (empty($planId) && $plan['id'] == $newPlanId) {
                         $flag = true;
                         break;
                     }
-                    if ($plan['id'] == $plan_id && $plan['interval'] == $interval && $plan['interval_count'] == $interval_count && $plan['name'] == $name && $plan['amount'] == $amount) {
+                    if ($plan['id'] == $newPlanId && $plan['interval'] == $interval && $plan['interval_count'] == $intervalCount && $plan['name'] == $name && $plan['amount'] == $amount) {
                         $flag = true;
                         break;
                     }
@@ -123,7 +123,7 @@ class SubscribePlansController extends AppController
                             'interval_count' => $intervalCount,
                             'name' => $name,
                             'currency' => 'usd',
-                            'id' => $plan_id
+                            'id' => $newPlanId
                         ]);
                     } else {
                         //update plan
@@ -161,7 +161,7 @@ class SubscribePlansController extends AppController
     /**
      * TODO: Write Comments.
      */
-    public function user_subscribe()
+    public function userSubscribe()
     {
         $this->loadModel('GintonicCMS.UserCustomers');
         $this->loadModel('GintonicCMS.Transactions');
@@ -189,7 +189,7 @@ class SubscribePlansController extends AppController
     /**
      * TODO: Write Comments.
      */
-    public function unsubscribe_user($subscribeId = null)
+    public function unsubscribeUser($subscribeId = null)
     {
         if (!empty($subscribeId)) {
             $userId = $this->request->session()->read('Auth.User.id');
@@ -296,7 +296,7 @@ class SubscribePlansController extends AppController
     /**
      * TODO: Write Comments.
      */
-    function subscribeslist()
+    public function subscribeslist()
     {
         $this->loadModel('GintonicCMS.UserCustomers');
         $this->loadModel('GintonicCMS.SubscribePlans');
@@ -320,7 +320,7 @@ class SubscribePlansController extends AppController
                     }
                 }
             } catch (Exception $ex) {
-
+                //debug($ex);
             }
         }
         $this->set(compact('arrSubscribePlans'));

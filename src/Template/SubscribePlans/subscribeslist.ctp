@@ -4,7 +4,7 @@
             <div class="col-md-8"><h3 class="title"><?php echo __('Subscribe Now') ?></h3></div>
             <div class="col-md-4 text-right">
                 <?php 
-                    echo $this->Html->link('My Subscribes',array('plugin' => 'GintonicCMS', 'controller' => 'subscribe_plans', 'action' => 'user_subscribe'),array('class'=>'btn btn-default'));
+                    echo $this->Html->link('My Subscribes',array('plugin' => 'GintonicCMS', 'controller' => 'subscribe_plans', 'action' => 'userSubscribe'),array('class'=>'btn btn-default'));
                 ?>
             </div>
         </div>

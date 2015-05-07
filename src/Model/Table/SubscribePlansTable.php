@@ -40,24 +40,23 @@ class SubscribePlansTable extends Table
     public function getPlanDetailByPlanId($planId)
     {
         $plan = $this->find()
-                ->where(['SubscribePlans.plan_id' => $planId])
-                ->contain(['SubscribePlanUsers'])
-                ->first();
+            ->where(['SubscribePlans.plan_id' => $planId])
+            ->contain(['SubscribePlanUsers'])
+            ->first();
         return $plan;
     }
 
     /**
      * TODO: write comment
      */
-    function getPlanDetail($planId = null)
+    public function getPlanDetail($planId = null)
     {
         if (!empty($planId)) {
             $planDetails = $this->find()
-                    ->where(['SubscribePlans.plan_id' => $planId])
-                    ->first();
+                ->where(['SubscribePlans.plan_id' => $planId])
+                ->first();
             return $planDetails->toArray();
         }
         return false;
     }
-
 }

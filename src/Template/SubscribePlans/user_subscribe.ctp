@@ -31,7 +31,7 @@
                                 </td>
                                 <td><?php echo $subscribePlan['created']; ?></td>
                                 <td class="text-center actions">
-                                    <?php echo $this->Html->link('Unsubscribe Now', array('plugin' => 'GintonicCMS', 'controller' => 'subscribe_plans', 'action' => 'unsubscribe_user', $subscribePlan['subscribe_id']), array('class' => 'btn btn-warning'), 'Do you want to really unsubscribe this plan?'); ?>
+                                    <?php echo $this->Html->link('Unsubscribe Now', array('plugin' => 'GintonicCMS', 'controller' => 'subscribe_plans', 'action' => 'unsubscribeUser', $subscribePlan['subscribe_id']), array('class' => 'btn btn-warning'), 'Do you want to really unsubscribe this plan?'); ?>
                                     <?php echo $this->Html->link('View Transactions', array('plugin' => 'GintonicCMS', 'controller' => 'subscribe_plans', 'action' => 'myplantransaction', $subscribePlan['plan_id']), array('class' => 'btn btn-info')); ?>
                                 </td>
                             </tr>

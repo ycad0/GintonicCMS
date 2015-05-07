@@ -2,22 +2,26 @@
 
 namespace GintonicCMS\Model\Behavior;
 
+use ArrayObject;
+use Cake\Event\Event;
 use Cake\Filesystem\File;
 use Cake\ORM\Behavior;
 use Cake\ORM\TableRegistry;
-use Cake\Event\Event;
-use ArrayObject;
 
 class FileBehavior extends Behavior
 {
+    /**
+     * TODO: write document
+     */
     public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
     {
         exit;
-         if (isset($data['file']) && isset($data['file']['filename'])) {
+        if (isset($data['file']) && isset($data['file']['filename'])) {
             $config = $this->config();
             $data['file']['path'] = $config['uploadDir'] . '/' . $data['file']['filename'];
         }
     }
+
     /**
      * TODO: write document
      */
@@ -57,22 +61,22 @@ class FileBehavior extends Behavior
         $fileInfo['ext'] = pathinfo($fileData['tmpFile']['name'], PATHINFO_EXTENSION);
         $fileInfo['filename'] = $this->__getFileName($fileData['tmpFile']['name'], $fileInfo['ext'], $userId);
         $fileInfo['modified'] = $fileInfo['created'] = date('Y-m-d H:i:s');
-        
+
         $file = new File($fileData['tmpFile']['tmp_name']);
         $fileData = $file->read(true, 'r');
         $file->close();
-        
-        $file = new File($this->config('uploadDir').'/'.$fileInfo['filename'], true, 644);
+
+        $file = new File($this->config('uploadDir') . '/' . $fileInfo['filename'], true, 644);
         $file->write($fileData, 'w');
         $file->close();
-        
+
         return $fileInfo;
     }
 
     /**
      * TODO: write document
      */
-    private function __getFileName($title=null, $ext=null, $userId=null)
+    private function __getFileName($title = null, $ext = null, $userId = null)
     {
         $fileNameFunction = $this->config('fileNameFunction');
         if (empty($fileNameFunction)) {
@@ -96,7 +100,7 @@ class FileBehavior extends Behavior
      */
     private function __validateFile($fileType = null)
     {
-        if(in_array($fileType, $this->config('allowedTypes'))) {
+        if (in_array($fileType, $this->config('allowedTypes'))) {
             return true;
         }
         return false;

@@ -11,7 +11,7 @@ use Cake\Routing\Router;
         );
         echo $this->Form->create('payment', array(
             'id' => 'payment-form',
-            'url'=> array("plugin" => 'GintonicCMS', "controller" => "payments", "action" => "confirm_payment"),
+            'url'=> array("plugin" => 'GintonicCMS', "controller" => "payments", "action" => "confirmPayment"),
             'inputDefaults' => array(
                 'div' => 'form-group',
                 'wrapInput' => false,

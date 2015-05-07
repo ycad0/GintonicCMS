@@ -15,10 +15,10 @@ $defaultOptions = array(
 );
 $options = array_merge($defaultOptions, $options);
 $amount = $options['amount'] * 100; // Convert to Stripe Format
-$amountKey = $this->requestAction(array('plugin' => 'GintonicCMS', 'controller' => 'payments', 'action' => 'one_time_payment_set_amount', 'amount' => $amount));
+$amountKey = $this->requestAction(array('plugin' => 'GintonicCMS', 'controller' => 'payments', 'action' => 'oneTimePaymentSetAmount', 'amount' => $amount));
 ?>
-<?php //echo $this->Form->create('Stripe', array('url' => array('plugin' => 'GintonicCMS', 'controller' => 'payments', 'action' => 'one_time_payment'))) ?>
-<?php echo $this->Form->create('Stripe', array('url' => 'http://proball_market.local/gintonic_c_m_s/payments/one_time_payment')) ?>
+<?php //echo $this->Form->create('Stripe', array('url' => array('plugin' => 'GintonicCMS', 'controller' => 'payments', 'action' => 'oneTimePayment'))) ?>
+<?php echo $this->Form->create('Stripe', array('url' => 'http://proball_market.local/gintonic_c_m_s/payments/oneTimePayment')) ?>
 <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
         data-key="<?php echo Configure::read('Stripe.publishable_key'); ?>"
         data-name="<?php echo Configure::read('Stripe.site_name'); ?>"

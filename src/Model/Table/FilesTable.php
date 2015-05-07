@@ -8,7 +8,7 @@ use Cake\ORM\Table;
 
 class FilesTable extends Table
 {
-    
+
     /**
      * TODO: doccomment
      */
@@ -22,7 +22,7 @@ class FilesTable extends Table
             ],
             'fileNameFunction' => 'convertName',
         ]);
-        
+
         $this->addBehavior('Timestamp', [
             'events' => [
                 'Model.beforeSave' => [
@@ -31,13 +31,13 @@ class FilesTable extends Table
                 ]
             ]
         ]);
-        
+
         $this->belongsTo('Users', [
             'className' => 'GintonicCMS.Users',
             'foreignKey' => 'user_id',
             'propertyName' => 'user',
         ]);
-        
+
         $this->hasMany('GintonicCMS.Albums');
     }
 
@@ -91,7 +91,7 @@ class FilesTable extends Table
         $file->delete();
         $file->close();
     }
-    
+
     /**
      * TODO: doccomment
      */
@@ -103,7 +103,7 @@ class FilesTable extends Table
         }
         return false;
     }
-    
+
     /**
      * TODO: doccomment
      */
@@ -122,7 +122,7 @@ class FilesTable extends Table
         }
         return $arrResponse;
     }
-    
+
     /**
      * TODO: doccomment
      */
@@ -144,9 +144,12 @@ class FilesTable extends Table
         }
         return $response;
     }
-    
+
+    /**
+     * TODO: Write Document
+     */
     public function convertName($title, $ext, $userId)
     {
-        return sha1($title). '_' . $userId . '.' . $ext;
+        return sha1($title) . '_' . $userId . '.' . $ext;
     }
 }

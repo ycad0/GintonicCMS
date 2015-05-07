@@ -4,7 +4,7 @@ use Cake\Routing\Router;
 
 if ($this->request->session()->read('Auth.User.id')) {    
     if(!empty($subscribe_id)){
-        echo $this->Html->link('Unsubscribe Now',array('plugin' => 'GintonicCMS', 'controller' => 'subscribe_plans', 'action' => 'unsubscribe_user',$subscribe_id),array('class'=>'btn btn-primary'));
+        echo $this->Html->link('Unsubscribe Now',array('plugin' => 'GintonicCMS', 'controller' => 'subscribe_plans', 'action' => 'unsubscribeUser',$subscribe_id),array('class'=>'btn btn-primary'));
     }else{
         $defaultOptions = array(
             'label' => '',
@@ -17,7 +17,7 @@ if ($this->request->session()->read('Auth.User.id')) {
         );
         $options = array_merge($defaultOptions, $options);
         $amount = $options['amount'] * 100; // Convert to Stripe Format
-        $amountKey = $this->requestAction(array('plugin' => 'GintonicCMS', 'controller' => 'payments', 'action' => 'one_time_payment_set_amount', 'amount' => $amount));
+        $amountKey = $this->requestAction(array('plugin' => 'GintonicCMS', 'controller' => 'payments', 'action' => 'oneTimePaymentSetAmount', 'amount' => $amount));
         ?>
         <?php echo $this->Form->create('GtwStripe', array('url' => array('plugin' => 'GintonicCMS', 'controller' => 'payments', 'action' => 'subscribe'))) ?>
         <script

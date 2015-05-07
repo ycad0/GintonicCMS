@@ -3,9 +3,9 @@
 namespace GintonicCMS\Controller;
 
 use App\Controller\AppController;
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Core\Plugin;
-use Cake\Core\Configure;
 use Stripe;
 
 class PaymentsController extends AppController
@@ -17,7 +17,7 @@ class PaymentsController extends AppController
     {
         parent::beforeFilter($event);
         $this->__setStripe();
-        
+
         if (Plugin::loaded('GintonicCMS')) {
             $this->layout = 'GintonicCMS.default';
         }
@@ -25,7 +25,7 @@ class PaymentsController extends AppController
         $this->loadModel('GintonicCMS.SubscribePlan');
         $this->loadModel('GintonicCMS.UserCustomer');
         $this->loadModel('GintonicCMS.SubscribePlanUser');
-        $this->Auth->allow('callback_subscribes', 'one_time_payment_set_amount', 'one_time_payment', 'success', 'fail', 'confirm_payment');
+        $this->Auth->allow('callbackSubscribes', 'oneTimePaymentSetAmount', 'oneTimePayment', 'success', 'fail', 'confirmPayment');
     }
 
     /**
@@ -61,18 +61,18 @@ class PaymentsController extends AppController
     /**
      * TODO: write comment
      */
-    public function callback_subscribes()
+    public function callbackSubscribes()
     {
         $input = @file_get_contents("php://input");
-        $event_json = json_decode($input);
-        $this->Transactions->addTransactionSubscribe($event_json);
+        $eventJson = json_decode($input);
+        $this->Transactions->addTransactionSubscribe($eventJson);
         exit;
     }
 
     /**
      * TODO: write comment
      */
-    public function one_time_payment()
+    public function oneTimePayment()
     {
         if (!empty($this->request->data['stripeToken'])) {
             $amountKey = 'Stripe.' . $this->request->data['key'];
@@ -93,7 +93,7 @@ class PaymentsController extends AppController
                         'stripe' => $charge
                     ];
                     $redirectUrl = $this->referer();
-                    
+
                     if ($charge->paid) {
                         $transaction = $this->Transactions->addTransaction($arrDetail, $userId);
                         $this->Flash->set(__('Payment process has been successfully completed'), [
@@ -133,10 +133,10 @@ class PaymentsController extends AppController
     {
         if (!empty($this->request->data['stripeToken'])) {
             $amountKey = 'Stripe.' . $this->request->data['key'];
-            
+
             if ($this->request->session()->check($amountKey)) {
                 $amount = $this->request->session()->read($amountKey);
-                
+
                 try {
                     // Create a Customer / get customer
                     $userId = $this->request->session()->read('Auth.User.id');
@@ -156,7 +156,7 @@ class PaymentsController extends AppController
                         'stripe' => $subscribe
                     ];
                     $redirectUrl = $this->referer();
-                    
+
                     if ($subscribe->paid) {
                         $this->loadModel('GintonicCMS.SubscribePlans');
                         $this->loadModel('GintonicCMS.SubscribePlanUsers');
@@ -198,13 +198,13 @@ class PaymentsController extends AppController
     /**
      * TODO: write comment
      */
-    function getCustomerId($userId = null, $stripeEmail = null, $stripeToken = null)
+    public function getCustomerId($userId = null, $stripeEmail = null, $stripeToken = null)
     {
         if (!empty($userId)) {
             $this->loadModel('UserCustomers');
             $userCustomer = $this->UserCustomers->find()
-                    ->where(['UserCustomers.user_id' => $userId])
-                    ->first();
+                ->where(['UserCustomers.user_id' => $userId])
+                ->first();
 
             if (!empty($userCustomer)) {
                 return $userCustomer->customer_id;
@@ -227,7 +227,7 @@ class PaymentsController extends AppController
     /**
      * TODO: write comment
      */
-    public function one_time_payment_set_amount()
+    public function oneTimePaymentSetAmount()
     {
         if ($this->request->is('requested')) {
             $amountKey = md5($this->request->query['amount']);
@@ -264,29 +264,29 @@ class PaymentsController extends AppController
      */
     public function fail()
     {
-
+        //Maintain Fail Transaction.
     }
 
     /**
      * TODO: this method is with some known errors. don't use it.
      */
-    public function confirm_payment()
+    public function confirmPayment()
     {
         if (!empty($this->request->data['stripeToken'])) {
             try {
                 $userId = $this->request->session()->read('Auth.User.id');
-                
+
                 $customer = $this->__createCustomer($this->request->data['email'], $this->request->data['stripeToken']);
-                
+
                 $charge = $this->__createCharge($customer->id, ((float) $this->request->data['amount']) * 100);
-                
+
                 $arrDetail = [
                     'transaction_type_id' => 1,
                     'fixed_price' => 1,
                     'stripe' => $charge
                 ];
                 $redirectUrl = $this->referer();
-                
+
                 if ($charge->paid) {
                     $transaction = $this->Transactions->addTransaction($arrDetail, $userId);
                     $this->Flash->set(__('Payment process has been successfully completed.'), [
@@ -336,31 +336,25 @@ class PaymentsController extends AppController
     }
 
     /**
-     * 
-     * @param string $email
-     * @param string $token
-     * @return mix return customer object.
+     * TODO: Write Comment
      */
     private function __createCustomer($email, $token)
     {
         return Stripe\Customer::create([
-            'email' => $email,
-            'card' => $token
+                'email' => $email,
+                'card' => $token
         ]);
     }
-    
+
     /**
-     * 
-     * @param string $customerId
-     * @param integer $amount
-     * @return mix return charge object.
+     * TODO: Write Comment
      */
     private function __createCharge($customerId, $amount)
     {
         return Stripe\Charge::create([
-            'customer' => $customerId,
-            'amount' => $amount,
-            'currency' => Configure::read('Stripe.currency')
+                'customer' => $customerId,
+                'amount' => $amount,
+                'currency' => Configure::read('Stripe.currency')
         ]);
     }
 }

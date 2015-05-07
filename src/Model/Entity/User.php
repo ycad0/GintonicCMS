@@ -17,7 +17,7 @@ class User extends Entity
     {
         return (new DefaultPasswordHasher)->hash($password);
     }
-    
+
     /**
      * TODO: doccomment
      */
@@ -28,7 +28,7 @@ class User extends Entity
         }
         return false;
     }
-    
+
     /**
      * TODO: doccomment
      */
@@ -36,7 +36,7 @@ class User extends Entity
     {
         $files = TableRegistry::get('Files');
         return $files->find('all')
-            ->where(['user_id' => $this->id])
-            ->all();
+                ->where(['user_id' => $this->id])
+                ->all();
     }
 }

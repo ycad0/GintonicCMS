@@ -1,4 +1,5 @@
 <?php
+
 namespace GintonicCMS\Controller;
 
 use Cake\Event\Event;
@@ -6,7 +7,6 @@ use GintonicCMS\Controller\AppController;
 
 class UsersController extends AppController
 {
-
     /**
      * TODO: blockquote
      */
@@ -20,12 +20,16 @@ class UsersController extends AppController
             'confirmation',
             'forgot_password',
             'reset_password',
-            'update_avatar',
+            'updateAvatar',
             'profile'
         ]);
     }
 
-    public function isAuthorized($user = null) {
+    /**
+     * TODO: Write Comment
+     */
+    public function isAuthorized($user = null)
+    {
         return true;
         parent::isAuthorized($user);
     }
@@ -61,8 +65,7 @@ class UsersController extends AppController
             return $this->redirect($this->request->referer());
         }
         $user = $this->Users->safeRead(
-            ['Users.id' => $this->request->session()->read('Auth.User.id')],
-            true
+            ['Users.id' => $this->request->session()->read('Auth.User.id')], true
         );
         if ($this->request->is(['post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->data);
@@ -84,7 +87,7 @@ class UsersController extends AppController
     /**
      * TODO: blockquote
      */
-    public function update_avatar($userId = null, $fileId = null)
+    public function updateAvatar($userId = null, $fileId = null)
     {
         if (!empty($this->request->data['id'])) {
             $userId = $this->request->data['id'];
@@ -243,9 +246,9 @@ class UsersController extends AppController
                     'params' => ['class' => 'alert-sucess']
                 ]);
                 return $this->redirect([
-                    'plugin' => 'GintonicCMS',
-                    'controller' => 'users',
-                    'action' => 'profile'
+                        'plugin' => 'GintonicCMS',
+                        'controller' => 'users',
+                        'action' => 'profile'
                 ]);
             } else {
                 $this->Flash->set(__('The authorization link provided is erroneous, please contact an administrator'), [
