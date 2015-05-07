@@ -7,8 +7,13 @@ use Cake\ORM\Entity;
 
 class User extends Entity
 {
-    protected $_accessible = ['*' => true];
+    protected $_accessible = [
+        'password' => false,
+        '*' => true
+
+    ];
     protected $_virtual = ['full_name'];
+    protected $_hidden = ['password'];
 
     /**
      * TODO: doccomment
@@ -39,4 +44,5 @@ class User extends Entity
                 ->where(['user_id' => $this->id])
                 ->all();
     }
+
 }

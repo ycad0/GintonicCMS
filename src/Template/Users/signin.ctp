@@ -10,14 +10,7 @@ echo $this->Require->req('users/login_validation');
                 <?php echo __('Sign in to continue'); ?>
             </h1>
             <div class="account-wall">
-                <?= $this->Html->link(
-                    $this->Html->image( 'GintonicCMS.logo.png', [
-                        "class" => "img-responsive profile-img site-logo",
-                        "alt" => 'GintonicCMS'
-                    ]),
-                    '/',
-                    ['escape'=>false]
-                ); ?>
+                <?= $this->element('GintonicCMS.site_logo'); ?>
                 <?= $this->Form->create('Users', [
                     'inputdefaults' => [
                         'div' => 'form-group',

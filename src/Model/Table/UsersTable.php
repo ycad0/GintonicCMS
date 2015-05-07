@@ -47,6 +47,10 @@ class UsersTable extends Table
                 ]
             ]
         ]);
+        $this->addBehavior('GintonicCMS.File', [
+            'allowedTypes' => ['image/png', 'image/jpeg', 'image/gif']
+        ]);
+
         $this->addAssociations([
             'belongsTo' => ['Files' => [
                 'className' => 'GintonicCMS.Files',
@@ -102,7 +106,7 @@ class UsersTable extends Table
     }
     
     /**
-     * TODO: doccomment
+     * TODO: DELETE THIS METHOD
      */
     public function safeRead($conditions = null, $withPassword = false)
     {
@@ -141,15 +145,17 @@ class UsersTable extends Table
     /**
      * TODO: doccomment
      */
-    public function forgotPasswordEmail($email)
+    public function sendPasswordRecovery($email)
     {
+        // TODO: use cakephp's protected fields instead of 'safeRead'
         $user = $this->safeRead(['email' => $email]);
+
         $response = [
             'status' => 'fail',
-            'message' => 'Unable to send forgot password email, Please try again'
+            'message' => 'Error sending password recovery email'
         ];
         if (empty($user)) {
-            return array('status' => 'fail', 'message' => 'No matching email found');
+            return array('status' => 'fail', 'message' => 'No matching email address found');
         }
         unset($user->password);
         $user->token = md5(uniqid(rand(), true));
@@ -159,7 +165,7 @@ class UsersTable extends Table
         if ($this->sendForgotPasswordEmail($user)) {
             $response = [
                 'status' => 'success',
-                'message' => 'Please check your e-mail for forgot password'
+                'message' => 'An email was sent with password recovery instructions'
             ];
         }
         return $response;

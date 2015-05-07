@@ -10,12 +10,20 @@ use Cake\ORM\TableRegistry;
 
 class FileBehavior extends Behavior
 {
+    public $_defaultConfig = [
+        'defaultFile' => false,
+        'allowedTypes' => [],
+        'uploadDir' => 'files/uploads',
+        'fileNameFunction' => false,
+    ];
+
     /**
      * TODO: write document
      */
     public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
     {
-        exit;
+        debug('test');exit;
+        $data['path'] = 'test';
         if (isset($data['file']) && isset($data['file']['filename'])) {
             $config = $this->config();
             $data['file']['path'] = $config['uploadDir'] . '/' . $data['file']['filename'];

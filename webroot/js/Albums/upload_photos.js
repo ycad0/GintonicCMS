@@ -29,7 +29,7 @@ define(['jquery', 'basepath'], function($, basepath) {
                     loggedInUserId: $('#logged-in-user-id').val(),
                 },
                 success: function (response) {
-                    $('[data-photogalary]').append(response);
+                    $('[data-photogalery]').append(response);
                 }
             });
         }

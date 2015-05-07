@@ -114,6 +114,6 @@ class AlbumsController extends AppController
             
             $this->set(compact('album', 'userId', 'loggedInUserId'));
         }
-        $this->render('GintonicCMS.Element/Albums/photo_galary');
+        $this->render('GintonicCMS.Element/Albums/photo_galery');
     }
 }
