@@ -74,10 +74,11 @@ class FileBehavior extends Behavior
      */
     private function __getFileName($title=null, $ext=null, $userId=null)
     {
-        if (empty($this->config('fileNameFunction'))) {
+        $fileNameFunction = $this->config('fileNameFunction');
+        if (empty($fileNameFunction)) {
             return date("d_m_Y_G.i.s") . '_' . $userId . '.' . $ext;
         } else {
-            $function = $this->config('fileNameFunction');
+            $function = $fileNameFunction;
             return $this->_table->$function($title, $ext, $userId);
         }
     }
