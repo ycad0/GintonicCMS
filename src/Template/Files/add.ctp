@@ -11,7 +11,7 @@ echo $this->Require->req('files/feedback');
 <div class="modal fade" id="file-modal" tabindex="-1" role="dialog" aria-labelledby="file-modal-label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <?php echo $this->Form->create($file, array('url' => ['controller' => 'files', 'action' => 'add'],'id' => 'ControllerAddForm','role' =>'form','type' => 'file','target' => 'upload_target')); ?>
+            <?php echo $this->Form->create($file, array('url' => 'gintonic_c_m_s/files/add','id' => 'ControllerAddForm','role' =>'form','type' => 'file','target' => 'upload_target')); ?>
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="file-modal-label"><?php echo __('Upload File'); ?></h4>
@@ -25,7 +25,7 @@ echo $this->Require->req('files/feedback');
                     <span class="input-group-btn">
                         <label for="FileTmpFile" class="btn btn-primary btn-file">
                             <?php echo __('Browse'); ?>
-                            <input type="file" id="FileTmpFile" style="display:none" class="form-control" name="tmpFile[]" multiple="">
+                            <input type="file" id="FileTmpFile" style="display:none" class="form-control" name="tmpFile" multiple="">
                         </label>
                     </span>
                     <?php //echo $this->Form->input('f',['label'=>false,'type'=>'text','readonly','placeholder'=>__('No file uploaded'),'class'=>'form-control','id'=>'filename','div'=>false]);?>
@@ -33,7 +33,7 @@ echo $this->Require->req('files/feedback');
                 </div>
                 <?php
                 if ($this->request->named) {
-                    echo $this->Form->input('dir', array('type' => 'hidden', 'value' => !empty($this->request->named['dir']) ? $this->request->named['dir'] : ''));
+                //    echo $this->Form->input('dir', array('type' => 'hidden', 'value' => !empty($this->request->named['dir']) ? $this->request->named['dir'] : ''));
                 }
                 ?>
             </div>

@@ -47,7 +47,7 @@ use Cake\I18n\Number;
         </td>
     <?php endif; ?>
     <td>
-        <?= Time::parse($file->created->i18nFormat())->format('Y-m-d H:i'); ?>
+        <?php echo !empty($file->created) ? Time::parse($file->created->i18nFormat())->format('Y-m-d H:i') : ''; ?>
     </td>
     <td class="text-center">
         <span class="text-center ">

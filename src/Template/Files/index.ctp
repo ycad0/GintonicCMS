@@ -59,7 +59,7 @@ echo $this->Require->req('files/filepicker');
                 </table>
             </div>
             <div class="box-footer clearfix">
-                <?= $this->element('GintonicCMS.pagination'); ?>
+                <?php echo $this->element('GintonicCMS.pagination'); ?>
             </div>
         </div>
     </div>

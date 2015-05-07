@@ -29,7 +29,7 @@ echo $this->Require->req('files/filepicker');
             $user['file']['filename'], 
             ['class' => 'img-responsive img-thumbnail', 'id' => 'userphoto']
         ); ?>
-        <button type="button" class="btn btn-default upload" data-loading-text="Loading..." data-upload-callback="users/update_avatar">Change Avatar</button>
+        <button type="button" class="btn btn-default upload" data-loading-text="Loading..." data-upload-callback="users/updateAvatar">Change Avatar</button>
     </div>
     <div class="col-md-8">
         <fieldset>

@@ -1,12 +1,13 @@
-define(['jquery', 'basepath', 'jqueryvalidate', 'wysiwyg', 'message/bootstrap-tokenfield.min'], function ($, basepath) {
+//define(['jquery', 'basepath', 'jqueryvalidate', 'wysiwyg', 'message/bootstrap-tokenfield.min'], function ($, basepath) {
+define(['jquery', 'basepath', 'jqueryvalidate', 'message/bootstrap-tokenfield.min'], function ($, basepath) {
     var $ = require('jquery');
     var jqueryvalidate = require('jqueryvalidate');
-    var wysiwyg = require('wysiwyg');
+    //var wysiwyg = require('wysiwyg');
     var tokens = require('message/bootstrap-tokenfield.min');
     //var tokens = require('messages/bootstrap-tokenfield.min');
 
     $(document).ready(function () {
-        $('.wysiwyg').wysihtml5();
+        //$('.wysiwyg').wysihtml5();
         jQuery("#MessageComposeForm").validate({
             errorClass: 'text-danger',
             rules: {

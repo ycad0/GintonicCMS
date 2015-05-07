@@ -1,4 +1,5 @@
 <?php
+
 namespace GintonicCMS\Controller;
 
 use Cake\Event\Event;
@@ -6,7 +7,6 @@ use GintonicCMS\Controller\AppController;
 
 class UsersController extends AppController
 {
-
     /**
      * TODO: blockquote
      */
@@ -20,9 +20,18 @@ class UsersController extends AppController
             'confirmation',
             'forgot_password',
             'reset_password',
-            'update_avatar',
+            'updateAvatar',
             'profile'
         ]);
+    }
+
+    /**
+     * TODO: Write Comment
+     */
+    public function isAuthorized($user = null)
+    {
+        return true;
+        parent::isAuthorized($user);
     }
 
     /**
@@ -238,9 +247,9 @@ class UsersController extends AppController
                     'params' => ['class' => 'alert-sucess']
                 ]);
                 return $this->redirect([
-                    'plugin' => 'GintonicCMS',
-                    'controller' => 'users',
-                    'action' => 'profile'
+                        'plugin' => 'GintonicCMS',
+                        'controller' => 'users',
+                        'action' => 'profile'
                 ]);
             } else {
                 $this->Flash->set(__('The authorization link provided is erroneous, please contact an administrator'), [
