@@ -48,7 +48,8 @@ class FilesController extends AppController
         // TODO: this whole action is gibberish
         // TODO: wow wow wow wow, security breach below!!!!! We can't let users
         // chose a path in the front-end and save files anywhere they want! O_O
-        debug('This method contains a security breach and cannot be used in it\'s current state.');exit;
+        debug('This method contains a security breach and cannot be used in it\'s current state.');
+        exit;
         if (!$this->request->session()->check('Auth.User.id')) {
             $this->Flash->set(__('You are not signed in.'), [
                 'element' => 'GintonicCMS.alert',
