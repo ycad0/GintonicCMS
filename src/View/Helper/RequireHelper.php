@@ -25,7 +25,6 @@ class RequireHelper extends Helper
             <script data-main='" . $config . "' src='" . $require . "'></script>
             <script type='text/javascript'>
                 require(['" . $configStripped . "'], function () {
-                    require (['basepath']);
                     " . $modules . "
                 });
             </script>";
