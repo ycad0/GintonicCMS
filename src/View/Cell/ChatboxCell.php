@@ -83,7 +83,15 @@ class ChatboxCell extends Cell
             }
             $this->set('messageType', 'compose', 'recipient');
             $this->set(compact(
-                    'isProhibitUser', 'recipientId', 'recipient', 'threadId', 'threadParticipantId', 'chats', 'unReadMessage', 'threadRecipientId', 'deletedMessage'
+                'isProhibitUser',
+                'recipientId',
+                'recipient',
+                'threadId',
+                'threadParticipantId',
+                'chats',
+                'unReadMessage',
+                'threadRecipientId',
+                'deletedMessage'
             ));
         }
     }

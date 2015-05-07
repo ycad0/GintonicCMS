@@ -9,6 +9,9 @@ class File extends Entity
     // Make all fields mass assignable for now.
     protected $_accessible = ['*' => true];
 
+    /**
+     * TODO: Write Comment
+     */
     protected function _getFilepath()
     {
         if (isset($this->_properties['filename'])) {

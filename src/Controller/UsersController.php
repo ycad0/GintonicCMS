@@ -65,7 +65,8 @@ class UsersController extends AppController
             return $this->redirect($this->request->referer());
         }
         $user = $this->Users->safeRead(
-            ['Users.id' => $this->request->session()->read('Auth.User.id')], true
+            ['Users.id' => $this->request->session()->read('Auth.User.id')],
+            true
         );
         if ($this->request->is(['post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->data);
