@@ -4,34 +4,34 @@ namespace GintonicCMS\Model\Table;
 
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Core\Configure;
-use Cake\Core\Configure\Engine\PhpConfig;
 use Cake\I18n\Time;
+use Cake\ORM\Query;
 use Cake\Network\Email\Email;
-use Cake\Network\Session;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 class UsersTable extends Table
 {
+
     /**
      * TODO: doccomment
      */
     public function validationDefault(Validator $validator)
     {
         return $validator
-            ->notEmpty('email', __('A username is required'))
-            ->notEmpty('role', __('A role is required'))
-            ->add('email', [
-                'unique' => [
-                    'rule' => ['validateUnique'],
-                    'provider' => 'table',
-                    'message' => __('Email adress already exists.')
-                ]
-            ])
-            ->requirePresence('password')
-            ->notEmpty('password', ['message' => __('Please enter password.')]);
+                ->notEmpty('email', __('A username is required'))
+                ->notEmpty('role', __('A role is required'))
+                ->add('email', [
+                    'unique' => [
+                        'rule' => ['validateUnique'],
+                        'provider' => 'table',
+                        'message' => __('Email adress already exists.')
+                    ]
+                ])
+                ->requirePresence('password')
+                ->notEmpty('password', ['message' => __('Please enter password.')]);
     }
-    
+
     /**
      * TODO: doccomment
      */
@@ -53,109 +53,89 @@ class UsersTable extends Table
 
         $this->addAssociations([
             'belongsTo' => ['Files' => [
-                'className' => 'GintonicCMS.Files',
-                'foreignKey' => 'file_id',
-                'propertyName' => 'file'
-            ]],
+                    'className' => 'GintonicCMS.Files',
+                    'foreignKey' => 'file_id',
+                    'propertyName' => 'file'
+                ]],
         ]);
     }
-    
+
+    public function findUsersDetails(Query $query, array $options)
+    {
+        return $query
+                ->where($options)
+                ->contain(['Files' => ['fields' => ['Files.id', 'Files.filename']]])
+                ->first();
+    }
+
     /**
      * TODO: doccomment
      */
-    public function isValidated($email)
+    public function verifyUser($userId, $token)
     {
-        $user = $this->safeRead(['email' => $email]);
-        if (!isset($user)) {
-            return false;
+        $response = [
+            'success' => false,
+            'class' => 'alert-danger',
+            'message' => __('Error occure while validate your account. Please try again.')
+        ];
+
+        if (empty($userId) || empty($token)) {
+            return $response = [
+                'success' => false,
+                'message' => __('The authorization link provided is erroneous, please contact an administrator.'),
+                'class' => 'alert-danger',
+            ];
         }
-        return $user->validated;
+
+        $user = $this->find('usersDetails', ['Users.id' => $userId]);
+
+        if (!empty($user['verified'])) {
+            $response = [
+                'success' => true,
+                'alreadyVarified' => true,
+                'class' => 'alert-success',
+                'message' => __('Your email address is already validated.')
+            ];
+        } else if (!empty($user)) {
+
+            if ($user['token'] != $token) {
+                $response = [
+                    'success' => false,
+                    'message' => __('Error occure while validate your account. Please try again.')
+                ];
+            } else {
+                $user['verified'] = true;
+                if ($this->save($user)) {
+                    $response = [
+                        'success' => true,
+                        'class' => 'alert-success',
+                        'user' => $user,
+                        'message' => __('Email address has been successfuly validated.')
+                    ];
+                }
+            }
+        }
+        return $response;
     }
-    
-    /**
-     * TODO: doccomment
-     */
-    public function signupMail($email)
-    {
-        $user = $this->safeRead(['email' => $email]);
-        if (!empty($user)) {
-            unset($user->password);
-            $user->token = md5(uniqid(rand(), true));
-            $user->token_creation = date("Y-m-d H:i:s");
-            ;
-            $this->save($user);
-            $this->sendSignupMail($user);
-        }
-        return true;
-    }
-    
-    /**
-     * TODO: doccomment
-     */
-    public function sendSignupMail($user)
-    {
-        $email = new Email();
-        $email->profile('default');
-        $email->viewVars(array('userId' => $user->id, 'token' => $user->token));
-        $email->template('GintonicCMS.signup')
-             ->emailFormat('html')
-             ->to($user->email)
-             ->from(Configure::read('admin_mail'))
-             ->subject('Account validation');
-        return $email->send();
-    }
-    
-    /**
-     * TODO: DELETE THIS METHOD
-     */
-    public function safeRead($conditions = null, $withPassword = false)
-    {
-        $this->data = $this->find()
-            ->where([$conditions])
-            ->contain(['Files' => ['fields' => ['Files.id', 'Files.filename']]])
-            ->first();
-        if (empty($this->data['file'])) {
-            $this->data['file'] = ['id' => 0, 'filename' => 'default'];
-        }
-        if (isset($this->data->password) && empty($withPassword)) {
-            unset($this->data->password);
-        }
-        return $this->data;
-    }
-    
-    /**
-     * TODO: doccomment
-     */
-    public function confirmation($userId, $token)
-    {
-        $user = $this->safeRead(['Users.id' => $userId]);
-        if (!$user) {
-            return false;
-        }
-        if ($user['token'] != $token) {
-            return false;
-        }
-        $user['validated'] = true;
-        if (!$this->save($user)) {
-            return false;
-        }
-        return $user;
-    }
-    
+
     /**
      * TODO: doccomment
      */
     public function sendPasswordRecovery($email)
     {
-        // TODO: use cakephp's protected fields instead of 'safeRead'
-        $user = $this->safeRead(['email' => $email]);
+        $user = $this->find('usersDetails', ['email' => $email]);
 
         $response = [
-            'status' => 'fail',
-            'message' => 'Error sending password recovery email'
+            'status' => false,
+            'class' => 'alert-danger',
+            'message' => 'Error occure while sending password recovery email.'
         ];
         if (empty($user)) {
-            return array('status' => 'fail', 'message' => 'No matching email address found');
+            return [
+                'status' => false,
+                'class' => 'alert-danger',
+                'message' => 'No matching email address found.'
+            ];
         }
         unset($user->password);
         $user->token = md5(uniqid(rand(), true));
@@ -164,8 +144,9 @@ class UsersTable extends Table
         $this->save($user);
         if ($this->sendForgotPasswordEmail($user)) {
             $response = [
-                'status' => 'success',
-                'message' => 'An email was sent with password recovery instructions'
+                'status' => true,
+                'class' => 'alert-success',
+                'message' => 'An email was sent with password recovery instructions.'
             ];
         }
         return $response;
@@ -185,7 +166,7 @@ class UsersTable extends Table
             ->subject('Forgot Password');
         return $email->send();
     }
-    
+
     /**
      * TODO: doccomment
      */
@@ -197,15 +178,17 @@ class UsersTable extends Table
     /**
      * TODO: doccomment
      */
-    public function checkForgotPassword($userId, $token)
+    public function verifyToken($userId, $token)
     {
         $response = [
             'status' => 'fail',
             'message' => 'Invalid forgot password token'
         ];
-        $user = $this->safeRead(['Users.id' => $userId]);
+
+        $user = $this->find('usersDetails', ['Users.id' => $userId]);
+
         if (!empty($user) && $user->token == $token) {
-            $time = new Time($this->data->token_creation);
+            $time = new Time($user->token_creation);
             if (!$time->wasWithinLast('+1 day')) {
                 $response = [
                     'status' => 'fail',
@@ -226,27 +209,32 @@ class UsersTable extends Table
      */
     public function resendVerification($email)
     {
-        $user = $this->safeRead(['email' => $email]);
+        $user = $this->find('usersDetails', ['email' => $email]);
+
         if (empty($user)) {
-            return [
-                'status' => 'fail',
-                'message' => 'No matching email found. Please try with correct email address.'
+            $response = [
+                'success' => false,
+                'class' => 'alert-danger',
+                'message' => __('No matching email found. Please try with correct email address.')
             ];
         } elseif (!empty($user['validated'])) {
-            return [
-                'status' => 'fail',
-                'message' => 'Your email address is already validated, please use email and password to login'
+            $response = [
+                'success' => false,
+                'class' => 'alert-info',
+                'message' => __('Your email address is already validated.')
             ];
         } else {
             $user['token'] = md5(uniqid(rand(), true));
             $user['token_creation'] = date("Y-m-d H:i:s");
             $this->save($user);
             $this->resendVerificationEmail($user);
-            return [
-                'status' => 'success',
+            $response = [
+                'success' => false,
+                'class' => 'alert-success',
                 'message' => __('The email was resent. Please check your inbox.')
             ];
         }
+        return $response;
     }
 
     /**
@@ -265,5 +253,68 @@ class UsersTable extends Table
             ->from([Configure::read('admin_mail') => Configure::read('site_name')])
             ->subject('Account validation');
         return $email->send();
+    }
+
+    public function recoverPassword($passwordInfo, $userId)
+    {
+        $response = [
+            'success' => false,
+            'message' => __('Error occure while reseting your password, Please try again.')
+        ];
+        if ($passwordInfo['new_password'] != $passwordInfo['confirm_password']) {
+            $response = [
+                'success' => false,
+                'message' => __('New Password and Confirm Password must be same.')
+            ];
+        } else {
+            $passwordInfo['id'] = $userId;
+            $passwordInfo['password'] = $passwordInfo['new_password'];
+            $passwordInfo['token'] = md5(uniqid(rand(), true));
+            $passwordInfo['token_creation'] = date("Y-m-d H:i:s");
+            $users = $this->newEntity($passwordInfo);
+            $this->save($users);
+            $response = [
+                'success' => true,
+                'message' => __('Your password has been updated successfully.')
+            ];
+        }
+        return $response;
+    }
+
+    public function changePassword($passwordInfo, $userId = null)
+    {
+        $response = [
+            'success' => false,
+            'class' => 'alert-danger',
+            'message' => __('Unable to Change Password, Please try again.')
+        ];
+        $userDetail = $this->get($userId);
+
+        if ($passwordInfo['new_password'] != $passwordInfo['confirm_password']) {
+            $response = [
+                'success' => false,
+                'class' => 'alert-danger',
+                'message' => __('Confirm Password entered does not match.')
+            ];
+        } elseif ($passwordInfo['new_password'] == "") {
+            $response = [
+                'success' => false,
+                'class' => 'alert-danger',
+                'message' => __('New Password Must Not Blank.')
+            ];
+        } else {
+            $passwordInfo['id'] = $userId;
+            $passwordInfo['password'] = $passwordInfo['new_password'];
+            $users = $this->patchEntity($userDetail, $passwordInfo);
+
+            if ($this->save($users)) {
+                $response = [
+                    'success' => false,
+                    'class' => 'alert-success',
+                    'message' => __('Password has been updated Successfully.')
+                ];
+            }
+        }
+        return $response;
     }
 }

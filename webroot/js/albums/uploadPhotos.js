@@ -1,9 +1,9 @@
-define(['jquery', 'basepath'], function($, basepath) {
+define(['jquery'], function($) {
     
     return function(id, path) {
         $.ajax({
             type: "POST",
-            url: basepath + "gintonic_c_m_s/Albums/upload_photos/",
+            url: "gintonic_c_m_s/albums/uploadPhotos/",
             dataType: 'json',
             data: {
                 id: $('#user-id').val(),
@@ -21,7 +21,7 @@ define(['jquery', 'basepath'], function($, basepath) {
         function loadFiles(fileIds){
             
             $.ajax({
-                url: basepath + "gintonic_c_m_s/Albums/loadFiles/",
+                url: "gintonic_c_m_s/Albums/loadFiles/",
                 type: 'POST',
                 data: {
                     fileIds: fileIds,

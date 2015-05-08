@@ -22,12 +22,12 @@ class FileBehavior extends Behavior
      */
     public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
     {
-        debug('test');exit;
-        $data['path'] = 'test';
+//        debug('test');exit;
+       /* $data['path'] = 'test';
         if (isset($data['file']) && isset($data['file']['filename'])) {
             $config = $this->config();
             $data['file']['path'] = $config['uploadDir'] . '/' . $data['file']['filename'];
-        }
+        }*/
     }
 
     /**

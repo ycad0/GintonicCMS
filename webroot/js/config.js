@@ -4,24 +4,24 @@
     Link:      http://gintonicweb.com
 */
 requirejs.config({
-    baseUrl: '/',
+    baseUrl: '/gintonic_c_m_s/',
     urlArgs: "bust=0",
     paths: {
         // Base Paths
-        app: 'gintonic_c_m_s/js/app',
-        lib: 'gintonic_c_m_s/js/lib',
-        gintonic:   'gintonic_c_m_s/js',
+        app: 'js/app',
+        lib: 'js/lib',
+        gintonic:   'js',
 
         // GintonicCMS utilities
-        stripe: 'gintonic_c_m_s/js/stripe',
-        messages: 'gintonic_c_m_s/js/messages',
-        albums: 'gintonic_c_m_s/js/albums',
-        users: 'gintonic_c_m_s/js/users',
-        admin: 'gintonic_c_m_s/js/admin',
-        files:  'gintonic_c_m_s/js/files',
+        stripe: 'js/stripe',
+        messages: 'js/messages',
+        albums: 'js/albums',
+        users: 'js/users',
+        admin: 'js/admin',
+        files:  'js/files',
         
         // GintonicCMS dependencies
-        wysiwyg: 'gintonic_c_m_s/js/lib/bootstrap-wysiwyg',
+        wysiwyg: 'js/lib/bootstrap-wysiwyg',
         
         // Libs
         jquery: '//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min',

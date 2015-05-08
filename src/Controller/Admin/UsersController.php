@@ -61,7 +61,7 @@ class UsersController extends AppController
      */
     public function edit($userId = 0)
     {
-        $user = $this->Users->safeRead(['Users.id' => $userId], true);
+        $user = $this->Users->find('usersDetails',['Users.id' => $userId]);
         if ($this->request->is(['post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {

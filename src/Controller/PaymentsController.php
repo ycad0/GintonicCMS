@@ -268,7 +268,7 @@ class PaymentsController extends AppController
     }
 
     /**
-     * TODO: this method is with some known errors. don't use it.
+     * TODO: Write comment.
      */
     public function confirmPayment()
     {

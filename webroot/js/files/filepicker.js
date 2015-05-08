@@ -1,4 +1,4 @@
-require(['jquery','basepath'], function ($, basepath) {    
+require(['jquery'], function ($) {
     $('.upload').click(function(){
         $('.upload').button('loading');
         var callback = $(this).attr('data-upload-callback');
@@ -8,8 +8,7 @@ require(['jquery','basepath'], function ($, basepath) {
         if (typeof dirname !== 'undefined'){
             dirurl = "/dir:"+dirname;
         }
-        
-        $.get( basepath+"gintonic_c_m_s/files/add/"+callback+dirurl, function(data){
+        $.get("/gintonic_c_m_s/files/add/"+callback+dirurl, function(data){
             $('#modal-loader').html(data);
             $('#file-modal').modal('show');
             $('.upload').button('reset');            

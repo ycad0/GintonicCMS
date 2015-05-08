@@ -11,14 +11,14 @@ use Cake\Core\Configure;
                     'class' => 'form-signin',
                     'url'=>[
                         'controller'=>'Users',
-                        'action'=>'reset_password',
+                        'action'=>'recover',
                         $userId,
                         $token
                     ], 
                     'id' => 'UserLoginForm',
                     'novalidate' => 'novalidate'
                 ]);?>
-                <?= $this->Flash->render();
+                <?= $this->Flash->render(); ?>
                 <?= $this->Form->input('new_password', [
                     'label' => false,
                     'type'=>'password',

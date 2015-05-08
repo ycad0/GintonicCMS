@@ -4,13 +4,14 @@ namespace GintonicCMS\Model\Entity;
 
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\ORM\Entity;
+use Cake\Network\Email\Email;
+use Cake\Core\Configure;
 
 class User extends Entity
 {
     protected $_accessible = [
         'password' => false,
         '*' => true
-
     ];
     protected $_virtual = ['full_name'];
     protected $_hidden = ['password'];
@@ -45,4 +46,19 @@ class User extends Entity
                 ->all();
     }
 
+    public function sendSignup($emailId = null)
+    {
+        $email = new Email();
+        $email->profile('default');
+        $email->viewVars([
+            'userId' => $this->id,
+            'token' => $this->token
+        ]);
+        $email->template('GintonicCMS.signup')
+            ->emailFormat('html')
+            ->to($emailId)
+            ->from(Configure::read('admin_mail'))
+            ->subject('Account validation');
+        return $email->send();
+    }
 }

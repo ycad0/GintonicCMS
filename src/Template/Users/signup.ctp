@@ -10,30 +10,30 @@
                     'templates'=>['submitContainer' => '<div class="submit form-group">{{content}}</div>'],
                     'class' => 'form-signin form-horizontal','id'=>'UserSignupForm'
                 ]);?>
-                <?php // TODO: Check what's up with parsley, require is outside here ?>
                 <?= $this->Form->input('first',[
                     'class'=>'form-control',
                     'placeholder'=>__('First Name'),
-                    'id'=>'signup-first'
-                ],'required');?>
+                    'id'=>'signup-first',
+                    'required'
+                ]);?>
                 <?= $this->Form->input('last',[
                     'class'=>'form-control',
                     'placeholder'=>__('Last Name'),
-                    'id'=>'signup-last'
+                    'id'=>'signup-last',
+                    'required'
                 ]);?>
-                <?php // TODO: and it's on the inside here ?>
                 <?= $this->Form->input('email',[
                     'class'=>'form-control',
                     'placeholder'=>__('Email'),
                     'id'=>'signup-email',
-                    'parsley-trigger'=>'change',
                     'required'
                 ]);?>
                 <?= $this->Form->input('password',[
                     'type'=>'password',
                     'class'=>'form-control',
                     'placeholder'=>__('Password'),
-                    'id'=>'signup-password'
+                    'id'=>'signup-password',
+                    'required'
                 ]);?>
                 <?= $this->Form->submit(__('Sign up'),[
                     'class'=>'btn btn-lg btn-primary btn-block'

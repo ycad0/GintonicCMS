@@ -97,26 +97,6 @@ class UsersTableTest extends TestCase
     }
 
     /**
-     * Test safeRead method
-     *
-     * @return void
-     */
-    public function testSafeRead()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test confirmation method
-     *
-     * @return void
-     */
-    public function testConfirmation()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
      * Test forgotPasswordEmail method
      *
      * @return void

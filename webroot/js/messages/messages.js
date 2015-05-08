@@ -1,5 +1,4 @@
-//define(['jquery', 'basepath', 'jqueryvalidate', 'wysiwyg', 'message/bootstrap-tokenfield.min'], function ($, basepath) {
-define(['jquery', 'basepath', 'jqueryvalidate', 'message/bootstrap-tokenfield.min'], function ($, basepath) {
+define(['jquery', 'jqueryvalidate', 'message/bootstrap-tokenfield.min'], function ($) {
     var $ = require('jquery');
     var jqueryvalidate = require('jqueryvalidate');
     //var wysiwyg = require('wysiwyg');

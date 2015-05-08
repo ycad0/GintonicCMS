@@ -1,8 +1,8 @@
-define(['jquery', 'basepath'], function($, basepath) {
+define(['jquery'], function($) {
     return function(id, path) {
         $.ajax({
             type: "POST",
-            url: basepath + "gintonic_c_m_s/users/updateAvatar/",
+            url: "gintonic_c_m_s/users/updateAvatar/",
             dataType: 'json',
             data: {
                 id: $('#user-id').val(),
