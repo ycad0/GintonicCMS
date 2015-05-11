@@ -25,7 +25,7 @@
                 </td>
                 <td width="10%" class="text-center">
                     <?php
-                    echo $this->element('GintonicCMS.subscribe', array('options' => array(
+                    echo $this->element('GintonicCMS.Stripe/subscribe', array('options' => array(
                             'description' => $plan->name,
                             'amount' => $plan->amount,
                             'label' => __('Subscribe Now'),

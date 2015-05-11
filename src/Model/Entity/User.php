@@ -61,4 +61,37 @@ class User extends Entity
             ->subject('Account validation');
         return $email->send();
     }
+
+    public function sendVerification($email = null)
+    {
+        $emailId = !empty($email) ? $email : $this->email;
+        $email = new Email('default');
+        $email->viewVars([
+            'userId' => $this->id,
+            'token' => $this->token, 'userName' => $this->full_name
+        ]);
+        $email->template('GintonicCMS.resend_code')
+            ->emailFormat('html')
+            ->to($emailId)
+            ->from([Configure::read('admin_mail') => Configure::read('site_name')])
+            ->subject('Account validation');
+        return $email->send();
+    }
+
+    public function sendRecovery($email = null)
+    {
+        $emailId = !empty($email) ? $email : $this->email;
+
+        $email = new Email('default');
+        $email->viewVars([
+            'userId' => $this->id,
+            'token' => $this->token
+        ]);
+        $email->template('GintonicCMS.forgot_password')
+            ->emailFormat('html')
+            ->to($emailId)
+            ->from([Configure::read('admin_mail') => Configure::read('site_name')])
+            ->subject('Forgot Password');
+        return $email->send();
+    }
 }

@@ -22,7 +22,7 @@
     </head>
     <body>
 
-        <?php echo $this->element('GintonicCMS.top_menu')?>
+        <?php echo $this->element('GintonicCMS.Menus/top_menu')?>
         <?php echo $this->Flash->render(); ?>
 
         <?php echo $this->fetch('content'); ?>	                    

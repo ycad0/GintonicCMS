@@ -62,7 +62,7 @@ class MessagesController extends AppController
             $usersList = $this->Users->find()
                 ->where(
                     [
-                    'Users.validated' => 1,
+                    'Users.verified' => 1,
                     'NOT' => ['Users.id' => $this->request->session()->read('Auth.User.id')]
                     ]
                 )
@@ -101,7 +101,7 @@ class MessagesController extends AppController
                         'body' => $this->request->data['body']
                     ];
                     $this->set(compact('message'));
-                    $response['content'] = $this->render('GintonicCMS.Element/new_message', 'ajax')->body();
+                    $response['content'] = $this->render('GintonicCMS.Element/Messages/new_message', 'ajax')->body();
                 }
                 echo json_encode($response);
                 exit;
@@ -187,7 +187,7 @@ class MessagesController extends AppController
                     'body' => $this->request->data['body']
                 ];
                 $this->set(compact('message'));
-                $response['content'] = $this->render('GintonicCMS.Element/new_message', 'ajax')->body();
+                $response['content'] = $this->render('GintonicCMS.Element/Messages/new_message', 'ajax')->body();
             }
             echo json_encode($response);
             exit;

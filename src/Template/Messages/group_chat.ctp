@@ -10,7 +10,7 @@ echo $this->Require->req('messages/messages');
 <span class="messages">
     <h1><?php echo __('Messages'); ?></h1>
     <div class="row">
-        <?php echo $this->element('GintonicCMS.header'); ?>
+        <?php echo $this->element('GintonicCMS.Messages/header'); ?>
         <div class="col-md-12  col-sm-12">
             <div class="col-md-7  col-sm-7 message-div">
                 <div class="col-md-12 col-sm-12 no-padding">

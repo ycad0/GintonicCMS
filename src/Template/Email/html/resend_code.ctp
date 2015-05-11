@@ -1,4 +1,4 @@
-<?php echo __('Hello %s',$user['first'])?>
+<?php echo __('Hello '.$userName)?>
 
 <h1>Account Activation Code</h1>
 <p>

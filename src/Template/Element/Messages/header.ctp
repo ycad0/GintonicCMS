@@ -24,5 +24,6 @@
         endforeach;
         echo $this->Html->link($this->Html->image('/Messages/img/user-add.png', ['class' => 'img-circle img-responsive center-block']) . '<span> Add User</span>', ['plugin' => 'GintonicCMS', 'controller' => 'messages', 'action' => 'compose', 0, 'group'], ['escape' => false]);
     }
+
     ?>
 </div>

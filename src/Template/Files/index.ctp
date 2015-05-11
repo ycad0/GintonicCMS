@@ -27,7 +27,7 @@ echo $this->Require->req('files/filepicker');
     <div class="col-xs-12">
         <div class="box box-primary">           
             <div class="box-footer clearfix">
-                <?= $this->element('paginationtop'); ?>
+                <?= $this->element('GintonicCMS.Pagination\paginationtop'); ?>
             </div>
             <div class="box-body table-responsive no-padding">
                 <table class="table table-hover table-bordered">
@@ -52,14 +52,14 @@ echo $this->Require->req('files/filepicker');
                             </tr>
                         <?php else : ?>
                             <?php foreach ($files as $file) : ?>
-                                <?= $this->element('filelist', array('file' => $file)); ?>
+                                <?= $this->element('Files/filelist', array('file' => $file)); ?>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </tbody>
                 </table>
             </div>
             <div class="box-footer clearfix">
-                <?php echo $this->element('GintonicCMS.pagination'); ?>
+                <?php echo $this->element('GintonicCMS.Pagination\pagination'); ?>
             </div>
         </div>
     </div>

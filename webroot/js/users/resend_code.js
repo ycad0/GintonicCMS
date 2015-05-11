@@ -1,4 +1,4 @@
-define(function(require) {
+define(function (require) {
     // Dependencies
     var $ = require('jquery');
     var jqueryvalidate = require('jqueryvalidate');

@@ -16,7 +16,7 @@ if (!$paymentUsingAPI) {
     </div>
     <div class="row text-center">
         <?php
-        echo $this->element('GintonicCMS.one_time_fix_payment', array('options' => array(
+        echo $this->element('GintonicCMS.Stripe/one_time_fix_payment', array('options' => array(
                 'description' => 'Pay Now',
                 'amount' => $amount,
                 'label' => 'Pay Now',
@@ -34,7 +34,7 @@ if (!$paymentUsingAPI) {
     </div>
 
     <?php
-    echo $this->element('GintonicCMS.one_time_dynamic_payment', [
+    echo $this->element('GintonicCMS.Stripe/one_time_dynamic_payment', [
         'description' => 'Pay Now',
         'amount' => $amount,
         'label' => 'Pay Now',

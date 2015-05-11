@@ -12,7 +12,7 @@ $this->Helpers()->load('GintonicCMS.Require');
     <div class="col-xs-12">
         <div class="box box-primary">
             <div class="box-footer clearfix">
-                <?php echo $this->element('paginationtop'); ?>                
+                <?php echo $this->element('GintonicCMS.Pagination\paginationtop'); ?>                
             </div>
             <div class="box-body table-responsive no-padding">
                 <table class="table table-hover table-bordered">
@@ -66,7 +66,7 @@ $this->Helpers()->load('GintonicCMS.Require');
                 </table>
             </div>
             <div class="box-footer clearfix">
-                <?php echo $this->element('GintonicCMS.pagination');  ?>
+                <?php echo $this->element('GintonicCMS.Pagination\pagination');  ?>
             </div>
         </div>
     </div>

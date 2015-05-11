@@ -1,6 +1,7 @@
 <?php
 $this->Helpers()->load('GintonicCMS.Require');
-echo $this->Require->req('users/login_validation'); 
+echo $this->Require->req('users/login_validation');
+
 ?>
 
 <div class="container">
@@ -11,7 +12,8 @@ echo $this->Require->req('users/login_validation');
             </h1>
             <div class="account-wall">
                 <?= $this->element('GintonicCMS.site_logo'); ?>
-                <?= $this->Form->create('Users', [
+                <?=
+                $this->Form->create('Users', [
                     'inputdefaults' => [
                         'div' => 'form-group',
                         'wrapInput' => false,
@@ -20,37 +22,46 @@ echo $this->Require->req('users/login_validation');
                     'templates' => [
                         'submitContainer' => '<div class="submit form-group">{{content}}</div>'
                     ],
-                    'class' => 'form-signin form-horizontal', 
+                    'class' => 'form-signin form-horizontal',
                     'id' => 'UserLoginForm',
                     'novalidate' => 'novalidate'
-                ]); ?>
+                ]);
+
+                ?>
 
                 <?= $this->Flash->render(); ?>
 
                 <p class="text-center form-group">
-                    <?= $this->Html->link(
-                        __('Create an account'),
-                        ['action' => 'signup'], 
-                        [
-                            'class' => 'text-center new-account',
-                            'style' => 'display:inline-block'
+                    <?=
+                    $this->Html->link(
+                        __('Create an account'), ['action' => 'signup'], [
+                        'class' => 'text-center new-account',
+                        'style' => 'display:inline-block'
                         ]
-                    );?>
+                    );
+
+                    ?>
                 </p>
 
-                <?= $this->Form->input('email', [
+                <?php
+                echo $this->Form->input('email', [
                     'label' => false,
                     'placeholder' => 'Email',
                     'required', 'autofocus'
-                ]);?>
-                <?= $this->Form->input('password', [
+                ]);
+
+                echo $this->Form->input('password', [
                     'label' => false,
                     'placeholder' => 'Password',
                     'required'
-                ]);?>
-                <?= $this->Form->submit(__('Sign in'), [
+                ]);
+
+
+                echo $this->Form->submit(__('Sign in'), [
                     'class' => 'btn btn-lg btn-primary btn-block'
-                ]); ?>
+                ]);
+
+                ?>
                 <p class="checkbox form-group">
                     <label>
                         <input name="remember" type="checkbox" value="remember-me">
@@ -62,13 +73,14 @@ echo $this->Require->req('users/login_validation');
             </div>
             <p class="text-center">
                 <br>
-                <?= $this->Html->link(
-                    __('Forgot your password?'),
-                    [
-                        'action' => 'forgot_password'
-                    ],
-                    ['escape' => false]
-                );?>
+                <?=
+                $this->Html->link(
+                    __('Forgot your password?'), [
+                    'action' => 'sendRecovery'
+                    ], ['escape' => false]
+                );
+
+                ?>
             </p>
         </div>
     </div>

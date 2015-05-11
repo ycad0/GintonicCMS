@@ -27,7 +27,7 @@ class FilesController extends AppController
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
-        $this->layout = 'admin';
+        $this->layout = 'default';
         if ($this->RequestHandler->responseType() == 'json') {
             $this->RequestHandler->setContent('json', 'application/json');
         }
