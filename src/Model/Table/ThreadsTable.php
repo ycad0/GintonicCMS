@@ -41,6 +41,13 @@ class ThreadsTable extends Table
     /**
      * TODO: doccomment
      */
+    public function create()
+    {
+        
+    }
+    /**
+     * TODO: doccomment
+     */
     public function getThread($userId = null, $recipientId = null, $threadUserIds = [])
     {
         $this->ThreadParticipants = TableRegistry::get('Messages.ThreadParticipants');

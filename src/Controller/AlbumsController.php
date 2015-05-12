@@ -7,6 +7,7 @@ use GintonicCMS\Controller\AppController;
 
 class AlbumsController extends AppController
 {
+
     /**
      * TODO: blockcomment
      */
@@ -14,7 +15,7 @@ class AlbumsController extends AppController
     {
         return true;
     }
-    
+
     /**
      * TODO: blockcomment
      */
@@ -25,18 +26,19 @@ class AlbumsController extends AppController
         $album = $this->Albums->find('all')
             ->where(['Albums.user_id' => $userId])
             ->contain([
-                'Files' => [
-                    'fields' => ['Files.id', 'Files.filename', 'Files.dir']
-                ]
-            ]);
+            'Files' => [
+                'fields' => ['Files.id', 'Files.filename', 'Files.dir']
+            ]
+        ]);
         $this->set(compact('loggedInUserId', 'album', 'userId'));
     }
-    
+
     /**
      * TODO: blockcomment
      */
     public function uploadPhotos($userId = null, $fileId = null)
     {
+        $this->autoRender = false;
         if (!empty($this->request->data['id'])) {
             $userId = $this->request->data['id'];
         }
@@ -46,7 +48,7 @@ class AlbumsController extends AppController
         $message = __('Can\'t upload photo.');
         $success = false;
         $status = 500;
-        
+
         if (!empty($userId) && !empty($fileId)) {
             $albumData = [
                 'user_id' => $userId,
@@ -59,13 +61,13 @@ class AlbumsController extends AppController
                 $status = 200;
             }
         }
-        echo json_encode([
-            'message' => $message,
-            'success' => $success
-        ]);
-        exit;
+        $this->layout = '';
+        
+        $this->set(compact('message', 'success'));
+        $this->set('_serialize', ['message', 'success']);
+        $this->render('/Albums/json/index');
     }
-    
+
     /**
      * TODO: blockcomment
      */
@@ -80,19 +82,18 @@ class AlbumsController extends AppController
                 $success = true;
                 $this->loadModel('GintonicCMS.Files');
                 $this->Files->deleteFile(
-                    $this->request->data['fileName'],
-                    $this->request->data['fileId']
+                    $this->request->data['fileName'], $this->request->data['fileId']
                 );
             }
         }
-        
+
         echo json_encode([
             'message' => $message,
             'success' => $success
         ]);
         exit;
     }
-    
+
     /**
      * TODO: blockcomment
      */
@@ -103,15 +104,15 @@ class AlbumsController extends AppController
         if (!empty($this->request->data['fileIds'])) {
             $userId = $this->request->data['userId'];
             $loggedInUserId = $this->request->data['loggedInUserId'];
-            
+
             $album = $this->Albums->find('all')
                 ->where(['Albums.file_id' => $this->request->data['fileIds']])
                 ->contain([
-                    'Files' => [
-                        'fields' => ['Files.id', 'Files.filename', 'Files.dir']
-                    ]
-                ]);
-            
+                'Files' => [
+                    'fields' => ['Files.id', 'Files.filename', 'Files.dir']
+                ]
+            ]);
+
             $this->set(compact('album', 'userId', 'loggedInUserId'));
         }
         $this->render('GintonicCMS.Element/Albums/photo_galery');
