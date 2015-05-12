@@ -11,7 +11,7 @@ class MessagesTable extends Table
 {
 
     public $uses = array('GintonicCMS.SentMessages');
- 
+
     /**
      * TODO: doccomment
      */
@@ -49,8 +49,8 @@ class MessagesTable extends Table
     public function validationDefault(Validator $validator)
     {
         return $validator
-            ->notEmpty('title', 'Please enter subject')
-            ->notEmpty('body', 'Please enter body');
+                ->notEmpty('title', 'Please enter subject')
+                ->notEmpty('body', 'Please enter body');
     }
 
     /**
@@ -61,8 +61,8 @@ class MessagesTable extends Table
         if (empty($message->is_read) || $message->read_on_date == '0000-00-00 00:00:00') {
             $this->updateAll(
                 [
-                    'Messages.is_read' => 1,
-                    'Messages.read_on_date' => date("Y-m-d H:i:s")
+                'Messages.is_read' => 1,
+                'Messages.read_on_date' => date("Y-m-d H:i:s")
                 ],
                 ['Messages.id' => $message->id]
             );
@@ -82,7 +82,7 @@ class MessagesTable extends Table
                 'controller' => 'messages',
                 'action' => 'compose',
                 $reqData['recipient_id']
-            ], true)
+                ], true)
         ];
         if (!empty($userId) && !empty($reqData)) {
             $parentId = $this->find()
@@ -117,24 +117,24 @@ class MessagesTable extends Table
                 'controller' => 'messages',
                 'action' => 'groupChat',
                 $reqData['thread_id']
-            ], true)
+                ], true)
         ];
         if (!empty($userId) && !empty($reqData)) {
             $threadId = $reqData['thread_id'];
             $parentId = $this->find()
-                    ->where(['Messages.thread_id' => $threadId])
-                    ->select(['id'])
-                    ->order(['created DESC'])
-                    ->first();
+                ->where(['Messages.thread_id' => $threadId])
+                ->select(['id'])
+                ->order(['created DESC'])
+                ->first();
             if (!empty($parentId)) {
                 $reqData['parent_id'] = $parentId->id;
             }
             if ($messageResult = $this->save($this->newEntity($reqData))) {
                 $this->ThreadParticipants = TableRegistry::get('ThreadParticipants');
                 $participantUsers = $this->ThreadParticipants->find()
-                        ->where(['ThreadParticipants.thread_id' => $threadId])
-                        ->combine('user_id', 'user_id')
-                        ->toArray();
+                    ->where(['ThreadParticipants.thread_id' => $threadId])
+                    ->combine('user_id', 'user_id')
+                    ->toArray();
                 $this->MessageReadStatuses = TableRegistry::get('MessageReadStatuses');
                 $response['id'] = $reqData['message_id'] = $messageResult->id;
                 foreach ($participantUsers as $participantUserId) {
@@ -160,10 +160,23 @@ class MessagesTable extends Table
             if ($this->MessageReadStatuses->updateAll(
                 ['status' => $status],
                 ['message_id' => $messageId]
-            )) {
+                )) {
                 $response = ['status' => __('success')];
             }
         }
         return $response;
+    }
+
+    /**
+     * TODO: Write Document
+     */
+    public function getMessageByThreadId($threadId = null, $limit = 10)
+    {
+        if (!empty($threadId)) {
+            return $this->find()
+                    ->where(['Messages.thread_id' => $threadId])
+                    ->limit($limit);
+        }
+        return false;
     }
 }

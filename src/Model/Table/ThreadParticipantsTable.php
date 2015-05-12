@@ -2,7 +2,6 @@
 
 namespace GintonicCMS\Model\Table;
 
-use Cake\Network\Session;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 
@@ -44,7 +43,7 @@ class ThreadParticipantsTable extends Table
             'Threads' => ['thread_participant_count']
         ]);
     }
-
+    
     /**
      * TODO: doccomment
      */
