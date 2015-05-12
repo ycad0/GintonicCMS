@@ -2,8 +2,8 @@
 
 namespace GintonicCMS\Controller;
 
-use GintonicCMS\Controller\AppController;
 use Cake\Event\Event;
+use GintonicCMS\Controller\AppController;
 
 class UsersController extends AppController
 {
@@ -106,7 +106,6 @@ class UsersController extends AppController
             $user->token_creation = date("Y-m-d H:i:s");
             
             if ($this->Users->save($user)) {
-
                 $user->sendSignup($this->request->data['email']);
                 $this->Flash->set(__('Please check your e-mail to validate your account'), [
                     'element' => 'GintonicCMS.alert',
@@ -244,7 +243,7 @@ class UsersController extends AppController
                     'element' => 'GintonicCMS.alert',
                     'params' => ['class' => 'alert-danger']
                 ]);
-            } else if ($this->request->data['new_password'] == "") {
+            } elseif ($this->request->data['new_password'] == "") {
                 $this->Flash->set(__('New Password Must Not Blank.'), [
                     'element' => 'GintonicCMS.alert',
                     'params' => ['class' => 'alert-danger']
@@ -304,10 +303,10 @@ class UsersController extends AppController
         $this->set(compact('userId', 'token'));
         $this->render('GintonicCMS.recover', 'GintonicCMS.bare');
     }
-    /*
+    
+    /**
      * TODO: Write comment
      */
-
     public function sendVerification()
     {
         if ($this->request->is(['post', 'put'])) {
@@ -318,7 +317,7 @@ class UsersController extends AppController
                     'element' => 'GintonicCMS.alert',
                     'params' => ['class' => 'alert-danger']
                 ]);
-            } else if (!empty($user['validated'])) {
+            } elseif (!empty($user['validated'])) {
                 $this->Flash->set(__('Your email address is already validated.'), [
                     'element' => 'GintonicCMS.alert',
                     'params' => ['class' => 'alert-info']

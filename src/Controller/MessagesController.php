@@ -102,7 +102,7 @@ class MessagesController extends AppController
                     ];
                     $this->layout = '';
                     $status = $response['status'];
-                    $this->set(compact('message','status'));
+                    $this->set(compact('message', 'status'));
                     $this->set('_serialize', ['message', 'status']);
                     $this->render('/Messages/json/new_message');
                 }
@@ -189,7 +189,7 @@ class MessagesController extends AppController
                 ];
                 $this->layout = '';
                 $status = $response['status'];
-                $this->set(compact('message','status'));
+                $this->set(compact('message', 'status'));
                 $this->set('_serialize', ['message', 'status']);
                 $this->render('/Messages/json/new_message');
             }

@@ -3,9 +3,9 @@
 namespace GintonicCMS\Model\Entity;
 
 use Cake\Auth\DefaultPasswordHasher;
-use Cake\ORM\Entity;
-use Cake\Network\Email\Email;
 use Cake\Core\Configure;
+use Cake\Network\Email\Email;
+use Cake\ORM\Entity;
 
 class User extends Entity
 {
@@ -47,6 +47,9 @@ class User extends Entity
         return $userFiles;
     }
 
+    /**
+     * TODO: doccomment
+     */
     public function sendSignup($emailId = null)
     {
         $email = new Email();
@@ -63,6 +66,9 @@ class User extends Entity
         return $email->send();
     }
 
+    /**
+     * TODO: doccomment
+     */
     public function sendVerification($email = null)
     {
         $emailId = !empty($email) ? $email : $this->email;
@@ -79,6 +85,9 @@ class User extends Entity
         return $email->send();
     }
 
+    /**
+     * TODO: doccomment
+     */
     public function sendRecovery($email = null)
     {
         $emailId = !empty($email) ? $email : $this->email;

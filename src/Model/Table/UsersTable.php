@@ -3,9 +3,9 @@
 namespace GintonicCMS\Model\Table;
 
 use Cake\I18n\Time;
+use Cake\ORM\Entity;
 use Cake\ORM\Query;
 use Cake\ORM\Table;
-use Cake\ORM\Entity;
 use Cake\Validation\Validator;
 
 class UsersTable extends Table
@@ -123,6 +123,9 @@ class UsersTable extends Table
         return false;
     }
 
+    /**
+     * TODO: doccomment
+     */
     public function recoverPassword($userInfo, $userId)
     {
         $userInfo['id'] = $userId;
@@ -133,6 +136,9 @@ class UsersTable extends Table
         return $this->save($users);
     }
 
+    /**
+     * TODO: doccomment
+     */
     public function changePassword($passwordInfo, $userId = null)
     {
         $user = $this->get($userId);

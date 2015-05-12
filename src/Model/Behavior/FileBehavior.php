@@ -20,7 +20,6 @@ class FileBehavior extends Behavior
     /**
      * TODO: write document
      */
-
     public function upload($fileData, $userDetails)
     {
         $fileTable = TableRegistry::get('Files');

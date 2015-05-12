@@ -43,7 +43,7 @@ class ThreadsTable extends Table
      */
     public function create()
     {
-        
+        //Write code;
     }
     /**
      * TODO: doccomment

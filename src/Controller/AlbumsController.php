@@ -26,10 +26,10 @@ class AlbumsController extends AppController
         $album = $this->Albums->find('all')
             ->where(['Albums.user_id' => $userId])
             ->contain([
-            'Files' => [
-                'fields' => ['Files.id', 'Files.filename', 'Files.dir']
-            ]
-        ]);
+                'Files' => [
+                    'fields' => ['Files.id', 'Files.filename', 'Files.dir']
+                ]
+            ]);
         $this->set(compact('loggedInUserId', 'album', 'userId'));
     }
 
@@ -82,7 +82,8 @@ class AlbumsController extends AppController
                 $success = true;
                 $this->loadModel('GintonicCMS.Files');
                 $this->Files->deleteFile(
-                    $this->request->data['fileName'], $this->request->data['fileId']
+                    $this->request->data['fileName'],
+                    $this->request->data['fileId']
                 );
             }
         }
@@ -108,11 +109,10 @@ class AlbumsController extends AppController
             $album = $this->Albums->find('all')
                 ->where(['Albums.file_id' => $this->request->data['fileIds']])
                 ->contain([
-                'Files' => [
-                    'fields' => ['Files.id', 'Files.filename', 'Files.dir']
-                ]
-            ]);
-
+                    'Files' => [
+                        'fields' => ['Files.id', 'Files.filename', 'Files.dir']
+                    ]
+                ]);
             $this->set(compact('album', 'userId', 'loggedInUserId'));
         }
         $this->render('GintonicCMS.Element/Albums/photo_galery');
