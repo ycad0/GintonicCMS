@@ -41,9 +41,8 @@ class User extends Entity
     {
         $files = TableRegistry::get('Files');
         $userFiles = $files->find('all')
-                ->where(['user_id' => $this->id])
-                ->all();
-        return userFiles;
+            ->where(['user_id' => $this->id])
+            ->all();
+        return $userFiles;
     }
-
 }
