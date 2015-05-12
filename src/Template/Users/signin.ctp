@@ -43,21 +43,19 @@ echo $this->Require->req('users/login_validation');
                     ?>
                 </p>
 
-                <?php
-                echo $this->Form->input('email', [
+                <?= $this->Form->input('email', [
                     'label' => false,
                     'placeholder' => 'Email',
                     'required', 'autofocus'
                 ]);
-
-                echo $this->Form->input('password', [
+                ?>
+                <?= $this->Form->input('password', [
                     'label' => false,
                     'placeholder' => 'Password',
                     'required'
                 ]);
-
-
-                echo $this->Form->submit(__('Sign in'), [
+                ?>
+                <?= $this->Form->submit(__('Sign in'), [
                     'class' => 'btn btn-lg btn-primary btn-block'
                 ]);
 

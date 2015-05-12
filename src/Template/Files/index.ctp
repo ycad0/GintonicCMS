@@ -27,7 +27,7 @@ echo $this->Require->req('files/filepicker');
     <div class="col-xs-12">
         <div class="box box-primary">           
             <div class="box-footer clearfix">
-                <?= $this->element('GintonicCMS.Pagination\paginationtop'); ?>
+                <?= $this->element('GintonicCMS.Pagination/paginationtop'); ?>
             </div>
             <div class="box-body table-responsive no-padding">
                 <table class="table table-hover table-bordered">
@@ -59,7 +59,7 @@ echo $this->Require->req('files/filepicker');
                 </table>
             </div>
             <div class="box-footer clearfix">
-                <?php echo $this->element('GintonicCMS.Pagination\pagination'); ?>
+                <?php echo $this->element('GintonicCMS.Pagination/pagination'); ?>
             </div>
         </div>
     </div>

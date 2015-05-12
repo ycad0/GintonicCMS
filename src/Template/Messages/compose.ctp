@@ -9,7 +9,12 @@ echo $this->Require->req('messages/messages');
 ?>
 <span class="messages">
         <!--<h1><?php echo __('Messages'); ?></h1>-->
-        <?php echo $this->element('GintonicCMS.Messages/header',['recipientID'=>(isset($recipient['id'])?$recipient['id']:''),'isProhibitUser'=>(isset($isProhibitUser)?$isProhibitUser:'')]); ?>
+        <?php
+            echo $this->element('GintonicCMS.Messages/header',[
+                'recipientID'=>isset($recipient['id'])?$recipient['id']:'',
+                'isProhibitUser'=>isset($isProhibitUser)?$isProhibitUser:''
+            ]);
+        ?>
         <div class="col-md-12  col-sm-12">
             <div class="col-md-12  col-sm-12 message-div">
                 <?php

@@ -1,8 +1,8 @@
-define(['jquery', 'jqueryvalidate', 'message/bootstrap-tokenfield.min'], function ($) {
+define(['jquery', 'jqueryvalidate', 'messages/bootstrap-tokenfield.min'], function ($) {
     var $ = require('jquery');
     var jqueryvalidate = require('jqueryvalidate');
     //var wysiwyg = require('wysiwyg');
-    var tokens = require('message/bootstrap-tokenfield.min');
+    var tokens = require('messages/bootstrap-tokenfield.min');
     //var tokens = require('messages/bootstrap-tokenfield.min');
 
     $(document).ready(function () {
@@ -36,7 +36,7 @@ define(['jquery', 'jqueryvalidate', 'message/bootstrap-tokenfield.min'], functio
         }
         $('.messageForm').submit(function (e) {
             e.preventDefault();
-
+            
             $.ajax({
                 url: $(this).attr('action'),
                 dataType: 'json',
@@ -45,7 +45,7 @@ define(['jquery', 'jqueryvalidate', 'message/bootstrap-tokenfield.min'], functio
                 success: function (data) {
                     if (data.status) {
                         //clear old message
-                        $('.wysiwyg').data('wysihtml5').editor.clear();
+                        //$('.wysiwyg').data('wysihtml5').editor.clear();
                         //add new message on display
                         $('.chat-msg-inner').append(data.content);
                         //scroll top

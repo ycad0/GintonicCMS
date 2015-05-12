@@ -100,11 +100,12 @@ class MessagesController extends AppController
                         'id' => $response['id'],
                         'body' => $this->request->data['body']
                     ];
-                    $this->set(compact('message'));
-                    $response['content'] = $this->render('GintonicCMS.Element/Messages/new_message', 'ajax')->body();
+                    $this->layout = '';
+                    $status = $response['status'];
+                    $this->set(compact('message','status'));
+                    $this->set('_serialize', ['message', 'status']);
+                    $this->render('/Messages/json/new_message');
                 }
-                echo json_encode($response);
-                exit;
             }
             $recipient = $this->Users->find()
                 ->where(['Users.id' => $recipientId])
@@ -186,11 +187,12 @@ class MessagesController extends AppController
                     'id' => $response['id'],
                     'body' => $this->request->data['body']
                 ];
-                $this->set(compact('message'));
-                $response['content'] = $this->render('GintonicCMS.Element/Messages/new_message', 'ajax')->body();
+                $this->layout = '';
+                $status = $response['status'];
+                $this->set(compact('message','status'));
+                $this->set('_serialize', ['message', 'status']);
+                $this->render('/Messages/json/new_message');
             }
-            echo json_encode($response);
-            exit;
         }
         $groupAdminDetail = $this->Threads->getGroupAdmin($threadId);
         $recipientUsers = $this->ThreadParticipants->getThreadOfUsers($threadId);
@@ -254,7 +256,7 @@ class MessagesController extends AppController
                 [
                 'plugin' => 'GintonicCMS',
                 'controller' => 'messages',
-                'action' => 'group_chat',
+                'action' => 'groupChat',
                 $threadId
                 ]
             );

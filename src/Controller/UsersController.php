@@ -204,8 +204,7 @@ class UsersController extends AppController
         }
 
         $user = $this->Users->find('usersDetails', ['Users.id' => $userId]);
-        debug($user);
-        exit;
+        
         if (!empty($user->verified)) {
             $this->Flash->set(__('Your email address is already validated.'), [
                 'element' => 'GintonicCMS.alert',
@@ -269,14 +268,14 @@ class UsersController extends AppController
     {
         if ($userId && $token) {
             if (!$this->Users->verifyToken($userId, $token)) {
-                $this->Flash->set(__('Forgot Password token is expired.'), [
+                $this->Flash->set(__('Recovery token is expired.'), [
                     'element' => 'GintonicCMS.alert',
                     'params' => ['class' => 'alert-danger']
                 ]);
                 return $this->redirect($this->Auth->redirectUrl());
             }
         } else {
-            $this->Flash->set(__('Forgot Password token is expired.'), [
+            $this->Flash->set(__('Recovery token is expired.'), [
                 'element' => 'GintonicCMS.alert',
                 'params' => ['class' => 'alert-danger']
             ]);
