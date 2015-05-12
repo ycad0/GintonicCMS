@@ -1,8 +1,3 @@
-/*
-    Gintonic Web
-    Author:    Philippe Lafrance
-    Link:      http://gintonicweb.com
-*/
 requirejs.config({
     baseUrl: '/gintonic_c_m_s/',
     urlArgs: "bust=0",
