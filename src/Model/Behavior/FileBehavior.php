@@ -10,6 +10,13 @@ use Cake\ORM\TableRegistry;
 
 class FileBehavior extends Behavior
 {
+    public $_defaultConfig = [
+        'defaultFile' => false,
+        'allowedTypes' => [],
+        'uploadDir' => 'files/uploads',
+        'fileNameFunction' => false,
+    ];
+
     /**
      * TODO: write document
      */

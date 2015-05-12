@@ -7,16 +7,7 @@ echo $this->Require->req('users/forgotpassword_validation');
         <div class="col-sm-6 col-md-4 col-md-offset-4">
             <h1 class="text-center login-title"><?php echo __('Forgot your password?'); ?></h1>
             <div class="account-wall">            
-                <?= $this->Html->link(
-                    $this->Html->image(
-                        'GintonicCMS.logo.png', [
-                            "class" => "img-responsive profile-img site-logo",
-                            "alt" => 'Gintonic CMS'
-                        ]
-                    ),
-                    '/',
-                    ['escape'=>false]
-                );?>
+                <?= $this->element('GintonicCMS.site_logo'); ?>
                 <?= $this->Form->create('Users', [
                     'templates'=>['submitContainer' => '<div class="submit form-group">{{content}}</div>'],
                     'class' => 'form-signin form-horizontal',

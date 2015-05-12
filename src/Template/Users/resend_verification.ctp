@@ -7,16 +7,7 @@ echo $this->Require->req('users/resend_code');
         <div class="col-sm-6 col-md-4 col-md-offset-4">
             <h1 class="text-center login-title"><?= __('Resend the Email Verification')?></h1>
             <div class="account-wall">
-                <?= $this->Html->link(
-                    $this->Html->image(
-                        'GintonicCMS.logo.png', [
-                            "class" => "img-responsive profile-img site-logo",
-                            "alt" => 'GintonicCMS'
-                        ]
-                    ),
-                    '/',
-                    ['escape'=>false]
-                );?>
+                <?= $this->element('GintonicCMS.site_logo'); ?>
                 <?= $this->Form->create('Users', [
                     'class' => 'form-signin',
                     'url'=>['controller'=>'Users','action'=>'resendVerification'],

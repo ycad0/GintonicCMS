@@ -1,7 +1,7 @@
 <?php
 $this->Helpers()->load('GintonicCMS.Require');
 echo $this->Require->req('files/filepicker');
-echo $this->Require->req('Albums/image_galary');
+echo $this->Require->req('Albums/image_galery');
 ?>
 <?php if ($userId == $loggedInUserId): ?>
     <div class="row">
@@ -17,6 +17,6 @@ echo $this->Require->req('Albums/image_galary');
     </div>
 
 <?php endif; ?>
-<div class="row" data-photogalary>
-    <?php echo $this->element('GintonicCMS.Albums/photo_galary', ['album' => $album, 'userId' => $userId, 'loggedInUserId' => $loggedInUserId]); ?>
+<div class="row" data-photogalery>
+    <?php echo $this->element('GintonicCMS.Albums/photo_galery', ['album' => $album, 'userId' => $userId, 'loggedInUserId' => $loggedInUserId]); ?>
 </div>

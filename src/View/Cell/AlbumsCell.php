@@ -121,6 +121,6 @@ class AlbumsCell extends Cell
             
             $this->set(compact('album', 'userId', 'loggedInUserId'));
         }
-        $this->render('GintonicCMS.Element/Albums/photo_galary');
+        $this->render('GintonicCMS.Element/Albums/photo_galery');
     }
 }

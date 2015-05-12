@@ -160,6 +160,7 @@ class UsersController extends AppController
      */
     public function signin()
     {
+        $this->render('GintonicCMS.signin', 'GintonicCMS.bare');
         $user = $this->Auth->user();
         if (!empty($user)) {
             return $this->redirect($this->Auth->redirectUrl());
@@ -194,8 +195,6 @@ class UsersController extends AppController
                 'params' => ['class' => 'alert-warning']
             ]);
         }
-
-        $this->render('GintonicCMS.signin', 'GintonicCMS.bare');
     }
 
     /**
@@ -308,6 +307,7 @@ class UsersController extends AppController
      */
     public function resetPassword($userId = null, $token = null)
     {
+        $this->render('GintonicCMS.reset_password', 'GintonicCMS.bare');
         if ($userId && $token) {
             $arrResponse = $this->Users->checkForgotPassword($userId, $token);
             if ($arrResponse['status'] == 'fail') {
@@ -373,9 +373,9 @@ class UsersController extends AppController
     /**
      * TODO: blockquote
      */
-    public function forgotPassword()
+    public function passwordRecovery()
     {
-        //Check For Already Logged In
+        $this->render('GintonicCMS.password_recovery', 'GintonicCMS.bare');
         if ($this->Auth->user()) {
             $this->Flash->set(__('You are already signed in.'), [
                 'element' => 'GintonicCMS.alert',
@@ -384,15 +384,15 @@ class UsersController extends AppController
             return $this->redirect($this->Auth->redirectUrl());
         }
         if ($this->request->is(['post', 'put'])) {
-            $arrResponse = $this->Users->forgotPasswordEmail($this->request->data['email']);
-            if (!empty($arrResponse)) {
-                if ($arrResponse['status'] == 'fail') {
-                    $this->Flash->set(__($arrResponse['message']), [
+            $response = $this->Users->sendPasswordRecovery($this->request->data['email']);
+            if (!empty($response)) {
+                if ($response['status'] == 'fail') {
+                    $this->Flash->set(__($response['message']), [
                         'element' => 'GintonicCMS.alert',
                         'params' => ['class' => 'alert-warning']
                     ]);
                 } else {
-                    $this->Flash->set(__($arrResponse['message']), [
+                    $this->Flash->set(__($response['message']), [
                         'element' => 'GintonicCMS.alert',
                         'params' => ['class' => 'alert-success']
                     ]);
