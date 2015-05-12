@@ -13,18 +13,6 @@ class FileBehavior extends Behavior
     /**
      * TODO: write document
      */
-    public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
-    {
-        exit;
-        if (isset($data['file']) && isset($data['file']['filename'])) {
-            $config = $this->config();
-            $data['file']['path'] = $config['uploadDir'] . '/' . $data['file']['filename'];
-        }
-    }
-
-    /**
-     * TODO: write document
-     */
     public function upload($fileData, $userDetails)
     {
         $fileTable = TableRegistry::get('Files');

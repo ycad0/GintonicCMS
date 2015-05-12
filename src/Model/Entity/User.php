@@ -35,8 +35,9 @@ class User extends Entity
     protected function _getUserFiles()
     {
         $files = TableRegistry::get('Files');
-        return $files->find('all')
+        $userFiles = $files->find('all')
                 ->where(['user_id' => $this->id])
                 ->all();
+        return userFiles;
     }
 }
