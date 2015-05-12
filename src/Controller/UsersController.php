@@ -192,6 +192,9 @@ class UsersController extends AppController
         }
     }
 
+    /**
+     * TODO: blockquote
+     */
     public function verify($userId = null, $token = null)
     {
         if (empty($userId) || empty($token)) {

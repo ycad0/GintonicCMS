@@ -10,7 +10,6 @@ use Cake\Validation\Validator;
 
 class UsersTable extends Table
 {
-
     /**
      * TODO: doccomment
      */
@@ -58,6 +57,9 @@ class UsersTable extends Table
         ]);
     }
 
+    /**
+     * TODO: blockquote
+     */
     public function findUsersDetails(Query $query, array $options)
     {
         return $query
