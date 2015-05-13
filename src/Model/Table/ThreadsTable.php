@@ -27,15 +27,7 @@ class ThreadsTable extends Table
         ]);
 
         $this->addAssociations([
-            'belongsTo' => ['Users' => [
-                    'className' => 'GintonicCMS.Users',
-                    'foreignKey' => 'user_id',
-                    'propertyName' => 'user_thread'
-                ]],
-            'hasMany' => ['ThreadParticipants' => [
-                    'className' => 'GintonicCMS.ThreadParticipants',
-                    'propertyName' => 'thread_participants'
-                ]]
+            'belongsToMany' => ['Users'],
         ]);
     }
 

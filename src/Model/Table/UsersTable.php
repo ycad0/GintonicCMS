@@ -49,11 +49,8 @@ class UsersTable extends Table
         ]);
 
         $this->addAssociations([
-            'belongsTo' => ['Files' => [
-                    'className' => 'GintonicCMS.Files',
-                    'foreignKey' => 'file_id',
-                    'propertyName' => 'file'
-                ]],
+            'belongsTo' => ['Files'],
+            'belongsToMany' => ['Threads']
         ]);
     }
 
