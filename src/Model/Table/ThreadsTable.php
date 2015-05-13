@@ -2,9 +2,8 @@
 
 namespace GintonicCMS\Model\Table;
 
-use Cake\I18n\Time;
-use Cake\ORM\Table;
 use Cake\ORM\Query;
+use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 
 class ThreadsTable extends Table
@@ -209,10 +208,9 @@ class ThreadsTable extends Table
             ->contain(['Users' => function ($userQuery) {
                     return $userQuery
                         ->select(['id', 'first', 'last', 'email']);
-                }])
-                ->first()
-                ->toArray();
-            return $userData['user_thread'];
-        }
+            }])
+            ->first()
+            ->toArray();
+        return $userData['user_thread'];
     }
-    
+}

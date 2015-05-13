@@ -160,7 +160,7 @@ class MessagesTable extends Table
             if ($this->MessageReadStatuses->updateAll(
                 ['status' => $status],
                 ['message_id' => $messageId]
-                )) {
+            )) {
                 $response = ['status' => __('success')];
             }
         }

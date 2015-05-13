@@ -16,6 +16,9 @@ class ThreadsController extends AppController
         parent::initialize();
     }
 
+    /**
+     * TODO: Write comment
+     */
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
