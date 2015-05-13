@@ -45,31 +45,6 @@ class ThreadParticipantsTable extends Table
         ]);
     }
 
-    /**
-     * TODO: doccomment
-     */
-    public function findParticipantCount(Query $query, array $options)
-    {
-        return $query
-                ->select([
-                    'ThreadParticipants.thread_id',
-                    'count' => $query->func()->count('ThreadParticipants.thread_id')
-                ])
-                ->group('ThreadParticipants.thread_id')
-                ->having(['count' => $options['count']]);
-    }
-
-    /**
-     * TODO: doccomment
-     */
-    public function findWithParticipants(Query $query, array $options)
-    {
-        return $query
-                ->select([
-                    'ThreadParticipants.thread_id',
-                ])
-                ->where(['ThreadParticipants.user_id IN' => $options['participantsIds']]);
-    }
 
     /**
      * TODO: doccomment

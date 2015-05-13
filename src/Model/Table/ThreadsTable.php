@@ -107,29 +107,33 @@ class ThreadsTable extends Table
         $threadDetails['messages'] = $messages->find()
             ->where(['Messages.thread_id' => $threadId])
             ->limit(10);
-        $threadDetails['participants'] = $this->ThreadParticipants->find('list', [
-                'keyField' => 'id',
-                'valueField' => 'user_id'
-            ])
-            ->where(['ThreadParticipants.thread_id' => $threadId]);
-        return $threadDetails;
+        //$threadDetails['participants'] = $this->ThreadParticipants->find('list', [
+        //        'keyField' => 'id',
+        //        'valueField' => 'user_id'
+        //    ])
+        //    ->where(['ThreadParticipants.thread_id' => $threadId]);
+        //return $threadDetails;
     }
 
     /**
      * TODO: doccomment
      */
-    public function retrieve($participantsIds = null)
+    public function findWithParticipants(Query $query, array $options)
     {
-        $thread = $this->ThreadParticipants->find('withParticipants', ['participantsIds' => $participantsIds])
-            ->find('participantCount', ['count' => count($participantsIds)])
-            ->order(['Threads.created' => 'DESC'])
-            ->contain(['Threads'])
-            ->first();
-        if (!empty($thread)) {
-            return $this->getThreadDetailById($thread->thread_id);
-        }
-        return false;
+        return $query
+            ->matching('Users', function ($q) use ($options){
+                return $q->where(['Users.id' => $options]);
+            });
     }
+    /**
+     * TODO: doccomment
+     */
+    public function findParticipantCount(Query $query, array $options)
+    {
+        return $query;
+        // Start from here
+    }
+
 
     /**
      * TODO: doccomment

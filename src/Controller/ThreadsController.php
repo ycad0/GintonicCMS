@@ -80,8 +80,12 @@ class ThreadsController extends AppController
      */
     public function retrieve()
     {
-        $this->autoRender = false;
-        $threadDetails = $this->Threads->retrieve($this->request->data['participants']);
-        echo json_encode($threadDetails);
+        $participants = [1,7];
+        $threads = $this->Threads
+            ->find('withParticipants',['ids' => $participants])
+            ->find('participantCount', ['count' => count($participants)])
+            ->order(['Threads.created' => 'DESC'])
+            ->first();
+        debug($threads->toArray());
     }
 }
