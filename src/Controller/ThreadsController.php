@@ -37,11 +37,12 @@ class ThreadsController extends AppController
     /**
      * TODO: Write comment
      */
-    public function create($participantIds = null)
+    public function create()
     {
         $this->autoRender = false;
         $userId = $this->request->session()->read('Auth.User.id');
-        $threadId = $this->Threads->create($this->request->data, $userId);
+        $userId = 35;
+        $threadId = $this->Threads->create($this->request->data['participants'], $userId);
         echo json_encode($threadId);
     }
 
@@ -80,12 +81,13 @@ class ThreadsController extends AppController
      */
     public function retrieve()
     {
-        $participants = [1,7];
+        $this->autoRender = false;
+        $participants = $this->request->data['participants'];
         $threads = $this->Threads
             ->find('withParticipants',['ids' => $participants])
             ->find('participantCount', ['count' => count($participants)])
             ->order(['Threads.created' => 'DESC'])
             ->first();
-        debug($threads->toArray());
+        echo json_encode($threads);
     }
 }

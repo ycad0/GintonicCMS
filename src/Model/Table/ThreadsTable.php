@@ -26,8 +26,11 @@ class ThreadsTable extends Table
             ]
         ]);
 
-        $this->addAssociations([
-            'belongsToMany' => ['Users'],
+//        $this->addAssociations([
+//            'belongsToMany' => ['Users'],
+//        ]);
+        $this->belongsToMany('Users', [
+            'saveStrategy' => 'append',
         ]);
     }
 
@@ -41,16 +44,29 @@ class ThreadsTable extends Table
         }
 
         $threadInfo['user_id'] = $userId;
-        $thread = $this->save($this->newEntity($threadInfo));
-        if ($thread) {
-            $threadParticipants = [];
-            $threadParticipants['thread_id'] = $thread->id;
-            foreach ($participantIds as $participant) {
-                $threadParticipants['user_id'] = $participant;
-                $this->ThreadParticipants->save($this->ThreadParticipants->newEntity($threadParticipants));
-            }
-            return $thread->id;
-        }
+
+        $threadInfo = [
+            'thread_users' => [
+                ['user_id' => 1],
+                ['user_id' => 2],
+            ]
+        ];
+        $thread = $this->newEntity($threadInfo, [
+            'associated' => ['Users']
+        ]);
+        $this->save($thread);
+        exit;
+        //$thread = $this->save($this->newEntity($threadInfo));
+//        if ($thread) {
+//            $threadParticipants = [];
+//            $threadParticipants['thread_id'] = $thread->id;
+//            foreach ($participantIds as $participant) {
+//                $threadParticipants['user_id'] = $participant;
+//                $this->ThreadUsers->save($this->ThreadUsers->newEntity($threadParticipants));
+//            }
+//            return $thread->id;
+//        }
+        exit;
         return false;
     }
 
@@ -87,7 +103,8 @@ class ThreadsTable extends Table
 
         $thread = $this->get($threadId);
         if (!empty($thread)) {
-            echo 'error';exit;
+            echo 'error';
+            exit;
             $this->ThreadParticipants = TableRegistry::get('Messages.ThreadParticipants');
             $removedCount = $this->ThreadParticipants->deleteAll(['thread_id' => $threadId, 'user_id IN ' => $participantsIds]);
             if ($removedCount) {
@@ -121,26 +138,37 @@ class ThreadsTable extends Table
     public function findWithParticipants(Query $query, array $options)
     {
         return $query
-            ->matching('Users', function ($q) use ($options){
-                return $q->where(['Users.id' => $options]);
-            });
+                ->matching('Users', function ($q) use ($options) {
+                    return $q
+                        ->select(['Threads.id'])
+                        ->where(['Users.id' => $options['ids']]);
+                });
     }
+
     /**
      * TODO: doccomment
      */
     public function findParticipantCount(Query $query, array $options)
     {
-        return $query;
-        // Start from here
+        return $query
+                ->matching('Users', function ($q) use ($options) {
+                    return $q
+                        ->select([
+                            'Threads.id',
+                            'count' => $q->func()->count('Users.id')
+                        ])
+                        ->group('Threads.id')
+                        ->having(['count' => $options['count']]);
+                });
     }
-
 
     /**
      * TODO: doccomment
      */
     public function getThread($userId = null, $recipientId = null, $threadUserIds = [])
     {
-            echo 'error';exit;
+        echo 'error';
+        exit;
         $this->ThreadParticipants = TableRegistry::get('GintonicCMS.ThreadParticipants');
         $participantsUsers = [$userId, $recipientId];
         if (empty($recipientId) && !empty($threadUserIds)) {
@@ -184,7 +212,8 @@ class ThreadsTable extends Table
         $threads = $this->find('list', ['keyField' => 'id', 'valueField' => 'id'])
             ->where(['Threads.thread_participant_count >' => 2])
             ->toArray();
-            echo 'error';exit;
+        echo 'error';
+        exit;
         $this->ThreadParticipants = TableRegistry::get('GintonicCMS.ThreadParticipants');
         $threadIds = $this->ThreadParticipants->find('list', ['keyField' => 'thread_id', 'valueField' => 'thread_id'])
             ->where(['ThreadParticipants.thread_id IN' => $threads, 'ThreadParticipants.user_id' => $userId])
@@ -207,9 +236,10 @@ class ThreadsTable extends Table
             ->contain(['Users' => function ($userQuery) {
                     return $userQuery
                         ->select(['id', 'first', 'last', 'email']);
-            }])
-            ->first()
-            ->toArray();
-        return $userData['user_thread'];
+                }])
+                ->first()
+                ->toArray();
+            return $userData['user_thread'];
+        }
     }
-}
+    
