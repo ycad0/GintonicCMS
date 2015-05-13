@@ -87,6 +87,7 @@ class ThreadsTable extends Table
 
         $thread = $this->get($threadId);
         if (!empty($thread)) {
+            echo 'error';exit;
             $this->ThreadParticipants = TableRegistry::get('Messages.ThreadParticipants');
             $removedCount = $this->ThreadParticipants->deleteAll(['thread_id' => $threadId, 'user_id IN ' => $participantsIds]);
             if ($removedCount) {
@@ -135,6 +136,7 @@ class ThreadsTable extends Table
      */
     public function getThread($userId = null, $recipientId = null, $threadUserIds = [])
     {
+            echo 'error';exit;
         $this->ThreadParticipants = TableRegistry::get('GintonicCMS.ThreadParticipants');
         $participantsUsers = [$userId, $recipientId];
         if (empty($recipientId) && !empty($threadUserIds)) {
@@ -178,6 +180,7 @@ class ThreadsTable extends Table
         $threads = $this->find('list', ['keyField' => 'id', 'valueField' => 'id'])
             ->where(['Threads.thread_participant_count >' => 2])
             ->toArray();
+            echo 'error';exit;
         $this->ThreadParticipants = TableRegistry::get('GintonicCMS.ThreadParticipants');
         $threadIds = $this->ThreadParticipants->find('list', ['keyField' => 'thread_id', 'valueField' => 'thread_id'])
             ->where(['ThreadParticipants.thread_id IN' => $threads, 'ThreadParticipants.user_id' => $userId])
