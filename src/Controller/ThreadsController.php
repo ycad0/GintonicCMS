@@ -67,10 +67,6 @@ class ThreadsController extends AppController
      */
     public function getThread()
     {
-        // thread id recieved via POST variable
-        // find last 10 messages for thread
-        // find participant list for thread
-        // return both arrays via JSON
         $this->autoRender = false;
         $threadDetails = $this->Threads->getThreadDetailById($this->request->data['threadId']);
         echo json_encode($threadDetails);
@@ -81,13 +77,7 @@ class ThreadsController extends AppController
      */
     public function retrieve()
     {
-        // receive an array of participant ids via POST request
-        // CUSTOM FINDER: only threads with the exact count of participants
-        // CUSTOM FINDER: only threads where the participants are registered
-        // Find the last thread that match both custom finders above
-        // Find last 10 messages in the thread
-        // Return both arrays via JSON
-        //$this->Threads->find('withParticipants', $participantsIds)->find('participantCount', count($participantsIds))->order('Thread.created' => 'DESC')->first()
+        $this->autoRender = false;
         $threadDetails = $this->Threads->retrieve($this->request->data['participants']);
         echo json_encode($threadDetails);
     }

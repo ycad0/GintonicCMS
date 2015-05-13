@@ -2,6 +2,7 @@
 
 namespace GintonicCMS\Model\Table;
 
+use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 
@@ -25,7 +26,7 @@ class ThreadParticipantsTable extends Table
         $this->addAssociations([
             'belongsTo' => [
                 'Threads' => [
-                    'className' => 'Messages.Threads',
+                    'className' => 'GintonicCMS.Threads',
                     'foreignKey' => 'thread_id',
                     'propertyName' => 'Thread'
                 ],
@@ -43,7 +44,33 @@ class ThreadParticipantsTable extends Table
             'Threads' => ['thread_participant_count']
         ]);
     }
-    
+
+    /**
+     * TODO: doccomment
+     */
+    public function findParticipantCount(Query $query, array $options)
+    {
+        return $query
+                ->select([
+                    'ThreadParticipants.thread_id',
+                    'count' => $query->func()->count('ThreadParticipants.thread_id')
+                ])
+                ->group('ThreadParticipants.thread_id')
+                ->having(['count' => $options['count']]);
+    }
+
+    /**
+     * TODO: doccomment
+     */
+    public function findWithParticipants(Query $query, array $options)
+    {
+        return $query
+                ->select([
+                    'ThreadParticipants.thread_id',
+                ])
+                ->where(['ThreadParticipants.user_id IN' => $options['participantsIds']]);
+    }
+
     /**
      * TODO: doccomment
      */
@@ -57,8 +84,8 @@ class ThreadParticipantsTable extends Table
             $userIds[$recipientId] = $recipientId;
         }
         $threadParticipant = $this->find()
-                ->where(['thread_id' => $threadId, 'user_id IN' => $userIds])
-                ->first();
+            ->where(['thread_id' => $threadId, 'user_id IN' => $userIds])
+            ->first();
         if (!empty($threadParticipant)) {
             return $threadParticipant->id;
         }
@@ -71,13 +98,13 @@ class ThreadParticipantsTable extends Table
     public function getThreadOfUsers($threadId = null)
     {
         $userList = $this->find()
-                ->where(['ThreadParticipants.thread_id' => $threadId])
-                ->combine('user_id', 'user_id')
-                ->toArray();
+            ->where(['ThreadParticipants.thread_id' => $threadId])
+            ->combine('user_id', 'user_id')
+            ->toArray();
         $this->Users = TableRegistry::get('GintonicCMS.Users');
         $userList = $this->Users->find('list', ['keyField' => 'id', 'valueField' => 'first'])
-                ->where(['Users.id IN' => $userList])
-                ->toArray();
+            ->where(['Users.id IN' => $userList])
+            ->toArray();
         return $userList;
     }
 }

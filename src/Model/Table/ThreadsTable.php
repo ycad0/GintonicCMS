@@ -9,6 +9,7 @@ use Cake\ORM\TableRegistry;
 
 class ThreadsTable extends Table
 {
+
     /**
      * TODO: doccomment
      */
@@ -33,7 +34,7 @@ class ThreadsTable extends Table
                     'propertyName' => 'user_thread'
                 ]],
             'hasMany' => ['ThreadParticipants' => [
-                    'className' => 'Messages.ThreadParticipants',
+                    'className' => 'GintonicCMS.ThreadParticipants',
                     'propertyName' => 'thread_participants'
                 ]]
         ]);
@@ -127,8 +128,15 @@ class ThreadsTable extends Table
      */
     public function retrieve($participantsIds = null)
     {
-        //this is code is under developement.
-        $data = $this->ThreadParticipants->find('participantCount', ['ThreadParticipants.count' => count($participantsIds)]);
+        $thread = $this->ThreadParticipants->find('withParticipants', ['participantsIds' => $participantsIds])
+            ->find('participantCount', ['count' => count($participantsIds)])
+            ->order(['Threads.created' => 'DESC'])
+            ->contain(['Threads'])
+            ->first();
+        if (!empty($thread)) {
+            return $this->getThreadDetailById($thread->thread_id);
+        }
+        return false;
     }
 
     /**
@@ -136,7 +144,7 @@ class ThreadsTable extends Table
      */
     public function getThread($userId = null, $recipientId = null, $threadUserIds = [])
     {
-        $this->ThreadParticipants = TableRegistry::get('Messages.ThreadParticipants');
+        $this->ThreadParticipants = TableRegistry::get('GintonicCMS.ThreadParticipants');
         $participantsUsers = [$userId, $recipientId];
         if (empty($recipientId) && !empty($threadUserIds)) {
             $threadUserIds[] = $userId;
@@ -179,7 +187,7 @@ class ThreadsTable extends Table
         $threads = $this->find('list', ['keyField' => 'id', 'valueField' => 'id'])
             ->where(['Threads.thread_participant_count >' => 2])
             ->toArray();
-        $this->ThreadParticipants = TableRegistry::get('Messages.ThreadParticipants');
+        $this->ThreadParticipants = TableRegistry::get('GintonicCMS.ThreadParticipants');
         $threadIds = $this->ThreadParticipants->find('list', ['keyField' => 'thread_id', 'valueField' => 'thread_id'])
             ->where(['ThreadParticipants.thread_id IN' => $threads, 'ThreadParticipants.user_id' => $userId])
             ->toArray();
