@@ -34,41 +34,6 @@ class ThreadsTable extends Table
         ]);
     }
 
-    /**
-     * TODO: doccomment
-     */
-    public function create($participantIds = null, $userId = null)
-    {
-        if (empty($userId)) {
-            return false;
-        }
-
-        $threadInfo['user_id'] = $userId;
-
-        $threadInfo = [
-            'thread_users' => [
-                ['user_id' => 1],
-                ['user_id' => 2],
-            ]
-        ];
-        $thread = $this->newEntity($threadInfo, [
-            'associated' => ['Users']
-        ]);
-        $this->save($thread);
-        exit;
-        //$thread = $this->save($this->newEntity($threadInfo));
-//        if ($thread) {
-//            $threadParticipants = [];
-//            $threadParticipants['thread_id'] = $thread->id;
-//            foreach ($participantIds as $participant) {
-//                $threadParticipants['user_id'] = $participant;
-//                $this->ThreadUsers->save($this->ThreadUsers->newEntity($threadParticipants));
-//            }
-//            return $thread->id;
-//        }
-        exit;
-        return false;
-    }
 
     /**
      * TODO: doccomment

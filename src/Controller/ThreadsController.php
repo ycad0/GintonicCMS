@@ -39,11 +39,18 @@ class ThreadsController extends AppController
      */
     public function create()
     {
-        $this->autoRender = false;
-        $userId = $this->request->session()->read('Auth.User.id');
-        $userId = 35;
-        $threadId = $this->Threads->create($this->request->data['participants'], $userId);
-        echo json_encode($threadId);
+        $data = [
+            'users' => [
+                ['id' => 1],
+                ['id' => 2],
+            ]
+        ];
+        $thread = $this->Threads->newEntity($data, [
+            'associated' => ['Users']
+        ]);
+        $this->Threads->save($thread);
+        echo json_encode($thread->id);
+        exit;
     }
 
     /**
