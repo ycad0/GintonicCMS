@@ -34,7 +34,6 @@ class ThreadsTable extends Table
         ]);
     }
 
-
     /**
      * TODO: doccomment
      */
@@ -44,17 +43,17 @@ class ThreadsTable extends Table
             return false;
         }
 
+        $users = TableRegistry::get('Users');
         $thread = $this->get($threadId);
         if (!empty($thread)) {
-            $threadParticipants = [];
-            $threadParticipants['thread_id'] = $threadId;
-            foreach ($participantsIds as $participant) {
-                $threadParticipants['user_id'] = $participant;
-                $this->ThreadParticipants->save($this->ThreadParticipants->newEntity($threadParticipants));
+            $participants = $users->find()
+                ->where(['Users.id IN' => $participantsIds]);
+            if(!empty($participants)) {
+                if($this->Users->link($thread, $participants->toArray())) {
+                    return true;
+                }
             }
-            return true;
         }
-        return false;
     }
 
     /**
@@ -70,8 +69,8 @@ class ThreadsTable extends Table
         if (!empty($thread)) {
             echo 'error';
             exit;
-            $this->ThreadParticipants = TableRegistry::get('Messages.ThreadParticipants');
-            $removedCount = $this->ThreadParticipants->deleteAll(['thread_id' => $threadId, 'user_id IN ' => $participantsIds]);
+            $this->ThreadUsers = TableRegistry::get('Messages.ThreadParticipants');
+            $removedCount = $this->ThreadUsers->deleteAll(['thread_id' => $threadId, 'user_id IN ' => $participantsIds]);
             if ($removedCount) {
                 return true;
             }

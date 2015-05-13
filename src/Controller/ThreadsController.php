@@ -4,6 +4,7 @@ namespace GintonicCMS\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
+use Cake\ORM\TableRegistry;
 
 class ThreadsController extends AppController
 {
@@ -39,18 +40,19 @@ class ThreadsController extends AppController
      */
     public function create()
     {
-        $data = [
-            'users' => [
-                ['id' => 1],
-                ['id' => 2],
-            ]
-        ];
-        $thread = $this->Threads->newEntity($data, [
+        $this->autoRender = false;
+        $data = $this->request->data['participants'];
+        $threadUser = [];
+        foreach ($data as $key => $id) {
+            $threadUser['users'][] = ['id' => (int) $id];
+        }
+
+        $thread = $this->Threads->newEntity($threadUser, [
             'associated' => ['Users']
         ]);
+
         $this->Threads->save($thread);
         echo json_encode($thread->id);
-        exit;
     }
 
     /**
@@ -91,7 +93,7 @@ class ThreadsController extends AppController
         $this->autoRender = false;
         $participants = $this->request->data['participants'];
         $threads = $this->Threads
-            ->find('withParticipants',['ids' => $participants])
+            ->find('withParticipants', ['ids' => $participants])
             ->find('participantCount', ['count' => count($participants)])
             ->order(['Threads.created' => 'DESC'])
             ->first();
