@@ -17,7 +17,7 @@
     "jsx-requirejs-plugin": "~0.6.0"
   },
   "exportsOverride": {
-    "jqeury": {
+    "jquery": {
       "js/lib": ["../dist/**/*.js"]
     },
     "*": {

@@ -55,6 +55,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-bower-task');
 
   // Default task(s).
-  grunt.registerTask('default', ['bower','requirejs']);
+  grunt.registerTask('default', ['requirejs']);
 
 };

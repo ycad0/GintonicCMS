@@ -1,0 +1,1 @@
+require(["jquery"],function(){$("#decoy-password").focus(function(){$(this).val("")}),$("#decoy-password").on("keypress",function(){$("#password").val($("#decoy-password").val())})});

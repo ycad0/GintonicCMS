@@ -1,0 +1,1 @@
+define(["require","react"],function(e){var t=e("react");t.render(t.createElement("h1",null,"Hello, world!"),document.getElementById("example"))});
