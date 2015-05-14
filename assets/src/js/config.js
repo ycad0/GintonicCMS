@@ -5,20 +5,14 @@ requirejs.config({
         // Base Paths
         app: 'js/app',
         lib: 'js/lib',
-        gintonic:   'js',
+        gintonic: 'js',
 
-        // GintonicCMS utilities
-        stripe: 'js/stripe',
-        messages: 'js/messages',
-        albums: 'js/albums',
-        users: 'js/users',
-        admin: 'js/admin',
-        files:  'js/files',
-        
-        // GintonicCMS dependencies
-        wysiwyg: 'js/lib/bootstrap-wysiwyg',
-        
         // Libs
+        
+        react: "js/lib/react/react-with-addons.min",
+        JSXTransformer: "js/lib/jsx-requirejs-plugin/JSXTransformer",
+        jsx: "js/lib/jsx-requirejs-plugin/jsx",
+
         jquery: '//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min',
         bootstrap: '//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min',
         jqueryvalidate: '//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min',
