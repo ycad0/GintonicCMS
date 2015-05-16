@@ -4,30 +4,35 @@ namespace GintonicCMS\View\Helper;
 use Cake\Utility\Inflector;
 use Cake\View\Helper;
 use Cake\View\Helper\UrlHelper;
+use Cake\View\Helper\HtmlHelper;
 
 class RequireHelper extends Helper
 {
     
-    public $helpers = array('Html');
+    public $helpers = ['Html','Url'];
     
     /**
      * TODO: doccomment
      */
-    public function load($config, $require = '//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.8/require.min.js')
+    public function load($config)
     {
         $modules = '';
         if (!is_null($this->_View->get('requiredeps'))) {
             $modules = "require([" . implode(',', $this->_View->get('requiredeps')) . "]);";
         }
-        $configStripped = substr($config, strrpos($config, '/') + 1);
-        return
-            "<script type='text/javascript'> var baseUrl = '" . $this->Html->Url->build('/', true) . "'; </script>
-            <script data-main='" . $config . "' src='" . $require . "'></script>
-            <script type='text/javascript'>
-                require(['" . $configStripped . "'], function () {
-                    " . $modules . "
-                });
-            </script>";
+        // TODO there must be a cleaner way to fetch plugin notation and js path
+        $config = substr($this->Html->script($config),13,-14);
+
+        $output = $this->Html->script(
+            'GintonicCMS.lib/requirejs/require',
+            ['data-main' => $config]
+        );
+        $output .= "<script type='text/javascript'>";
+        $output .= "require(['" . $config . "'], function () {";
+        $output .= $modules;
+        $output .= '});</script>';
+
+        return $output;
     }
     
     /**

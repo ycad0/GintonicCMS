@@ -8,5 +8,6 @@
 /assets/src/js/lib/*
 /assets/src/css/lib/*
 /assets/src/less/lib/*
+/assets/src/fonts/lib/*
 *.orig
 *.swp

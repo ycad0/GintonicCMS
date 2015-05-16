@@ -14,16 +14,11 @@
     "bootstrap": "~3.3.4",
     "fontawesome": "~4.3.0",
     "react": "~0.13.3",
-    "jsx-requirejs-plugin": "~0.6.0"
+    "jsx-requirejs-plugin": "~0.6.0",
+    "requirejs": "https://github.com/jrburke/requirejs.git#master",
+    "admin-lte": "~2.1.1"
   },
-  "exportsOverride": {
-    "jquery": {
-      "js/lib": ["../dist/**/*.js"]
-    },
-    "*": {
-      "js/lib": ["**/*.js","../dist/**/*.js"],
-      "less/lib": "**/*.less",
-      "css/lib": "**/*.css"
-    }
+  "devDependencies": {
+    "less": "~2.5.0"
   }
 }
