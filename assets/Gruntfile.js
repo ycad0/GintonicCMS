@@ -5,6 +5,11 @@ module.exports = function(grunt) {
 
     pkg: grunt.file.readJSON('package.json'),
 
+    bower: {
+      install: {
+         //just run 'grunt bower:install' and you'll see files from your Bower packages in lib directory
+      }
+    },
     copy: {
         main: {
             files: [
@@ -90,23 +95,53 @@ module.exports = function(grunt) {
         }
     },
     requirejs: {
-        compile:{
+        build:{
             options: {
                 appDir:"src/js",
                 baseUrl:"./",
                 dir:"../webroot/js",
                 stubModules: ['jsx', 'text', 'JSXTransformer'],
+                paths: {
+                    requireLib: '../../bower_components/requirejs/require'
+                },
                 modules:[{
-                    name: "config"
-                }]
+                    name: "config",
+                    include: "requireLib"
+                }],
+            }
+        },
+        dev:{
+            options: {
+                appDir:"src/js",
+                baseUrl:"./",
+                dir:"../webroot/js",
+                stubModules: ['jsx', 'text', 'JSXTransformer'],
+                paths: {
+                    requireLib: '../../bower_components/requirejs/require'
+                },
+                modules:[{
+                    name: "config",
+                    include: "requireLib"
+                }],
+                optimize: 'none'
             }
         }
     },
     less: {
-        options: {
-            compress: true            
-        },
         build: {
+          options: {
+              compress: true
+          },
+          files: {
+            "../webroot/css/default.css": "src/less/default.less",
+            "../webroot/css/bare.css": "src/less/bare.less",
+            "../webroot/css/admin.css": "src/less/admin.less"
+          }
+        },
+        dev: {
+          options: {
+              compress: false
+          },
           files: {
             "../webroot/css/default.css": "src/less/default.less",
             "../webroot/css/bare.css": "src/less/bare.less",
@@ -119,11 +154,13 @@ module.exports = function(grunt) {
     });
 
     // Load the plugin that provides the "uglify" task.
+    grunt.loadNpmTasks('grunt-bower-task');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-less');
 
     // Default task(s).
-    grunt.registerTask('default', ['copy','requirejs', 'less']);
+    grunt.registerTask('default', ['bower','copy','requirejs:build', 'less:build']);
+    grunt.registerTask('dev', ['bower','copy','requirejs:dev', 'less:dev']);
 
 };

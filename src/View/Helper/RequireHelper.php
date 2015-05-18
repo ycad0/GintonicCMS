@@ -1,6 +1,7 @@
 <?php
 namespace GintonicCMS\View\Helper;
 
+use Cake\Core\Configure;
 use Cake\Utility\Inflector;
 use Cake\View\Helper;
 use Cake\View\Helper\UrlHelper;
@@ -14,27 +15,27 @@ class RequireHelper extends Helper
     /**
      * TODO: doccomment
      */
-    public function load($config)
+    public function load($url, $requireLib='GintonicCMS.config')
     {
+        if (strpos($url, '//') === false) {
+            $url = $this->Url->assetUrl($url, ['pathPrefix' => Configure::read('App.jsBaseUrl')]);
+        }
         $modules = '';
         if (!is_null($this->_View->get('requiredeps'))) {
             $modules = "require([" . implode(',', $this->_View->get('requiredeps')) . "]);";
         }
-        // TODO there must be a cleaner way to fetch plugin notation and js path
-        $config = substr($this->Html->script($config),13,-14);
-
         $output = $this->Html->script(
-            'GintonicCMS.lib/requirejs/require',
-            ['data-main' => $config]
+            'GintonicCMS.config',
+            ['data-main' => $url]
         );
         $output .= "<script type='text/javascript'>";
-        $output .= "require(['" . $config . "'], function () {";
+        $output .= "require(['" . $url. "'], function () {";
         $output .= $modules;
         $output .= '});</script>';
 
         return $output;
     }
-    
+
     /**
      * TODO: doccomment
      */
