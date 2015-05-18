@@ -32,6 +32,8 @@ class ThreadsTable extends Table
         $this->belongsToMany('Users', [
             'saveStrategy' => 'append',
         ]);
+
+        $this->hasMany('Messages');
     }
 
     /**
@@ -48,8 +50,8 @@ class ThreadsTable extends Table
         if (!empty($thread)) {
             $participants = $users->find()
                 ->where(['Users.id IN' => $participantsIds]);
-            if(!empty($participants)) {
-                if($this->Users->link($thread, $participants->toArray())) {
+            if (!empty($participants)) {
+                if ($this->Users->link($thread, $participants->toArray())) {
                     return true;
                 }
             }
@@ -93,7 +95,7 @@ class ThreadsTable extends Table
         //        'valueField' => 'user_id'
         //    ])
         //    ->where(['ThreadParticipants.thread_id' => $threadId]);
-        //return $threadDetails;
+        return $threadDetails;
     }
 
     /**
@@ -105,7 +107,7 @@ class ThreadsTable extends Table
                 ->matching('Users', function ($q) use ($options) {
                     return $q
                         ->select(['Threads.id'])
-                        ->where(['Users.id' => $options['ids']]);
+                        ->where(['Users.id IN ' => $options['ids']]);
                 });
     }
 
@@ -124,6 +126,14 @@ class ThreadsTable extends Table
                         ->group('Threads.id')
                         ->having(['count' => $options['count']]);
                 });
+    }
+
+    /**
+     * TODO: Write Comment
+     */
+    public function findUnread(Query $query, array $options)
+    {
+        return $query;
     }
 
     /**

@@ -4,7 +4,6 @@ namespace GintonicCMS\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
-use Cake\ORM\TableRegistry;
 
 class ThreadsController extends AppController
 {
@@ -23,7 +22,15 @@ class ThreadsController extends AppController
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
-        $this->Auth->allow(['create', 'addParticipants', 'removeParticipants', 'getThread', 'retrieve']);
+        $this->Auth->allow([
+            'create',
+            'addParticipants',
+            'removeParticipants',
+            'getThread',
+            'retrieve',
+            'getUnreadCount',
+            'getUnreadThreads'
+        ]);
     }
 
     /**
@@ -52,7 +59,7 @@ class ThreadsController extends AppController
         ]);
 
         $this->Threads->save($thread);
-        echo json_encode($thread->id);
+        echo json_encode($thread->id, JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -62,7 +69,7 @@ class ThreadsController extends AppController
     {
         $this->autoRender = false;
         $isAdded = $this->Threads->addParticipants($this->request->data['participants'], $this->request->data['threadId']);
-        echo json_encode($isAdded);
+        echo json_encode($isAdded, JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -72,7 +79,7 @@ class ThreadsController extends AppController
     {
         $this->autoRender = false;
         $isremoved = $this->Threads->removeParticipants($this->request->data['participants'], $this->request->data['threadId']);
-        echo json_encode($isremoved);
+        echo json_encode($isremoved, JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -82,7 +89,7 @@ class ThreadsController extends AppController
     {
         $this->autoRender = false;
         $threadDetails = $this->Threads->getThreadDetailById($this->request->data['threadId']);
-        echo json_encode($threadDetails);
+        echo json_encode($threadDetails, JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -97,6 +104,33 @@ class ThreadsController extends AppController
             ->find('participantCount', ['count' => count($participants)])
             ->order(['Threads.created' => 'DESC'])
             ->first();
-        echo json_encode($threads);
+        echo json_encode($threads, JSON_NUMERIC_CHECK);
+    }
+
+    /**
+     * TODO: Write Comment
+     */
+    public function unreadCount()
+    {
+        $this->autoRender = false;
+        $this->request->data['users'] = 2;
+        $this->loadModel('GintonicCMS.Messages');
+        
+        $threadCount = $this->Threads->Messages
+            ->find('unread', ['userId' => $this->request->data['users']])
+            ->count();
+        debug($threadCount);
+        exit;
+        echo json_encode($threadCount, JSON_NUMERIC_CHECK);
+    }
+
+    /**
+     * TODO: Write Comment
+     */
+    public function get()
+    {
+        $this->autoRender = false;
+        $threadIds = [1, 2];
+        exit;
     }
 }

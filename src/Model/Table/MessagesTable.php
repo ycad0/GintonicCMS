@@ -30,7 +30,7 @@ class MessagesTable extends Table
             'propertyName' => 'Threads'
         ]);
 
-        $this->hasOne('MessageReadStatus');
+        $this->hasMany('MessageReadStatus');
 
         $this->addBehavior('Timestamp', [
             'events' => [
@@ -43,6 +43,16 @@ class MessagesTable extends Table
         parent::initialize($config);
     }
 
+    public function test()
+    {
+        debug('here');
+        exit;
+    }
+    
+    public function findUnread(Query $query, array $options)
+    {
+        return $query;
+    }
     /**
      * TODO: doccomment
      */

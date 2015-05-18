@@ -14,13 +14,11 @@ class MessageReadStatusesTable extends Table
     public function initialize(array $config)
     {
         parent::initialize($config);
-        
-        $this->belongsTo('Messages', [
-            'className' => 'Messages.Messages',
-            'foreignKey' => 'message_id',
-            'propertyName' => 'Messages'
+
+        $this->addAssociations([
+            'belongsTo' => ['Messages']
         ]);
-        
+
         $this->addBehavior('Timestamp', [
             'events' => [
                 'Model.beforeSave' => [
