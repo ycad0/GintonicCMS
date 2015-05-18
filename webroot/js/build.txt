@@ -1,5 +1,0 @@
-
-config.js
-----------------
-/var/www/html/CMSDemo/plugins/GintonicCMS/assets/bower_components/requirejs/require.js
-config.js

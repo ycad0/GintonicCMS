@@ -3,9 +3,10 @@
 /tmp/*
 /logs/*
 /composer.lock
-/assets/bower_components/*
+/assets/lib/*
 /assets/node_modules/*
 /assets/src/js/lib/*
+/assets/src/js/bower_components/*
 /assets/src/css/lib/*
 /assets/src/less/lib/*
 /assets/src/fonts/lib/*

@@ -7,7 +7,9 @@ module.exports = function(grunt) {
 
     bower: {
       install: {
-         //just run 'grunt bower:install' and you'll see files from your Bower packages in lib directory
+         options:{
+            targetDir: 'lib'
+         }
       }
     },
     copy: {
@@ -15,79 +17,79 @@ module.exports = function(grunt) {
             files: [
                 {
                     expand: true,
-                    cwd: 'bower_components/admin-lte/build/less',
+                    cwd: 'lib/admin-lte/build/less',
                     src: ['**'],
                     dest: 'src/less/lib/admin-lte/'
                 },
                 {
                     expand: true,
-                    cwd: 'bower_components/admin-lte/dist/js',
+                    cwd: 'lib/admin-lte/dist/js',
                     src: ['**'],
                     dest: 'src/js/lib/admin-lte/'
                 },
                 {
                     expand: true,
-                    cwd: 'bower_components/admin-lte/plugins',
+                    cwd: 'lib/admin-lte/plugins',
                     src: ['**/?*.css'],
                     dest: 'src/css/lib/'
                 },
                 {
                     expand: true,
-                    cwd: 'bower_components/admin-lte/plugins',
+                    cwd: 'lib/admin-lte/plugins',
                     src: ['**/?*.js'],
                     dest: 'src/js/lib/'
                 },
                 {
                     expand: true,
-                    cwd: 'bower_components/bootstrap/less',
+                    cwd: 'lib/bootstrap/less',
                     src: ['**'],
                     dest: 'src/less/lib/bootstrap'
                 },
                 {
                     expand: true,
-                    cwd: 'bower_components/bootstrap/dist/fonts',
+                    cwd: 'lib/bootstrap/dist/fonts',
                     src: ['**'],
                     dest: 'src/fonts/lib/bootstrap'
                 },
                 {
                     expand: true,
-                    cwd: 'bower_components/bootstrap/js',
+                    cwd: 'lib/bootstrap/js',
                     src: ['**'],
                     dest: 'src/js/lib/bootstrap'
                 },
                 {
                     expand: true,
-                    cwd: 'bower_components/fontawesome/less',
+                    cwd: 'lib/fontawesome/less',
                     src: ['**'],
                     dest: 'src/less/lib/fontawesome'
                 },
                 {
                     expand: true,
-                    cwd: 'bower_components/fontawesome/fonts',
+                    cwd: 'lib/fontawesome/fonts',
                     src: ['**'],
                     dest: 'src/fonts/lib/fontawesome'
                 },
                 {
                     expand: true,
-                    cwd: 'bower_components/jquery/dist',
+                    cwd: 'lib/jquery/dist',
                     src: ['**'],
                     dest: 'src/js/lib/jquery'
                 },
                 {
                     expand: true,
-                    cwd: 'bower_components/jsx-requirejs-plugin/js',
+                    cwd: 'lib/jsx-requirejs-plugin/js',
                     src: ['**'],
                     dest: 'src/js/lib/jsx-requirejs-plugin'
                 },
                 {
                     expand: true,
-                    cwd: 'bower_components/',
+                    cwd: 'lib/',
                     src: ['react/*.js'],
                     dest: 'src/js/lib/'
                 },
                 {
                     expand: true,
-                    cwd: 'bower_components',
+                    cwd: 'lib',
                     src: ['requirejs-text/*.js'],
                     dest: 'src/js/lib/'
                 }
@@ -102,7 +104,7 @@ module.exports = function(grunt) {
                 dir:"../webroot/js",
                 stubModules: ['jsx', 'text', 'JSXTransformer'],
                 paths: {
-                    requireLib: '../../bower_components/requirejs/require'
+                    requireLib: '../../lib/requirejs/require'
                 },
                 modules:[{
                     name: "config",
@@ -117,7 +119,7 @@ module.exports = function(grunt) {
                 dir:"../webroot/js",
                 stubModules: ['jsx', 'text', 'JSXTransformer'],
                 paths: {
-                    requireLib: '../../bower_components/requirejs/require'
+                    requireLib: '../../lib/requirejs/require'
                 },
                 modules:[{
                     name: "config",
