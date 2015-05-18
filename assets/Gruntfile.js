@@ -10,7 +10,7 @@ module.exports = function(grunt) {
             files: [
                 {
                     expand: true,
-                    cwd: 'bower_components/admin-lte/build',
+                    cwd: 'bower_components/admin-lte/build/less',
                     src: ['**'],
                     dest: 'src/less/lib/admin-lte/'
                 },
@@ -101,6 +101,18 @@ module.exports = function(grunt) {
                 }]
             }
         }
+    },
+    less: {
+        options: {
+            compress: true            
+        },
+        build: {
+          files: {
+            "../webroot/css/default.css": "src/less/default.less",
+            "../webroot/css/bare.css": "src/less/bare.less",
+            "../webroot/css/admin.css": "src/less/admin.less"
+          }
+        }
     }
 
 
@@ -109,8 +121,9 @@ module.exports = function(grunt) {
     // Load the plugin that provides the "uglify" task.
     grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-less');
 
     // Default task(s).
-    grunt.registerTask('default', ['copy','requirejs']);
+    grunt.registerTask('default', ['copy','requirejs', 'less']);
 
 };
