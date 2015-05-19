@@ -2,10 +2,10 @@
 
 namespace GintonicCMS\Controller;
 
-use App\Controller\AppController as BaseController;
+use Cake\Controller\Controller;
 use Cake\Core\Configure;
 
-class AppController extends BaseController
+class AppController extends Controller
 {
     public $helpers = [
         'GintonicCMS.Require',
@@ -23,6 +23,44 @@ class AppController extends BaseController
         $this->loadComponent('Flash');
         $this->loadComponent('GintonicCMS.Cookie');
         $this->loadComponent('RequestHandler');
+        $this->loadComponent('Auth', [
+            'authorize' => 'controller',
+            'authenticate' => [
+                'Form' => [
+                    'fields' => [
+                        'username' => 'email',
+                        'password' => 'password'
+                    ]
+                ]
+            ],
+            'flash' => [
+                'key' => 'auth',
+                'params' => [
+                    'plugin' => 'GintonicCMS',
+                    'class' => 'alert-danger'
+                ]
+            ],
+            'loginAction' => [
+                'controller' => 'Users',
+                'action' => 'signin',
+                'plugin' =>'GintonicCMS'
+            ],
+            'loginRedirect' => [
+                'controller' => 'Users',
+                'action' => 'profile',
+                'plugin' =>'GintonicCMS'
+            ],
+            'logoutRedirect' => [
+                'controller' => 'Users',
+                'action' => 'signin',
+                'plugin' =>'GintonicCMS'
+            ],
+            'unauthorizedRedirect' => [
+                'controller' => 'Users',
+                'action' => 'signin',
+                'plugin' =>'GintonicCMS'
+            ]
+        ]);
         parent::initialize();
     }
     
