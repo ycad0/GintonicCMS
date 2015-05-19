@@ -2,35 +2,27 @@
 
 namespace GintonicCMS\Model\Table;
 
+use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
-use Cake\Routing\Router;
-use Cake\Validation\Validator;
 
 class MessagesTable extends Table
 {
-
-    public $uses = array('GintonicCMS.SentMessages');
 
     /**
      * TODO: doccomment
      */
     public function initialize(array $config)
     {
-        $this->belongsTo('Sender', [
-            'className' => 'GintonicCMS.Users',
-            'foreignKey' => 'user_id',
-            'propertyName' => 'Sender',
-            'fields' => ['id', 'first', 'last', 'email']
-        ]);
+        parent::initialize($config);
 
-        $this->belongsTo('Threads', [
-            'className' => 'Threads',
-            'foreignKey' => 'thread_id',
-            'propertyName' => 'Threads'
+        $this->addAssociations([
+            'belongsTo' => [
+                'GintonicCMS.Threads',
+                'GintonicCMS.Users'
+            ],
+            'hasMany' => ['GintonicCMS.MessageReadStatuses']
         ]);
-
-        $this->hasMany('MessageReadStatus');
 
         $this->addBehavior('Timestamp', [
             'events' => [
@@ -40,153 +32,5 @@ class MessagesTable extends Table
                 ]
             ]
         ]);
-        parent::initialize($config);
-    }
-
-    public function test()
-    {
-        debug('here');
-        exit;
-    }
-    
-    public function findUnread(Query $query, array $options)
-    {
-        return $query;
-    }
-    /**
-     * TODO: doccomment
-     */
-    public function validationDefault(Validator $validator)
-    {
-        return $validator
-                ->notEmpty('title', 'Please enter subject')
-                ->notEmpty('body', 'Please enter body');
-    }
-
-    /**
-     * TODO: doccomment
-     */
-    public function setRead($message)
-    {
-        if (empty($message->is_read) || $message->read_on_date == '0000-00-00 00:00:00') {
-            $this->updateAll(
-                [
-                'Messages.is_read' => 1,
-                'Messages.read_on_date' => date("Y-m-d H:i:s")
-                ],
-                ['Messages.id' => $message->id]
-            );
-        }
-    }
-
-    /**
-     * TODO: doccomment
-     */
-    public function sentMessage($userId = null, $reqData = [])
-    {
-        $response = [
-            'status' => false,
-            'message' => 'Unable to sent Message',
-            'redirect' => Router::url([
-                'plugin' => 'GintonicCMS',
-                'controller' => 'messages',
-                'action' => 'compose',
-                $reqData['recipient_id']
-                ], true)
-        ];
-        if (!empty($userId) && !empty($reqData)) {
-            $parentId = $this->find()
-                ->where(['Messages.thread_id' => $reqData['thread_id']])
-                ->select(['id'])
-                ->order(['created DESC'])
-                ->first();
-            if (!empty($parentId)) {
-                $reqData['parent_id'] = $parentId->id;
-            }
-            if ($messageResult = $this->save($this->newEntity($reqData))) {
-                $this->MessageReadStatuses = TableRegistry::get('MessageReadStatuses');
-                $response['id'] = $reqData['message_id'] = $messageResult->id;
-                $this->MessageReadStatuses->save($this->MessageReadStatuses->newEntity($reqData));
-                $response['status'] = true;
-                $response['message'] = 'Message sent successfully.';
-            }
-        }
-        return $response;
-    }
-
-    /**
-     * TODO: doccomment
-     */
-    public function sentGroupMessage($userId = null, $reqData = [])
-    {
-        $response = [
-            'status' => false,
-            'message' => 'Unable to sent Message',
-            'redirect' => Router::url([
-                'plugin' => 'GintonicCMS',
-                'controller' => 'messages',
-                'action' => 'groupChat',
-                $reqData['thread_id']
-                ], true)
-        ];
-        if (!empty($userId) && !empty($reqData)) {
-            $threadId = $reqData['thread_id'];
-            $parentId = $this->find()
-                ->where(['Messages.thread_id' => $threadId])
-                ->select(['id'])
-                ->order(['created DESC'])
-                ->first();
-            if (!empty($parentId)) {
-                $reqData['parent_id'] = $parentId->id;
-            }
-            if ($messageResult = $this->save($this->newEntity($reqData))) {
-                $this->ThreadParticipants = TableRegistry::get('ThreadParticipants');
-                $participantUsers = $this->ThreadParticipants->find()
-                    ->where(['ThreadParticipants.thread_id' => $threadId])
-                    ->combine('user_id', 'user_id')
-                    ->toArray();
-                $this->MessageReadStatuses = TableRegistry::get('MessageReadStatuses');
-                $response['id'] = $reqData['message_id'] = $messageResult->id;
-                foreach ($participantUsers as $participantUserId) {
-                    if ($userId != $participantUserId) {
-                        $this->MessageReadStatuses->save($this->MessageReadStatuses->newEntity($reqData));
-                    }
-                }
-                $response['status'] = true;
-                $response['message'] = 'Message sent successfully.';
-            }
-        }
-        return $response;
-    }
-
-    /**
-     * TODO: doccomment
-     */
-    public function changeMessageStatus($messageId = null, $status = 0)
-    {
-        $response = ['status' => __('fail')];
-        if (!empty($messageId)) {
-            $this->MessageReadStatuses = TableRegistry::get('MessageReadStatuses');
-            if ($this->MessageReadStatuses->updateAll(
-                ['status' => $status],
-                ['message_id' => $messageId]
-            )) {
-                $response = ['status' => __('success')];
-            }
-        }
-        return $response;
-    }
-
-    /**
-     * TODO: Write Document
-     */
-    public function getMessageByThreadId($threadId = null, $limit = 10)
-    {
-        if (!empty($threadId)) {
-            return $this->find()
-                    ->where(['Messages.thread_id' => $threadId])
-                    ->limit($limit);
-        }
-        return false;
     }
 }

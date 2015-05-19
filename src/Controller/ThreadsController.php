@@ -2,8 +2,9 @@
 
 namespace GintonicCMS\Controller;
 
-use App\Controller\AppController;
+use GintonicCMS\Controller\AppController;
 use Cake\Event\Event;
+use Cake\ORM\TableRegistry;
 
 class ThreadsController extends AppController
 {
@@ -22,6 +23,8 @@ class ThreadsController extends AppController
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
+        $this->Auth->allow();
+        return;
         $this->Auth->allow([
             'create',
             'addParticipants',
@@ -100,7 +103,7 @@ class ThreadsController extends AppController
         $this->autoRender = false;
         $participants = $this->request->data['participants'];
         $threads = $this->Threads
-            ->find('withParticipants', ['ids' => $participants])
+            ->find('withUsers', ['ids' => $participants])
             ->find('participantCount', ['count' => count($participants)])
             ->order(['Threads.created' => 'DESC'])
             ->first();
@@ -113,14 +116,12 @@ class ThreadsController extends AppController
     public function unreadCount()
     {
         $this->autoRender = false;
-        $this->request->data['users'] = 2;
-        $this->loadModel('GintonicCMS.Messages');
-        
-        $threadCount = $this->Threads->Messages
-            ->find('unread', ['userId' => $this->request->data['users']])
+        debug($this->Threads->find()->contain(['Messages.MessageReadStatuses'])->toArray());exit;
+
+        $threadCount = $this->Threads
+            ->find('withUsers', ['ids' => $users])
+            ->find('unread')
             ->count();
-        debug($threadCount);
-        exit;
         echo json_encode($threadCount, JSON_NUMERIC_CHECK);
     }
 

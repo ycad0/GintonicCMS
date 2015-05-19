@@ -15,7 +15,6 @@ class ThreadsTable extends Table
     public function initialize(array $config)
     {
         parent::initialize($config);
-        $this->primaryKey('id');
 
         $this->addBehavior('Timestamp', [
             'events' => [
@@ -26,14 +25,9 @@ class ThreadsTable extends Table
             ]
         ]);
 
-//        $this->addAssociations([
-//            'belongsToMany' => ['Users'],
-//        ]);
-        $this->belongsToMany('Users', [
-            'saveStrategy' => 'append',
+        $this->addAssociations([
+            'hasMany' => ['GintonicCMS.Messages']
         ]);
-
-        $this->hasMany('Messages');
     }
 
     /**
@@ -101,14 +95,14 @@ class ThreadsTable extends Table
     /**
      * TODO: doccomment
      */
-    public function findWithParticipants(Query $query, array $options)
+    public function findWithUsers(Query $query, array $options)
     {
         return $query
-                ->matching('Users', function ($q) use ($options) {
-                    return $q
-                        ->select(['Threads.id'])
-                        ->where(['Users.id IN ' => $options['ids']]);
-                });
+            ->matching('Users', function ($q) use ($options) {
+                return $q
+                    //->select(['Threads.id'])
+                    ->where(['Users.id IN ' => $options['ids']]);
+            });
     }
 
     /**

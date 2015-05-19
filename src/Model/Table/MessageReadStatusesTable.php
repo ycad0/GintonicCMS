@@ -2,9 +2,9 @@
 
 namespace GintonicCMS\Model\Table;
 
+use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
-use Cake\Routing\Router;
 
 class MessageReadStatusesTable extends Table
 {
@@ -16,7 +16,7 @@ class MessageReadStatusesTable extends Table
         parent::initialize($config);
 
         $this->addAssociations([
-            'belongsTo' => ['Messages']
+            'belongsTo' => ['GintonicCMS.Messages']
         ]);
 
         $this->addBehavior('Timestamp', [
