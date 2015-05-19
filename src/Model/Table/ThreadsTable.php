@@ -123,6 +123,22 @@ class ThreadsTable extends Table
     /**
      * TODO: doccomment
      */
+    public function findParticipant(Query $query, array $options)
+    {
+        return $query
+                ->matching('Users', function ($q) use ($options) {
+                    return $q
+                        ->select(['Users.id'])
+                        ->where([
+                            'Users.id NOT IN ' => $options['userIds'],
+                            'Threads.id IN' => $options['threadIds']
+                        ]);
+                });
+    }
+    
+    /**
+     * TODO: doccomment
+     */
     public function findParticipantCount(Query $query, array $options)
     {
         return $query
@@ -146,6 +162,18 @@ class ThreadsTable extends Table
                 ->matching('Messages.MessageReadStatuses', function ($q) use ($options) {
                     return $q
                         ->where(['MessageReadStatuses.status' => 0, 'MessageReadStatuses.user_id IN' => $options['ids']]);
+                });
+    }
+    
+    /**
+     * TODO: Write Comment
+     */
+    public function findDeleted(Query $query, array $options)
+    {
+        return $query
+                ->matching('Messages.MessageReadStatuses', function ($q) use ($options) {
+                    return $q
+                        ->where(['MessageReadStatuses.status' => 2, 'MessageReadStatuses.user_id IN' => $options['ids']]);
                 });
     }
 

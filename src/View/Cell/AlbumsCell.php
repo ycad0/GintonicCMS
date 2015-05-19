@@ -44,6 +44,7 @@ class AlbumsCell extends Cell
      */
     public function uploadPhotos($userId = null, $fileId = null)
     {
+        $this->autoRender = false;
         if (!empty($this->request->data['id'])) {
             $userId = $this->request->data['id'];
         }
@@ -70,7 +71,6 @@ class AlbumsCell extends Cell
             'message' => $message,
             'success' => $success
         ]);
-        exit;
     }
     
     /**
@@ -78,6 +78,7 @@ class AlbumsCell extends Cell
      */
     public function deleteImage()
     {
+        $this->autoRender = false;
         $message = __('Unable to delete image. Please try again...');
         $success = false;
         if (!empty($this->request->data['id']) && !empty($this->request->data['fileId'])) {
@@ -97,7 +98,6 @@ class AlbumsCell extends Cell
             'message' => $message,
             'success' => $success
         ]);
-        exit;
     }
     
     /**

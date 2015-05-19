@@ -34,10 +34,42 @@ class MessagesTable extends Table
         ]);
     }
     
+    /**
+     * TODO: Write Document
+     */
     public function findWithMessages(Query $query, array $options)
     {
         return $query
             ->where(['Messages.id IN' => $options['ids']])
             ->contain(['Users' => ['Files'], 'MessageReadStatuses']);
+    }
+    
+    /**
+     * TODO: Write Document
+     */
+    public function findWithUsers(Query $query, array $options)
+    {
+        return $query
+            ->where([
+                'Messages.user_id IN' => $options['userIds'],
+                'thread_id IN' => $options['threadIds']
+            ])
+            ->contain(['Users' => ['Files']])
+            ->group(['Messages.user_id'])
+            ->order(['Messages.created' => 'asc']);
+    }
+    
+    /**
+     * TODO: Write Document
+     */
+    public function findWithThreads(Query $query, array $options)
+    {
+        return $query
+            ->where([
+                'thread_id IN' => $options['threadIds']
+            ])
+            ->contain(['Users' => ['Files']])
+            ->group(['Messages.user_id'])
+            ->order(['Messages.created' => 'asc']);
     }
 }

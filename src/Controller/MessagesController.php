@@ -10,7 +10,6 @@ use Cake\Routing\Router;
 
 class MessagesController extends AppController
 {
-
     public $paginate = ['maxLimit' => 5];
 
     /**
@@ -21,7 +20,7 @@ class MessagesController extends AppController
         parent::initialize();
         $this->loadComponent('Auth');
         $this->loadModel('GintonicCMS.Threads');
-        $this->loadModel('GintonicCMS.ThreadParticipants');
+        $this->loadModel('GintonicCMS.ThreadsUsers');
         $this->loadModel('GintonicCMS.MessageReadStatuses');
     }
 
@@ -32,7 +31,7 @@ class MessagesController extends AppController
     {
         return true;
     }
-    
+
     /**
      * TODO: doccomment
      */
@@ -81,20 +80,18 @@ class MessagesController extends AppController
     {
         if ($this->request->session()->check('Auth.User.id')) {
             $usersList = $this->Users->find()
-                ->where(
-                    [
+                ->where([
                     'Users.verified' => 1,
                     'NOT' => ['Users.id' => $this->request->session()->read('Auth.User.id')]
-                    ]
-                )
+                ])
                 ->andWhere(['NOT' => ['Users.role' => 'admin']])
                 ->select(['id', 'file_id', 'email', 'first', 'last'])
-                ->contain(
-                    ['Files' => function ($file) {
+                ->contain([
+                    'Files' => function ($file) {
                         return $file
-                                ->select(['id', 'filename']);
-                    }]
-                )
+                            ->select(['id', 'filename']);
+                    }
+                ])
                 ->toArray();
             $usersList = $this->getUnreadMessage($usersList);
             $userGroups = $this->Threads->getGroups($this->request->session()->read('Auth.User.id'));
@@ -113,7 +110,7 @@ class MessagesController extends AppController
             $this->set('chats', array());
         } else {
             $userId = $this->request->session()->read('Auth.User.id');
-            $recipientId = (int)$recipientId;
+            $recipientId = (int) $recipientId;
             if ($this->request->is(['put', 'post']) && !empty($this->request->data['body']) && empty($isGroup)) {
                 $response = $this->Messages->sentMessage($userId, $this->request->data);
                 if ($response['status']) {
@@ -132,34 +129,36 @@ class MessagesController extends AppController
                 ->where(['Users.id' => $recipientId])
                 ->select(['id', 'first', 'last', 'email'])
                 ->first();
-            if (!empty($recipient)) {
-                $recipient = $recipient->toArray();
+            
+            $threads = $this->Threads
+                ->find('withUsers', ['ids' => $userId])
+                ->select(['Threads.id']);
+            
+            foreach ($threads as $key => $threads) {
+                $threadIds[] = $threads->id;
             }
-            $threadId = $this->Threads->getThread($userId, $recipientId);
+            
+            $chat = $this->Messages->find('withThreads', ['threadIds' => $threadIds]);
+            $messages = $this->Threads->find('deleted', ['ids' => $recipientId])
+                ->select('Messages.id');
+            
+            foreach ($messages as $key => $message) {
+                $deletedMessage[] = $message->_matchingData['Messages']->id;
+            }
+            
+            $messages = $this->Threads->find('unread', ['ids' => $threadRecipientId]);
+            
             $threadParticipantId = $this->ThreadParticipants->getThreadParticipant($threadId, $userId);
             $threadRecipientId = $this->ThreadParticipants->getThreadParticipant($threadId, $recipientId);
-            $chats = $this->Messages->find()
-                ->where(['Messages.thread_id' => $threadId])
-                ->all()
-                ->toArray();
+            
             $unReadMessage = $this->getUnreadMessage($threadRecipientId, true);
             $threadMessageList = $this->Messages->find()
                 ->where(['Messages.thread_id' => $threadId])
                 ->combine('id', 'id')
                 ->toArray();
-            $deletedMessage = $this->MessageReadStatuses->find('all')
-                ->where(
-                    [
-                    'MessageReadStatuses.status' => 2,
-                    'MessageReadStatuses.message_id IN' => $threadMessageList
-                    ]
-                )
-                ->combine('message_id', 'message_id')
-                ->toArray();
             if (!empty($unReadMessage)) {
                 $this->MessageReadStatuses->updateAll(
-                    ['status' => 1],
-                    ['message_id IN' => $unReadMessage]
+                    ['status' => 1], ['message_id IN' => $unReadMessage]
                 );
             }
             $this->set('messageType', 'compose', 'recipient');
@@ -186,22 +185,21 @@ class MessagesController extends AppController
     {
         if (empty($threadId)) {
             $this->Flash->set(__('Invalid Group.'), [
-               'element' => 'GintonicCMS.alert',
-               'params' => ['class' => 'alert-danger']
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
             ]);
-            
+
             return $this->redirect(
-                [
-                'plugin' => 'GintonicCMS',
-                'controller' => 'messages',
-                'action' => 'compose'
-                ]
+                    [
+                        'plugin' => 'GintonicCMS',
+                        'controller' => 'messages',
+                        'action' => 'compose'
+                    ]
             );
         }
         if ($this->request->is(['put', 'post']) && empty($isGroup)) {
             $response = $this->Messages->sentGroupMessage(
-                $this->request->session()->read('Auth.User.id'),
-                $this->request->data
+                $this->request->session()->read('Auth.User.id'), $this->request->data
             );
             if ($response['status']) {
                 $message = [
@@ -221,8 +219,7 @@ class MessagesController extends AppController
         unset($groupUsersJson[$this->request->session()->read('Auth.User.id')]);
         $groupUsersJson = $this->setUserCommaSepList($groupUsersJson);
         $unReadMessage = $this->getUnreadMessage(
-            $this->request->session()->read('Auth.User.id'),
-            true
+            $this->request->session()->read('Auth.User.id'), true
         );
         $chats = $this->Messages->find('all')
             ->where(['Messages.thread_id' => $threadId]);
@@ -231,8 +228,8 @@ class MessagesController extends AppController
         $deletedMessage = $this->MessageReadStatuses->find('all')
             ->where(
                 [
-                'MessageReadStatuses.status' => 2,
-                'MessageReadStatuses.message_id IN' => $threadMessageList
+                    'MessageReadStatuses.status' => 2,
+                    'MessageReadStatuses.message_id IN' => $threadMessageList
                 ]
             )
             ->combine('message_id', 'message_id')
@@ -240,13 +237,7 @@ class MessagesController extends AppController
         $this->set('activeGroupID', $threadId);
         $this->set(
             compact(
-                'recipientUsers',
-                'groupUsersJson',
-                'chats',
-                'groupAdminDetail',
-                'deletedMessage',
-                'threadId',
-                'unReadMessage'
+                'recipientUsers', 'groupUsersJson', 'chats', 'groupAdminDetail', 'deletedMessage', 'threadId', 'unReadMessage'
             )
         );
     }
@@ -260,37 +251,35 @@ class MessagesController extends AppController
             $userLists = explode(',', $this->request->data['user_list']);
             if (count($userLists) == 1) {
                 return $this->redirect(
-                    [
-                    'plugin' => 'GintonicCMS',
-                    'controller' => 'messages',
-                    'action' => 'compose',
-                    $userLists[0]
-                    ]
+                        [
+                            'plugin' => 'GintonicCMS',
+                            'controller' => 'messages',
+                            'action' => 'compose',
+                            $userLists[0]
+                        ]
                 );
             }
             $threadId = $this->Threads->getThread(
-                $this->request->session()->read('Auth.User.id'),
-                0,
-                $userLists
+                $this->request->session()->read('Auth.User.id'), 0, $userLists
             );
             return $this->redirect(
-                [
-                'plugin' => 'GintonicCMS',
-                'controller' => 'messages',
-                'action' => 'groupChat',
-                $threadId
-                ]
+                    [
+                        'plugin' => 'GintonicCMS',
+                        'controller' => 'messages',
+                        'action' => 'groupChat',
+                        $threadId
+                    ]
             );
         }
         $this->Flash->set(__('Invalid Group.'), [
             'element' => 'GintonicCMS.alert',
             'params' => ['class' => 'alert-danger']
-         ]);
+        ]);
         return $this->redirect(
-            ['plugin' => 'GintonicCMS',
-            'controller' => 'messages',
-            'action' => 'compose'
-            ]
+                ['plugin' => 'GintonicCMS',
+                    'controller' => 'messages',
+                    'action' => 'compose'
+                ]
         );
     }
 
@@ -303,8 +292,8 @@ class MessagesController extends AppController
             $query = $this->MessageReadStatuses->find('all')
                 ->where(
                     [
-                    'MessageReadStatuses.thread_participant_id' => $participantId,
-                    'MessageReadStatuses.status' => 0
+                        'MessageReadStatuses.thread_participant_id' => $participantId,
+                        'MessageReadStatuses.status' => 0
                     ]
                 )
                 ->combine('message_id', 'message_id');
@@ -323,8 +312,8 @@ class MessagesController extends AppController
                     $threads = $this->ThreadParticipants->find()
                         ->where(
                             [
-                            'ThreadParticipants.user_id' => $user->id,
-                            'ThreadParticipants.thread_id IN' => $recipantThreads
+                                'ThreadParticipants.user_id' => $user->id,
+                                'ThreadParticipants.thread_id IN' => $recipantThreads
                             ]
                         )
                         ->select(['ThreadParticipants.id'])
@@ -335,8 +324,8 @@ class MessagesController extends AppController
                         $userList[$key]['unread_message'] = $this->MessageReadStatuses->find('all')
                             ->where(
                                 [
-                                'MessageReadStatuses.thread_participant_id' => $threadparticipantId,
-                                'MessageReadStatuses.status' => 0
+                                    'MessageReadStatuses.thread_participant_id' => $threadparticipantId,
+                                    'MessageReadStatuses.status' => 0
                                 ]
                             )
                             ->combine('message_id', 'message_id')
@@ -354,9 +343,9 @@ class MessagesController extends AppController
     public function delete($messageId = 0)
     {
         $this->layout = 'ajax';
+        $this->autoRender = false;
         $response = $this->Messages->changeMessageStatus($messageId, 2);
         echo json_encode($response);
-        exit;
     }
 
     /**
@@ -365,9 +354,9 @@ class MessagesController extends AppController
     public function changeStatus($messageId = 0, $status = 0)
     {
         $this->layout = 'ajax';
+        $this->autoRender = false;
         $response = $this->Messages->changeMessageStatus($messageId, $status);
         echo json_encode($response);
-        exit;
     }
 
     /**
@@ -406,12 +395,12 @@ class MessagesController extends AppController
         }
         $jsonData = json_encode($userCommaSepList);
         if (empty($getUserList)) {
+            $this->autoRender = false;
             echo $jsonData;
-            exit;
         }
         return $jsonData;
     }
-    
+
     /**
      * TODO: doccomment
      */
@@ -419,37 +408,33 @@ class MessagesController extends AppController
     {
         $userId = $this->request->session()->read('Auth.User.id');
 
-        $threadIds = $this->ThreadParticipants->find('all')
-            ->where(['ThreadParticipants.user_id' => $userId])
-            ->combine('id', 'thread_id');
+        $threadIds = $this->Threads
+            ->find('withUsers', ['ids' => $userId])
+            ->combine('id', 'id');
+
         $participantsIds = [];
         $messages = [];
-        $threads = [];
+
         if (!empty($threadIds)) {
-            $participantsIds = $this->ThreadParticipants->find('all')
-                ->where(
-                    [
-                    'ThreadParticipants.user_id !=' => $userId,
-                    'thread_id IN' => $threadIds->toArray()
-                    ]
-                )
-                ->combine('id', 'user_id');
-            if (!empty($participantsIds)) {
-                $messages = $this->Messages->find('all')
-                    ->where(
-                        [
-                        'Messages.user_id IN ' => $participantsIds->toArray(),
-                        'thread_id IN ' => $threadIds->toArray()
-                        ]
-                    )
-                    ->contain(['Sender' => ['Files']])
-                    ->group(['Messages.user_id'])
-                    ->order(['Messages.created' => 'asc']);
+            $participantsIds = $this->Threads
+                ->find('participant', ['userIds' => $userId, 'threadIds' => $threadIds->toArray()])
+                ->select('Users.id');
+
+            foreach ($participantsIds as $key => $value) {
+                $participantsUserIds[] = $value->_matchingData['Users']->id;
+            }
+
+            if (!empty($participantsUserIds)) {
+                $messages = $this->Messages
+                    ->find('withUsers', [
+                        'userIds' => $participantsUserIds,
+                        'threadIds' => $threadIds->toArray()
+                    ]);
             }
         }
         $this->set(compact('messages'));
     }
-    
+
     /**
      * TODO: doccomment
      */
@@ -457,21 +442,20 @@ class MessagesController extends AppController
     {
         if (empty($recipientId)) {
             $this->Flash->set(
-                __('Invalid Recipient.!!!'),
-                [
+                __('Invalid Recipient.!!!'), [
                 'element' => 'GintonicCMS.alert',
                 'params' => ['class' => 'alert-danger']
                 ]
             );
             $this->redirect(
                 [
-                'plugin' => false,
-                'controller' => 'proball_messages',
-                'action' => 'index'
+                    'plugin' => false,
+                    'controller' => 'proball_messages',
+                    'action' => 'index'
                 ]
             );
         }
-        
+
         $userId = $this->request->session()->read('Auth.User.id');
         $threadId = $this->Threads->getThread($userId, $recipientId);
         $threadParticipantId = $this->ThreadParticipants->getThreadParticipant($threadId, $userId);
