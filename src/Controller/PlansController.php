@@ -8,7 +8,7 @@ use Cake\Event\Event;
 use Cake\Routing\Router;
 use Stripe;
 
-class SubscribePlansController extends AppController
+class PlansController extends AppController
 {
     /**
      * TODO: Write Comments.
@@ -31,7 +31,7 @@ class SubscribePlansController extends AppController
      */
     public function index()
     {
-        $plans = $this->SubscribePlans->find()
+        $plans = $this->Plans->find()
                 ->all();
         $this->set('plans', $plans);
     }
@@ -42,8 +42,8 @@ class SubscribePlansController extends AppController
     public function delete($planId = null)
     {
         if (!empty($planId)) {
-            $plan = $this->SubscribePlans->get($planId);
-            if ($this->SubscribePlans->delete($plan)) {
+            $plan = $this->Plans->get($planId);
+            if ($this->Plans->delete($plan)) {
                 $this->planDelete($plan->plan_id);
                 $this->Flash->set(__('Plan has been deleted successfully.'), [
                     'element' => 'GintonicCMS.alert',
@@ -113,8 +113,8 @@ class SubscribePlansController extends AppController
                 } else {
                     $this->request->data['amount'] = $amount;
                 }
-                $subscribePlan = $this->SubscribePlans->newEntity($this->request->data);
-                if ($this->SubscribePlans->save($subscribePlan)) {
+                $subscribePlan = $this->Plans->newEntity($this->request->data);
+                if ($this->Plans->save($subscribePlan)) {
                     if (empty($planId)) {
                         //Create new plan
                         Stripe\Plan::create([
@@ -127,8 +127,8 @@ class SubscribePlansController extends AppController
                         ]);
                     } else {
                         //update plan
-                        $oldPlanId = $this->SubscribePlans->find()
-                                ->where(['SubscribePlans.id' => $planId])
+                        $oldPlanId = $this->Plans->find()
+                                ->where(['Plans.id' => $planId])
                                 ->first();
 
                         $p = Stripe\Plan::retrieve($oldPlanId['plan_id']);
@@ -139,7 +139,7 @@ class SubscribePlansController extends AppController
                         'element' => 'GintonicCMS.alert',
                         'params' => ['class' => 'alert-success']
                     ]);
-                    return $this->redirect(Router::url(array('controller' => 'subscribe_plans', 'action' => 'index'), true));
+                    return $this->redirect(Router::url(array('controller' => 'plans', 'action' => 'index'), true));
                 } else {
                     $this->Flash->set(__('Unable to create plan.'), [
                         'element' => 'GintonicCMS.alert',
@@ -149,8 +149,8 @@ class SubscribePlansController extends AppController
             }
         }
         if (!empty($planId) && empty($this->request->data)) {
-            $plan = $this->SubscribePlans->find()
-                    ->where(['SubscribePlans.id' => $planId])
+            $plan = $this->Plans->find()
+                    ->where(['Plans.id' => $planId])
                     ->first();
             $this->request->data = $plan->toArray();
             $this->request->data['amount'] = $this->request->data['amount'] / 100;
@@ -163,15 +163,16 @@ class SubscribePlansController extends AppController
      */
     public function userSubscribe()
     {
-        $this->loadModel('GintonicCMS.UserCustomers');
+        $this->loadModel('GintonicCMS.CustomersUsers');
         $this->loadModel('GintonicCMS.Transactions');
         $userId = $this->request->session()->read('Auth.User.id');
-        $customerId = $this->UserCustomers->getCustomerStripeId($userId);
-        $subscribePlans = [];
+        
+        $customerId = $this->CustomersUsers->find('customerStripeId', ['userId' => $userId]);
+        $plans = [];
         if ($customerId) {
             $subscribes = Stripe\Customer::retrieve($customerId)->subscriptions->all();
             foreach ($subscribes->data as $key => $subscribe) {
-                $subscribePlans[] = array(
+                $plans[] = array(
                     'plan_id' => $subscribe->plan->id,
                     'plan_name' => $subscribe->plan->name,
                     'created' => date("Y-m-d H:i:s", $subscribe->plan->created),
@@ -182,7 +183,7 @@ class SubscribePlansController extends AppController
         $transactions = $this->Transactions->find()
                 ->where(['Transactions.user_id' => $userId, 'Transactions.transaction_type_id' => 2])
                 ->all();
-        $this->set(compact('subscribePlans'));
+        $this->set(compact('plans'));
         $this->set('subscribes', $transactions);
     }
 
@@ -193,14 +194,15 @@ class SubscribePlansController extends AppController
     {
         if (!empty($subscribeId)) {
             $userId = $this->request->session()->read('Auth.User.id');
-            $this->loadModel('GintonicCMS.UserCustomers');
-            $this->loadModel('GintonicCMS.SubscribePlans');
-            $this->loadModel('GintonicCMS.SubscribePlanUsers');
-            $customerId = $this->UserCustomers->getCustomerStripeId($userId);
+            $this->loadModel('GintonicCMS.CustomersUsers');
+            $this->loadModel('GintonicCMS.Plans');
+            $this->loadModel('GintonicCMS.PlansUsers');
+            
+            $customerId = $this->CustomersUsers->find('customerStripeId', ['userId' => $userId]);
             $subscribeStatus = Stripe\Customer::retrieve($customerId)->subscriptions->retrieve($subscribeId)->cancel();
             if ($subscribeStatus->status == "canceled") {
-                $planDetail = $this->SubscribePlans->getPlanDetail($subscribeStatus->plan->id);
-                $response = $this->SubscribePlanUsers->addToSubscribeList($planDetail['id'], $userId, 'fail');
+                $planDetail = $this->Plans->find('planDetails', ['planId' => $subscribeStatus->plan->id]);
+                $response = $this->PlansUsers->addToSubscribeList($planDetail['id'], $userId, 'fail');
                 $this->Flash->set(__('Plan has been unsubscribe successfully.'), [
                     'element' => 'GintonicCMS.alert',
                     'params' => ['class' => 'alert-success']
@@ -232,9 +234,10 @@ class SubscribePlansController extends AppController
             ]);
             return $this->redirect($this->referer());
         }
-        $this->loadModel('GintonicCMS.SubscribePlans');
+        $this->loadModel('GintonicCMS.Plans');
 
-        $planUsers = $this->SubscribePlans->getPlanDetailByPlanId($planId);
+        $planUsers = $this->Plans->find('planDetails', ['planId' => $planId]);
+                
         $this->loadModel('GintonicCMS.Users');
         $userList = $this->Users->find('list', [
             'keyField' => 'id',
@@ -246,7 +249,7 @@ class SubscribePlansController extends AppController
             $userList[$key] = str_replace(';', ' ', $user);
         }
         $title = $planUsers->plan_id . ' plan (' . $planUsers->name . ') users';
-        $backUrl = Router::url(array('controller' => 'subscribe_plans', 'action' => 'index'), true);
+        $backUrl = Router::url(array('controller' => 'plans', 'action' => 'index'), true);
         $this->set(compact('title', 'backUrl', 'planUsers', 'userList'));
     }
 
@@ -273,7 +276,7 @@ class SubscribePlansController extends AppController
         }
 
         $this->loadModel('GintonicCMS.Transactions');
-        $transactions = $this->Transactions->getTransaction($conditions);
+        $transactions = $this->Transactions->find('transactions',$conditions);
         $this->set('transactions', $this->paginate($transactions));
 
         $all = false;
@@ -281,9 +284,9 @@ class SubscribePlansController extends AppController
             $all = true;
         }
         $this->set(compact('all'));
-        $this->loadModel('GintonicCMS.SubscribePlans');
-        $planDetail = $this->SubscribePlans->find()
-                ->where(['SubscribePlans.plan_id' => $planId]);
+        $this->loadModel('GintonicCMS.Plans');
+        $planDetail = $this->Plans->find()
+                ->where(['Plans.plan_id' => $planId]);
 
         $title = ' Transactions ' . (empty($planDetail->id) ? '' : ('for ' . $planDetail['plan_id'] . ' plan'));
         if (empty($planId) && empty($userId) && empty($allTransaction)) {
@@ -298,24 +301,24 @@ class SubscribePlansController extends AppController
      */
     public function subscribeslist()
     {
-        $this->loadModel('GintonicCMS.UserCustomers');
-        $this->loadModel('GintonicCMS.SubscribePlans');
+        $this->loadModel('GintonicCMS.CustomersUsers');
+        $this->loadModel('GintonicCMS.Plans');
         $userId = $this->request->session()->read('Auth.User.id');
-        $customerId = $this->UserCustomers->getCustomerStripeId($userId);
-        $arrSubscribePlans = array();
+        $customerId = $this->CustomersUsers->find('customerStripeId', ['userId' => $userId]);
+        $arrPlans = array();
         if ($customerId) {
             try {
                 $customer = Stripe\Customer::retrieve($customerId);
                 if (!empty($customer->subscriptions)) {
                     $subscribes = Stripe\Customer::retrieve($customerId)->subscriptions->all();
-                    $plans = $this->SubscribePlans->find('list', [
+                    $plans = $this->Plans->find('list', [
                         'keyField' => 'plan_id',
                         'valueField' => 'plan_id'
                     ]);
 
                     foreach ($subscribes->data as $key => $subscribe) {
                         if (in_array($subscribe->plan->id, $plans->toArray())) {
-                            $arrSubscribePlans[$subscribe->plan->id] = $subscribe->id;
+                            $arrPlans[$subscribe->plan->id] = $subscribe->id;
                         }
                     }
                 }
@@ -323,8 +326,8 @@ class SubscribePlansController extends AppController
                 //debug($ex);
             }
         }
-        $this->set(compact('arrSubscribePlans'));
-        $this->set('plans', $this->SubscribePlans->find());
+        $this->set(compact('arrPlans'));
+        $this->set('plans', $this->Plans->find());
     }
 
     /**

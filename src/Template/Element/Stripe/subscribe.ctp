@@ -4,7 +4,7 @@ use Cake\Routing\Router;
 
 if ($this->request->session()->read('Auth.User.id')) {    
     if(!empty($subscribe_id)){
-        echo $this->Html->link('Unsubscribe Now',array('plugin' => 'GintonicCMS', 'controller' => 'subscribe_plans', 'action' => 'unsubscribeUser',$subscribe_id),array('class'=>'btn btn-primary'));
+        echo $this->Html->link('Unsubscribe Now',array('plugin' => 'GintonicCMS', 'controller' => 'plans', 'action' => 'unsubscribeUser',$subscribe_id),array('class'=>'btn btn-primary'));
     }else{
         $defaultOptions = array(
             'label' => '',

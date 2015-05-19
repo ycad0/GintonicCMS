@@ -3,9 +3,11 @@
 namespace GintonicCMS\Model\Table;
 
 use Cake\ORM\Table;
+use Cake\ORM\Query;
 
-class UserCustomersTable extends Table
+class PlansTable extends Table
 {
+
     /**
      * TODO: write comment
      */
@@ -21,21 +23,22 @@ class UserCustomersTable extends Table
                 ]
             ]
         ]);
+
+        $this->addAssociations([
+            'hasMany' => [
+                'PlansUsers'
+            ]
+        ]);
     }
 
     /**
-     * TODO: write comment
+     * TODO: Write document.
      */
-    public function getCustomerStripeId($userId = null)
+    public function findPlanDetails(Query $query, array $options)
     {
-        if (!empty($userId)) {
-            $userCustomer = $this->find()
-                    ->where(['UserCustomers.user_id' => $userId])
-                    ->first();
-            if (!empty($userCustomer->customer_id)) {
-                return $userCustomer->customer_id;
-            }
-        }
-        return false;
+        return $query
+                ->where(['Plans.plan_id' => $options['planId']])
+                ->contain(['PlansUsers'])
+                ->first();
     }
 }

@@ -33,4 +33,11 @@ class MessagesTable extends Table
             ]
         ]);
     }
+    
+    public function findWithMessages(Query $query, array $options)
+    {
+        return $query
+            ->where(['Messages.id IN' => $options['ids']])
+            ->contain(['Users' => ['Files'], 'MessageReadStatuses']);
+    }
 }

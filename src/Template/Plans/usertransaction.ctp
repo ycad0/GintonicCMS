@@ -23,7 +23,7 @@
                         <?php
                     } else {
                         $srNo = 1;
-                        foreach ($planUsers->SubscribePlanUsers as $key => $planUser) {
+                        foreach ($planUsers->plans_users as $key => $planUser) {
                             ?>
                             <tr>
                                 <td><?php echo $srNo++; ?></td>
@@ -33,7 +33,7 @@
                                 <td><?php echo $planUser['modified']; ?></td>
                                 <td class="text-center">
                                     <?php
-                                    echo $this->Html->link('View Transactions', array('plugin' => 'GintonicCMS', 'controller' => 'subscribe_plans', 'action' => 'myplantransaction', $planUsers['plan_id'], $planUser['user_id']), array('class' => 'btn btn-info'));
+                                    echo $this->Html->link('View Transactions', array('plugin' => 'GintonicCMS', 'controller' => 'plans', 'action' => 'myplantransaction', $planUsers['plan_id'], $planUser['user_id']), array('class' => 'btn btn-info'));
                                     ?>
                                 </td>
                             </tr>

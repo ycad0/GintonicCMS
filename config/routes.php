@@ -22,14 +22,14 @@ Router::scope('/', ['plugin' => 'GintonicCMS'], function ($routes) {
     $routes->connect('/payments/subscribe/*', ['controller' => 'Payments', 'action'=>'subscribe']);
     $routes->connect('/payments/confirmPayment/*', ['controller' => 'payments', 'action'=>'confirmPayment']);
     
-    $routes->connect('/subscribe_plans', ['controller' => 'SubscribePlans', 'action'=>'index']);
-    $routes->connect('/subscribe_plans/delete/*', ['controller' => 'SubscribePlans', 'action'=>'delete']);
-    $routes->connect('/subscribe_plans/userSubscribe/*', ['controller' => 'SubscribePlans', 'action'=>'userSubscribe']);
-    $routes->connect('/subscribe_plans/unsubscribeUser/*', ['controller' => 'SubscribePlans', 'action'=>'unsubscribeUser']);
-    $routes->connect('/subscribe_plans/createPlans/*', ['controller' => 'SubscribePlans', 'action'=>'createPlans']);
-    $routes->connect('/subscribe_plans/myplantransaction/*', ['controller' => 'SubscribePlans', 'action'=>'myplantransaction']);
-    $routes->connect('/subscribe_plans/usertransaction/*', ['controller' => 'SubscribePlans', 'action'=>'usertransaction']);
-    $routes->connect('/subscribe_plans/subscribeslist/*', ['controller' => 'SubscribePlans', 'action'=>'subscribeslist']);
+    $routes->connect('/plans', ['controller' => 'Plans', 'action'=>'index']);
+    $routes->connect('/plans/delete/*', ['controller' => 'Plans', 'action'=>'delete']);
+    $routes->connect('/plans/userSubscribe/*', ['controller' => 'Plans', 'action'=>'userSubscribe']);
+    $routes->connect('/plans/unsubscribeUser/*', ['controller' => 'Plans', 'action'=>'unsubscribeUser']);
+    $routes->connect('/plans/createPlans/*', ['controller' => 'Plans', 'action'=>'createPlans']);
+    $routes->connect('/plans/myplantransaction/*', ['controller' => 'Plans', 'action'=>'myplantransaction']);
+    $routes->connect('/plans/usertransaction/*', ['controller' => 'Plans', 'action'=>'usertransaction']);
+    $routes->connect('/plans/subscribeslist/*', ['controller' => 'Plans', 'action'=>'subscribeslist']);
 
     $routes->fallbacks('InflectedRoute');
 });

@@ -116,11 +116,9 @@ class ThreadsController extends AppController
     public function unreadCount()
     {
         $this->autoRender = false;
-        debug($this->Threads->find()->contain(['Messages.MessageReadStatuses'])->toArray());exit;
-
+        //debug($this->Threads->find()->contain(['Messages.MessageReadStatuses'])->toArray());exit;
         $threadCount = $this->Threads
-            ->find('withUsers', ['ids' => $users])
-            ->find('unread')
+            ->find('unread', ['ids' => $this->request->data['participantId']])
             ->count();
         echo json_encode($threadCount, JSON_NUMERIC_CHECK);
     }
@@ -131,7 +129,8 @@ class ThreadsController extends AppController
     public function get()
     {
         $this->autoRender = false;
-        $threadIds = [1, 2];
-        exit;
+        $threadDetails = $this->Threads
+            ->find('withThreads', ['ids' => $this->request->data['threadIds']]);
+        echo json_encode($threadDetails, JSON_NUMERIC_CHECK);
     }
 }

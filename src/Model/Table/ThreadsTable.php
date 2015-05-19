@@ -26,7 +26,12 @@ class ThreadsTable extends Table
         ]);
 
         $this->addAssociations([
-            'hasMany' => ['GintonicCMS.Messages']
+            'hasMany' => ['GintonicCMS.Messages'],
+            'belongsToMany' => [
+                'Users' => [
+                    'saveStrategy' => 'append'
+                ]
+            ]
         ]);
     }
 
@@ -98,13 +103,23 @@ class ThreadsTable extends Table
     public function findWithUsers(Query $query, array $options)
     {
         return $query
-            ->matching('Users', function ($q) use ($options) {
-                return $q
-                    //->select(['Threads.id'])
-                    ->where(['Users.id IN ' => $options['ids']]);
-            });
+                ->matching('Users', function ($q) use ($options) {
+                    return $q
+                        ->select(['Threads.id'])
+                        ->where(['Users.id IN ' => $options['ids']]);
+                });
     }
 
+    /**
+     * TODO: doccomment
+     */
+    public function findWithThreads(Query $query, array $options)
+    {
+        return $query
+            ->where(['Threads.id IN' => $options['ids']])
+            ->contain(['Messages' => ['Users' => ['Files']]]);
+    }
+    
     /**
      * TODO: doccomment
      */
@@ -127,7 +142,11 @@ class ThreadsTable extends Table
      */
     public function findUnread(Query $query, array $options)
     {
-        return $query;
+        return $query
+                ->matching('Messages.MessageReadStatuses', function ($q) use ($options) {
+                    return $q
+                        ->where(['MessageReadStatuses.status' => 0, 'MessageReadStatuses.user_id IN' => $options['ids']]);
+                });
     }
 
     /**

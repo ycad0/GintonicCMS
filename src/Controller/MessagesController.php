@@ -39,9 +39,10 @@ class MessagesController extends AppController
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
+        $this->Auth->allow();
         if (Plugin::loaded('GintonicCMS')) {
             $this->loadModel('GintonicCMS.Users');
-            $this->__setHeader();
+            //$this->__setHeader();
         }
     }
 
@@ -51,6 +52,26 @@ class MessagesController extends AppController
     public function index($type = 'inbox')
     {
         $this->set('title_for_layout', 'Messages');
+    }
+
+    public function unreadCount()
+    {
+        $this->autoRender = false;
+        $threadCount = $this->Threads
+            ->find('unread', ['ids' => $this->request->data['participantId']])
+            ->count();
+        echo json_encode($threadCount, JSON_NUMERIC_CHECK);
+    }
+
+    /**
+     * TODO: Write Comment
+     */
+    public function get()
+    {
+        $this->autoRender = false;
+        $messageDetails = $this->Messages
+            ->find('withMessages', ['ids' => $this->request->data['MessagesIds']]);
+        echo json_encode($messageDetails, JSON_NUMERIC_CHECK);
     }
 
     /**

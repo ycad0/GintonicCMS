@@ -12,27 +12,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (empty($subscribePlans)) { ?>
+                    <?php if (empty($plans)) { ?>
                         <tr>
                             <td colspan='5' class='text-warning'><?php echo __('No subscribes found.') ?></td>
                         </tr>
                         <?php
                     } else {
                         $srNo = 1;
-                        foreach ($subscribePlans as $subscribePlan) {
+                        foreach ($plans as $plan) {
                             ?>
                             <tr>
                                 <td><?php echo $srNo++; ?></td>
                                 <td class="text-center">
-                                    <?php echo $subscribePlan['plan_id']; ?>
+                                    <?php echo $plan['plan_id']; ?>
                                 </td>
                                 <td>
-                                    <?php echo $subscribePlan['plan_name']; ?>
+                                    <?php echo $plan['plan_name']; ?>
                                 </td>
-                                <td><?php echo $subscribePlan['created']; ?></td>
+                                <td><?php echo $plan['created']; ?></td>
                                 <td class="text-center actions">
-                                    <?php echo $this->Html->link('Unsubscribe Now', array('plugin' => 'GintonicCMS', 'controller' => 'subscribe_plans', 'action' => 'unsubscribeUser', $subscribePlan['subscribe_id']), array('class' => 'btn btn-warning'), 'Do you want to really unsubscribe this plan?'); ?>
-                                    <?php echo $this->Html->link('View Transactions', array('plugin' => 'GintonicCMS', 'controller' => 'subscribe_plans', 'action' => 'myplantransaction', $subscribePlan['plan_id']), array('class' => 'btn btn-info')); ?>
+                                    <?php echo $this->Html->link('Unsubscribe Now', array('plugin' => 'GintonicCMS', 'controller' => 'plans', 'action' => 'unsubscribeUser', $plan['subscribe_id']), array('class' => 'btn btn-warning'), 'Do you want to really unsubscribe this plan?'); ?>
+                                    <?php echo $this->Html->link('View Transactions', array('plugin' => 'GintonicCMS', 'controller' => 'plans', 'action' => 'myplantransaction', $plan['plan_id']), array('class' => 'btn btn-info')); ?>
                                 </td>
                             </tr>
                             <?php

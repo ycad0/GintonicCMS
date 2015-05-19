@@ -22,9 +22,10 @@ class PaymentsController extends AppController
             $this->layout = 'GintonicCMS.default';
         }
         $this->loadModel('GintonicCMS.Transactions');
-        $this->loadModel('GintonicCMS.SubscribePlan');
-        $this->loadModel('GintonicCMS.UserCustomer');
-        $this->loadModel('GintonicCMS.SubscribePlanUser');
+        $this->loadModel('GintonicCMS.Plans');
+        $this->loadModel('GintonicCMS.PlansUsers');
+        $this->loadModel('GintonicCMS.CustomersUsers');
+        $this->loadModel('GintonicCMS.PlansUsers');
         $this->Auth->allow('callbackSubscribes', 'oneTimePaymentSetAmount', 'oneTimePayment', 'success', 'fail', 'confirmPayment');
     }
 
@@ -53,8 +54,9 @@ class PaymentsController extends AppController
         } elseif (empty($userId)) {
             $conditions['Transactions.user_id'] = $this->request->session()->read('Auth.User.id');
         }
-
-        $transaction = $this->Transactions->getTransaction($conditions);
+        
+        $transaction = $this->Transactions->find('transactions',$conditions);
+        
         $this->set('transactions', $this->paginate($transaction));
     }
 
@@ -158,11 +160,9 @@ class PaymentsController extends AppController
                     $redirectUrl = $this->referer();
 
                     if ($subscribe->paid) {
-                        $this->loadModel('GintonicCMS.SubscribePlans');
-                        $this->loadModel('GintonicCMS.SubscribePlanUsers');
                         $transaction = $this->Transactions->addTransaction($arrDetail, $userId);
-                        $planDetail = $this->SubscribePlans->getPlanDetail($arrDetail['plan_id']);
-                        $response = $this->SubscribePlanUsers->addToSubscribeList($planDetail['id'], $this->request->session()->read('Auth.User.id'));
+                        $planDetail = $this->Plans->find('planDetails', ['planId' => $arrDetail['plan_id']]);
+                        $response = $this->PlansUsers->addToSubscribeList($planDetail['id'], $this->request->session()->read('Auth.User.id'));
                         $this->Flash->set(__('Subscribe has been successfully completed.'), [
                             'element' => 'GintonicCMS.alert',
                             'params' => ['class' => 'alert-success']
@@ -201,9 +201,8 @@ class PaymentsController extends AppController
     public function getCustomerId($userId = null, $stripeEmail = null, $stripeToken = null)
     {
         if (!empty($userId)) {
-            $this->loadModel('UserCustomers');
-            $userCustomer = $this->UserCustomers->find()
-                ->where(['UserCustomers.user_id' => $userId])
+            $userCustomer = $this->CustomersUsers->find()
+                ->where(['CustomersUsers.user_id' => $userId])
                 ->first();
 
             if (!empty($userCustomer)) {
@@ -215,8 +214,8 @@ class PaymentsController extends AppController
                         'user_id' => $userId,
                         'customer_id' => $customer->id,
                     ];
-                    $userCustomer = $this->UserCustomers->newEntity($arrCustomer);
-                    $this->UserCustomers->save($userCustomer);
+                    $userCustomer = $this->CustomersUsers->newEntity($arrCustomer);
+                    $this->CustomersUsers->save($userCustomer);
                     return $customer->id;
                 }
             }
