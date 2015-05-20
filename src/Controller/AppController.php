@@ -4,6 +4,7 @@ namespace GintonicCMS\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
+use Cake\Event\Event;
 
 class AppController extends Controller
 {
@@ -62,6 +63,13 @@ class AppController extends Controller
             ]
         ]);
         parent::initialize();
+    }
+    
+    public function beforeFilter(Event $event)
+    {
+        if ($this->request->params['controller'] == 'Pages') {
+            $this->Auth->allow();
+        }
     }
 
     /**

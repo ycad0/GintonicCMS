@@ -2,32 +2,38 @@
 
 namespace GintonicCMS\View\Helper;
 
+use Cake\Core\Configure;
 use Cake\Utility\Inflector;
 use Cake\View\Helper;
 use Cake\View\Helper\UrlHelper;
+use Cake\View\Helper\HtmlHelper;
 
 class RequireHelper extends Helper
 {
-    public $helpers = array('Html');
-
+    public $helpers = ['Html','Url'];
+ 
     /**
      * TODO: doccomment
      */
-    public function load($config, $require = '//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.8/require.min.js')
+    public function load($url, $requireLib='GintonicCMS.config')
     {
+        if (strpos($url, '//') === false) {
+            $url = $this->Url->assetUrl($url, ['pathPrefix' => Configure::read('App.jsBaseUrl')]);
+        }
         $modules = '';
         if (!is_null($this->_View->get('requiredeps'))) {
             $modules = "require([" . implode(',', $this->_View->get('requiredeps')) . "]);";
         }
-        $configStripped = substr($config, strrpos($config, '/') + 1);
-        return
-            "<script type='text/javascript'> var baseUrl = '" . $this->Html->Url->build('/', true) . "'; </script>
-            <script data-main='" . $config . "' src='" . $require . "'></script>
-            <script type='text/javascript'>
-                require(['" . $configStripped . "'], function () {
-                    " . $modules . "
-                });
-            </script>";
+        $output = $this->Html->script(
+            'GintonicCMS.config',
+            ['data-main' => $url]
+        );
+        $output .= "<script type='text/javascript'>";
+        $output .= "require(['" . $url. "'], function () {";
+        $output .= $modules;
+        $output .= '});</script>';
+
+        return $output;
     }
 
     /**
