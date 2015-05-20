@@ -2,13 +2,12 @@
 
 namespace GintonicCMS\Controller;
 
-use GintonicCMS\Controller\AppController;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
+use GintonicCMS\Controller\AppController;
 
 class ThreadsController extends AppController
 {
-
     /**
      * TODO: Write comment
      */
@@ -54,7 +53,7 @@ class ThreadsController extends AppController
         $data = $this->request->data['participants'];
         $threadUser = [];
         foreach ($data as $key => $id) {
-            $threadUser['users'][] = ['id' => (int) $id];
+            $threadUser['users'][] = ['id' => (int)$id];
         }
 
         $thread = $this->Threads->newEntity($threadUser, [

@@ -64,7 +64,10 @@ class AppController extends Controller
         ]);
         parent::initialize();
     }
-    
+
+    /**
+     * TODO: blockcomment
+     */
     public function beforeFilter(Event $event)
     {
         if ($this->request->params['controller'] == 'Pages') {

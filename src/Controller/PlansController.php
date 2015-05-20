@@ -276,7 +276,7 @@ class PlansController extends AppController
         }
 
         $this->loadModel('GintonicCMS.Transactions');
-        $transactions = $this->Transactions->find('transactions',$conditions);
+        $transactions = $this->Transactions->find('transactions', $conditions);
         $this->set('transactions', $this->paginate($transactions));
 
         $all = false;

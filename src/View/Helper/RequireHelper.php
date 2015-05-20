@@ -5,17 +5,17 @@ namespace GintonicCMS\View\Helper;
 use Cake\Core\Configure;
 use Cake\Utility\Inflector;
 use Cake\View\Helper;
-use Cake\View\Helper\UrlHelper;
 use Cake\View\Helper\HtmlHelper;
+use Cake\View\Helper\UrlHelper;
 
 class RequireHelper extends Helper
 {
-    public $helpers = ['Html','Url'];
- 
+    public $helpers = ['Html', 'Url'];
+
     /**
      * TODO: doccomment
      */
-    public function load($url, $requireLib='GintonicCMS.config')
+    public function load($url, $requireLib = 'GintonicCMS.config')
     {
         if (strpos($url, '//') === false) {
             $url = $this->Url->assetUrl($url, ['pathPrefix' => Configure::read('App.jsBaseUrl')]);
@@ -25,11 +25,10 @@ class RequireHelper extends Helper
             $modules = "require([" . implode(',', $this->_View->get('requiredeps')) . "]);";
         }
         $output = $this->Html->script(
-            'GintonicCMS.config',
-            ['data-main' => $url]
+            'GintonicCMS.config', ['data-main' => $url]
         );
         $output .= "<script type='text/javascript'>";
-        $output .= "require(['" . $url. "'], function () {";
+        $output .= "require(['" . $url . "'], function () {";
         $output .= $modules;
         $output .= '});</script>';
 
