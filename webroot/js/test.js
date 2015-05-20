@@ -1,1 +1,1 @@
-define(["require","react"],function(e){var t=e("react");t.render(t.createElement("h1",null,"Hello, world!"),document.getElementById("example"))});
+define(["require","jsx!gintonic/test2"],function(e){e("jsx!gintonic/test2")});
