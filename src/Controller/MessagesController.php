@@ -222,7 +222,8 @@ class MessagesController extends AppController
         unset($groupUsersJson[$this->request->session()->read('Auth.User.id')]);
         $groupUsersJson = $this->setUserCommaSepList($groupUsersJson);
         $unReadMessage = $this->getUnreadMessage(
-            $this->request->session()->read('Auth.User.id'), true
+            $this->request->session()->read('Auth.User.id'),
+            true
         );
         $chats = $this->Messages->find('all')
             ->where(['Messages.thread_id' => $threadId]);
@@ -425,9 +426,9 @@ class MessagesController extends AppController
             if (!empty($participantsUserIds)) {
                 $messages = $this->Messages
                     ->find('withUsers', [
-                    'userIds' => $participantsUserIds,
-                    'threadIds' => $threadIds->toArray()
-                ]);
+                        'userIds' => $participantsUserIds,
+                        'threadIds' => $threadIds->toArray()
+                    ]);
             }
         }
         $this->set(compact('messages'));
@@ -440,18 +441,17 @@ class MessagesController extends AppController
     {
         if (empty($recipientId)) {
             $this->Flash->set(
-                __('Invalid Recipient.!!!'), [
-                'element' => 'GintonicCMS.alert',
-                'params' => ['class' => 'alert-danger']
-                ]
-            );
-            $this->redirect(
+                __('Invalid Recipient.!!!'),
                 [
-                    'plugin' => false,
-                    'controller' => 'proball_messages',
-                    'action' => 'index'
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-danger']
                 ]
             );
+            $this->redirect([
+                'plugin' => false,
+                'controller' => 'proball_messages',
+                'action' => 'index'
+            ]);
         }
 
         $userId = $this->request->session()->read('Auth.User.id');
