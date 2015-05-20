@@ -1,0 +1,1 @@
+define(["require","jsx!gintonic/test2"],function(e){e("jsx!gintonic/test2")});
