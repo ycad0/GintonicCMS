@@ -148,7 +148,7 @@ class PaymentsController extends AppController
                     $subscribe->paid = ($subscribe->status == 'active') ? 1 : 0;
                     $subscribe->currency = $subscribe->plan->currency;
                     $card = $this->__getCardInfo($customerId);
-                    $subscribe->card = (object) array('name' => $card->name, 'brand' => $card->brand, 'last4' => $card->last4);
+                    $subscribe->card = (object)array('name' => $card->name, 'brand' => $card->brand, 'last4' => $card->last4);
                     $subscribe->amount = $subscribe->plan->amount;
                     $arrDetail = [
                         'transaction_type_id' => 2,
@@ -277,7 +277,7 @@ class PaymentsController extends AppController
 
                 $customer = $this->__createCustomer($this->request->data['email'], $this->request->data['stripeToken']);
 
-                $charge = $this->__createCharge($customer->id, ((float) $this->request->data['amount']) * 100);
+                $charge = $this->__createCharge($customer->id, ((float)$this->request->data['amount']) * 100);
 
                 $arrDetail = [
                     'transaction_type_id' => 1,

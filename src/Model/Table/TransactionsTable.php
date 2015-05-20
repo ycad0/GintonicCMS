@@ -46,7 +46,7 @@ class TransactionsTable extends Table
                             ->select(['TransactionsTypes.name']);
                 }
             ])
-            ->order(['Transactions.created' => 'desc']);;
+            ->order(['Transactions.created' => 'desc']);
     }
 
     /**

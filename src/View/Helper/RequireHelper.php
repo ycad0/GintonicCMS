@@ -25,7 +25,8 @@ class RequireHelper extends Helper
             $modules = "require([" . implode(',', $this->_View->get('requiredeps')) . "]);";
         }
         $output = $this->Html->script(
-            'GintonicCMS.config', ['data-main' => $url]
+            'GintonicCMS.config',
+            ['data-main' => $url]
         );
         $output .= "<script type='text/javascript'>";
         $output .= "require(['" . $url . "'], function () {";
