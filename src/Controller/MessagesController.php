@@ -424,11 +424,10 @@ class MessagesController extends AppController
             }
 
             if (!empty($participantsUserIds)) {
-                $messages = $this->Messages
-                    ->find('withUsers', [
-                        'userIds' => $participantsUserIds,
-                        'threadIds' => $threadIds->toArray()
-                    ]);
+                $messages = $this->Messages->find('withUsers', [
+                    'userIds' => $participantsUserIds,
+                    'threadIds' => $threadIds->toArray()
+                ]);
             }
         }
         $this->set(compact('messages'));
@@ -440,13 +439,10 @@ class MessagesController extends AppController
     public function mailboxView($recipientId = null)
     {
         if (empty($recipientId)) {
-            $this->Flash->set(
-                __('Invalid Recipient.!!!'),
-                [
-                    'element' => 'GintonicCMS.alert',
-                    'params' => ['class' => 'alert-danger']
-                ]
-            );
+            $this->Flash->set(__('Invalid Recipient.!!!'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
+            ]);
             $this->redirect([
                 'plugin' => false,
                 'controller' => 'proball_messages',
