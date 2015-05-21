@@ -10,7 +10,7 @@ use Cake\View\Helper\UrlHelper;
 class RequireHelper extends Helper
 {
     
-    public $helpers = ['Html','Url'];
+    public $helpers = ['Html', 'Url'];
     
     /**
      * TODO: doccomment

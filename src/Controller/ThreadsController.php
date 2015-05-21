@@ -48,7 +48,7 @@ class ThreadsController extends AppController
     {
         $this->autoRender = false;
         $thread = $this->Threads->newEntity(
-            $this->request->data['users'], 
+            $this->request->data['users'],
             ['associated' => ['Users']]
         );
         $this->Threads->save($thread);
