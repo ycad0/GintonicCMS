@@ -74,7 +74,6 @@ class AppController extends Controller
             $this->Auth->allow();
         }
     }
-
     /**
      * TODO: blockcomment
      */
