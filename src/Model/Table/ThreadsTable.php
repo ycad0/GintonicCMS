@@ -2,20 +2,19 @@
 
 namespace GintonicCMS\Model\Table;
 
-use Cake\I18n\Time;
+use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 
 class ThreadsTable extends Table
 {
+
     /**
      * TODO: doccomment
      */
     public function initialize(array $config)
     {
         parent::initialize($config);
-        $this->primaryKey('id');
-
         $this->addBehavior('Timestamp', [
             'events' => [
                 'Model.beforeSave' => [
@@ -24,100 +23,103 @@ class ThreadsTable extends Table
                 ]
             ]
         ]);
-
         $this->addAssociations([
-            'belongsTo' => ['Users' => [
-                'className' => 'GintonicCMS.Users',
-                'foreignKey' => 'user_id',
-                'propertyName' => 'user_thread'
-            ]],
-            'hasMany' => ['ThreadParticipants' => [
-                'className' => 'Messages.ThreadParticipants',
-                'propertyName' => 'thread_participants'
-            ]]
+            'hasMany' => ['GintonicCMS.Messages'],
+            'belongsToMany' => [
+                'Users' => [
+                    'saveStrategy' => 'append'
+                ]
+            ]
         ]);
     }
 
     /**
      * TODO: doccomment
      */
-    public function create()
+    public function findWithUsers(Query $query, array $options)
     {
-        //Write code;
-    }
-    /**
-     * TODO: doccomment
-     */
-    public function getThread($userId = null, $recipientId = null, $threadUserIds = [])
-    {
-        $this->ThreadParticipants = TableRegistry::get('Messages.ThreadParticipants');
-        $participantsUsers = [$userId, $recipientId];
-        if (empty($recipientId) && !empty($threadUserIds)) {
-            $threadUserIds[] = $userId;
-            $participantsUsers = $threadUserIds;
-        }
-        $threadQuery = $this->ThreadParticipants->find()
-            ->where(['ThreadParticipants.user_id IN' => $participantsUsers]);
-
-        $threads = $threadQuery->select([
-            'ThreadParticipants.thread_id',
-            'count' => $threadQuery->func()->count('ThreadParticipants.thread_id')
-        ])
-        ->group('ThreadParticipants.thread_id')
-        ->having(['count' => count($participantsUsers)])
-        ->toArray();
-        
-        if (empty($threads) && empty($recipientId) && empty($threadUserIds)) {
-            return 0;
-        }
-        if (empty($threads)) {
-            $data['user_id'] = $userId;
-            $threadResult = $this->save($this->newEntity($data));
-            $data = [];
-            $data['thread_id'] = $threadId = $threadResult->id;
-            foreach ($participantsUsers as $threadUserId) {
-                $data['user_id'] = $threadUserId;
-                $threads[] = $this->ThreadParticipants->save($this->ThreadParticipants->newEntity($data));
-            }
-        } else {
-            $threadId = $threads[0]['thread_id'];
-        }
-        return $threadId;
+        return $query
+            ->matching('Users', function ($q) use ($options) {
+                return $q
+                    ->select(['Threads.id'])
+                    ->where(['Users.id IN ' => $options['users']]);
+            });
     }
 
     /**
      * TODO: doccomment
      */
-    public function getGroups($userId = null)
+    public function findDetails(Query $query, array $options)
     {
-        $threads = $this->find('list', ['keyField' => 'id', 'valueField' => 'id'])
-            ->where(['Threads.thread_participant_count >' => 2])
-            ->toArray();
-        $this->ThreadParticipants = TableRegistry::get('Messages.ThreadParticipants');
-        $threadIds = $this->ThreadParticipants->find('list', ['keyField' => 'thread_id', 'valueField' => 'thread_id'])
-            ->where(['ThreadParticipants.thread_id IN' => $threads, 'ThreadParticipants.user_id' => $userId])
-            ->toArray();
-        $groups = array();
-        $count = 0;
-        foreach ($threadIds as $threadId) {
-            $groups[$threadId] = 'Group-' . $count++;
-        }
-        return $groups;
+        return $query
+            ->where(['Threads.id' => $options['threads']])
+            ->contain([
+                'Messages' => [
+                    'Users' => [
+                        'Files'
+                    ]
+                ]
+            ])
+            ->limit(10);
     }
-
+    
     /**
      * TODO: doccomment
      */
-    public function getGroupAdmin($threadId = null)
+    public function findParticipant(Query $query, array $options)
     {
-        $userData = $this->find()
-            ->where(['Threads.id' => $threadId])
-            ->contain(['Users' => function ($userQuery) {
-                    return $userQuery
-                            ->select(['id', 'first', 'last', 'email']);
-            }])
-            ->first()
-            ->toArray();
-        return $userData['user_thread'];
+        return $query
+            ->matching('Users', function ($q) use ($options) {
+                return $q
+                    ->select(['Users.id'])
+                    ->where([
+                        'Users.id NOT IN ' => $options['userIds'],
+                        'Threads.id' => $options['threadIds']
+                    ]);
+            });
+    }
+    
+    /**
+     * TODO: doccomment
+     */
+    public function findWithUserCount(Query $query, array $options)
+    {
+        return $query
+            ->matching('Users', function ($q) use ($options) {
+                return $q
+                    ->select([
+                        'Threads.id',
+                        'count' => $q->func()->count('Users.id')
+                    ])
+                    ->group('Threads.id')
+                    ->having(['count' => $options['count']]);
+            });
+    }
+
+    /**
+     * TODO: Write Comment
+     */
+    public function findUnread(Query $query, array $options)
+    {
+        return $query
+            ->matching('Messages.MessageReadStatuses', function ($q) use ($options) {
+                return $q->where([
+                    'MessageReadStatuses.status' => 0,
+                ]);
+            });
+    }
+    
+    /**
+     * TODO: Write Comment
+     */
+    public function findDeleted(Query $query, array $options)
+    {
+        return $query
+            ->matching('Messages.MessageReadStatuses', function ($q) use ($options) {
+                return $q
+                    ->where([
+                        'MessageReadStatuses.status' => 2,
+                    ]);
+            });
     }
 }
