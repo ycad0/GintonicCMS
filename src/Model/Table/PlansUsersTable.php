@@ -5,7 +5,7 @@ namespace GintonicCMS\Model\Table;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 
-class SubscribePlanUsersTable extends Table
+class PlansUsersTable extends Table
 {
     /**
      * TODO: write comment
@@ -22,20 +22,12 @@ class SubscribePlanUsersTable extends Table
         ]);
         
         $this->addBehavior('CounterCache', [
-            'SubscribePlans' => ['plan_user_count']
+            'Plans' => ['plan_user_count']
         ]);
         $this->addAssociations([
             'belongsTo' => [
-                'SubscribePlans' => [
-                    'className' => 'SubscribePlans',
-                    'foreignKey' => 'plan_id',
-                    'counterCache' => true
-                ],
-                'Users' => [
-                    'className' => 'Users',
-                    'foreignKey' => 'user_id',
-                    'propertyName' => 'Users'
-                ]
+                'Plans',
+                'Users'
             ]
         ]);
         parent::initialize($config);
@@ -53,7 +45,7 @@ class SubscribePlanUsersTable extends Table
         ];
         
         $oldPlan = $this->find()
-                    ->where(['SubscribePlanUsers.user_id' => $userId, 'SubscribePlanUsers.plan_id' => $planId])
+                    ->where(['PlansUsers.user_id' => $userId, 'PlansUsers.plan_id' => $planId])
                     ->first();
         
         if (!empty($oldPlan)) {
@@ -79,18 +71,19 @@ class SubscribePlanUsersTable extends Table
     {
         if (!empty($subscribeDetail) && isset($subscribeDetail['plan_id']) && isset($subscribeDetail['last_charged']) && isset($subscribeDetail['customer_id'])) {
             //$subscribeDetail['plan_id'] is the varachar here
-            $subscribePlan = TableRegistry::get('GintonicCMS.SubscribePlans');
-            $userCustomer = TableRegistry::get('GintonicCMS.UserCustomers');
+            $subscribePlan = TableRegistry::get('GintonicCMS.Plans');
+            $userCustomer = TableRegistry::get('GintonicCMS.CustomersUsers');
             
-            $planDetail = $subscribePlan->getPlanDetail($subscribeDetail['plan_id']);
+            $planDetail = $subscribePlan->find('planDetails', ['planId' => $subscribeDetail['plan_id']]);
+            
             $customerDetail = $userCustomer->find()
                                 ->where(['customer_id' => $subscribeDetail['customer_id']])
                                 ->first();
             
             $subscribePlanUser = $this->find()
                                 ->where([
-                                    'SubscribePlanUsers.user_id' => $customerDetail->user_id,
-                                    'SubscribePlanUsers.plan_id' => $planDetail->id
+                                    'PlansUsers.user_id' => $customerDetail->user_id,
+                                    'PlansUsers.plan_id' => $planDetail->id
                                 ])
                                 ->first()
                                 ->toArray();

@@ -28,12 +28,12 @@ use Cake\I18n\Time;
                                     <div class="col-md-11 col-sm-11">
                                         <h4>
                                             <?php
-                                            $name = $message->Sender->first . ' ' . $message->Sender->last;
+                                            $name = $message->user->first . ' ' . $message->user->last;
                                             echo $this->Html->link($name, [
                                                 'plugin' => 'GintonicCMS',
                                                 'controller' => 'messages',
                                                 'action' => 'mailboxView',
-                                                $message->Sender->id
+                                                $message->user->id
                                                     ], ['escape' => false]
                                             );
                                             ?>

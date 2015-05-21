@@ -2,9 +2,10 @@
 
 namespace GintonicCMS\Model\Table;
 
+use Cake\ORM\Query;
 use Cake\ORM\Table;
 
-class UserCustomersTable extends Table
+class CustomersUsersTable extends Table
 {
     /**
      * TODO: write comment
@@ -26,16 +27,10 @@ class UserCustomersTable extends Table
     /**
      * TODO: write comment
      */
-    public function getCustomerStripeId($userId = null)
+    public function findCustomerStripeId(Query $query, array $options)
     {
-        if (!empty($userId)) {
-            $userCustomer = $this->find()
-                    ->where(['UserCustomers.user_id' => $userId])
-                    ->first();
-            if (!empty($userCustomer->customer_id)) {
-                return $userCustomer->customer_id;
-            }
-        }
-        return false;
+        return $query
+                ->where(['CustomersUsers.user_id' => $options['userId']])
+                ->first();
     }
 }

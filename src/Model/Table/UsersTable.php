@@ -16,17 +16,17 @@ class UsersTable extends Table
     public function validationDefault(Validator $validator)
     {
         return $validator
-                ->notEmpty('email', __('A username is required'))
-                ->notEmpty('role', __('A role is required'))
-                ->add('email', [
-                    'unique' => [
-                        'rule' => ['validateUnique'],
-                        'provider' => 'table',
-                        'message' => __('Email adress already exists.')
-                    ]
-                ])
-                ->requirePresence('password')
-                ->notEmpty('password', ['message' => __('Please enter password.')]);
+            ->notEmpty('email', __('A username is required'))
+            ->notEmpty('role', __('A role is required'))
+            ->add('email', [
+                'unique' => [
+                    'rule' => ['validateUnique'],
+                    'provider' => 'table',
+                    'message' => __('Email adress already exists.')
+                ]
+            ])
+            ->requirePresence('password')
+            ->notEmpty('password', ['message' => __('Please enter password.')]);
     }
 
     /**
@@ -49,11 +49,8 @@ class UsersTable extends Table
         ]);
 
         $this->addAssociations([
-            'belongsTo' => ['Files' => [
-                    'className' => 'GintonicCMS.Files',
-                    'foreignKey' => 'file_id',
-                    'propertyName' => 'file'
-                ]],
+            'belongsTo' => ['GintonicCMS.Files'],
+            'belongsToMany' => ['GintonicCMS.Threads']
         ]);
     }
 

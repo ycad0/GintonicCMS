@@ -34,8 +34,8 @@ use Cake\I18n\Time;
                                 ?>
                                 <tr>
                                     <td><?php echo $transaction['id'] ?></td>
-                                    <td><?php echo $transaction['Users']['first'] . ' ' . $transaction['Users']['last']; ?></td>
-                                    <td class="text-center"><?php echo $transaction['TransactionTypes']['name'] ?></td>
+                                    <td><?php echo $transaction['user']['first'] . ' ' . $transaction['user']['last']; ?></td>
+                                    <td class="text-center"><?php echo $transaction['transactions_type']['name'] ?></td>
                                     <td><?php echo $transaction['transaction_id'] ?></td>
                                     <td><?php echo strtoupper($transaction['currency']) . ' ' . $transaction['amount'] ?></td>
                                     <td><?php echo $transaction['brand'] . ' ' . $transaction['last4'] ?></td>

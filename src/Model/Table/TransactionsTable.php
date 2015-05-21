@@ -2,11 +2,11 @@
 
 namespace GintonicCMS\Model\Table;
 
+use Cake\ORM\Query;
 use Cake\ORM\Table;
 
 class TransactionsTable extends Table
 {
-
     /**
      * TODO: write comment.
      */
@@ -23,16 +23,8 @@ class TransactionsTable extends Table
 
         $this->addAssociations([
             'belongsTo' => [
-                'Users' => [
-                    'className' => 'Users',
-                    'foreignKey' => 'user_id',
-                    'propertyName' => 'Users'
-                ],
-                'TransactionTypes' => [
-                    'className' => 'TransactionTypes',
-                    'foreignKey' => 'transaction_type_id',
-                    'propertyName' => 'TransactionTypes'
-                ]
+                'Users',
+                'TransactionsTypes'
             ]
         ]);
     }
@@ -40,21 +32,21 @@ class TransactionsTable extends Table
     /**
      * TODO: write comment
      */
-    public function getTransaction($conditions = null)
+    public function findTransactions(Query $query, array $options)
     {
-        return $this->find()
-                ->where($conditions)
-                ->contain([
-                    'Users' => function ($query) {
-                        return $query
-                            ->select(['Users.id', 'Users.first', 'Users.last']);
-                    },
-                    'TransactionTypes' => function ($query) {
-                        return $query
-                            ->select(['TransactionTypes.name']);
-                    }
-                ])
-                ->order(['Transactions.created' => 'desc']);
+        return $query
+            ->where($options)
+            ->contain([
+                'Users' => function ($q) {
+                    return $q
+                        ->select(['Users.id', 'Users.first', 'Users.last']);
+                },
+                'TransactionsTypes' => function ($qt) {
+                    return $qt
+                            ->select(['TransactionsTypes.name']);
+                }
+            ])
+            ->order(['Transactions.created' => 'desc']);
     }
 
     /**

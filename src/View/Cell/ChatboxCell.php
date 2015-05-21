@@ -25,7 +25,7 @@ class ChatboxCell extends Cell
     {
         $this->loadModel('GintonicCMS.Users');
         $this->loadModel('GintonicCMS.Threads');
-        $this->loadModel('GintonicCMS.ThreadParticipants');
+        $this->loadModel('GintonicCMS.ThreadsUsers');
         $this->loadModel('GintonicCMS.Messages');
         $this->loadModel('GintonicCMS.MessageReadStatuses');
 
@@ -37,6 +37,7 @@ class ChatboxCell extends Cell
             $userId = $this->request->session()->read('Auth.User.id');
             $recipientId = (int)$recipientId;
             if ($this->request->is(['put', 'post']) && !empty($this->request->data['body']) && empty($isGroup)) {
+                $this->autoRender = false;
                 $response = $this->Messages->sentMessage($userId, $this->request->data);
                 if ($response['status']) {
                     $message = [
@@ -47,7 +48,6 @@ class ChatboxCell extends Cell
                     $response['content'] = $this->render('GintonicCMS.Element/Messages/new_message', 'ajax')->body();
                 }
                 echo json_encode($response);
-                exit;
             }
             $recipient = $this->Users->find()
                 ->where(['Users.id' => $recipientId])

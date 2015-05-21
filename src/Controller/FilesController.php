@@ -147,8 +147,8 @@ class FilesController extends AppController
     public function update()
     {
         $this->layout = false;
+        $this->autoRender = false;
         $response = $this->Files->updateFileName($this->request->data);
         echo json_encode($response, JSON_NUMERIC_CHECK);
-        exit;
     }
 }

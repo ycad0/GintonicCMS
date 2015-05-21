@@ -8,8 +8,8 @@ use Cake\Core\Configure;
         <div class="col-md-12">
             <h1>
                 Subscribe Plans
-                <?php echo $this->Html->link('<i class="fa fa-th-large"></i> View Subscribe Transactions', Router::url(array('plugin' => 'GintonicCMS', 'controller' => 'subscribe_plans', 'action' => 'myplantransaction', 0, 0, true), true), array('class' => 'btn btn-primary pull-right', 'escape' => false, 'title' => 'View Subscribes transactions')); ?>
-                <?php echo $this->Html->link('<i class="fa fa-plus"> </i>Add Plan', array('controller' => 'subscribe_plans', 'action' => 'createPlans'), array('class' => 'btn btn-primary pull-right', 'escape' => false, 'title' => 'Add new plan')); ?>
+                <?php echo $this->Html->link('<i class="fa fa-th-large"></i> View Subscribe Transactions', Router::url(array('plugin' => 'GintonicCMS', 'controller' => 'plans', 'action' => 'myplantransaction', 0, 0, true), true), array('class' => 'btn btn-primary pull-right', 'escape' => false, 'title' => 'View Subscribes transactions')); ?>
+                <?php echo $this->Html->link('<i class="fa fa-plus"> </i>Add Plan', array('controller' => 'plans', 'action' => 'createPlans'), array('class' => 'btn btn-primary pull-right', 'escape' => false, 'title' => 'Add new plan')); ?>
             </h1>
             <table class="table table-hover table-striped table-bordered">
                 <thead>
@@ -45,13 +45,13 @@ use Cake\Core\Configure;
                                 <td><?php echo $plan['modified']; ?></td>
                                 <td class="text-center">
                                     <span class="text-center">
-                                        <?php echo $this->Html->link('<i class="fa fa-pencil"> </i>', array('plugin' => 'GintonicCMS', 'controller' => 'SubscribePlans', 'action' => 'createPlans', $plan['id']), array('role' => 'button', 'escape' => false, 'title' => 'Edit this plan')); ?>
+                                        <?php echo $this->Html->link('<i class="fa fa-pencil"> </i>', array('plugin' => 'GintonicCMS', 'controller' => 'Plans', 'action' => 'createPlans', $plan['id']), array('role' => 'button', 'escape' => false, 'title' => 'Edit this plan')); ?>
                                         &nbsp;
-                                        <?php echo $this->Html->link('<i class="fa fa-th"> </i>', array('plugin' => 'GintonicCMS', 'controller' => 'SubscribePlans', 'action' => 'myplantransaction', $plan['plan_id']), array('role' => 'button', 'escape' => false, 'title' => 'View this plan transactions')); ?>
+                                        <?php echo $this->Html->link('<i class="fa fa-th"> </i>', array('plugin' => 'GintonicCMS', 'controller' => 'Plans', 'action' => 'myplantransaction', $plan['plan_id']), array('role' => 'button', 'escape' => false, 'title' => 'View this plan transactions')); ?>
                                         &nbsp;
-                                        <?php echo $this->Html->link('<i class="fa fa-user"> </i>', array('plugin' => 'GintonicCMS', 'controller' => 'SubscribePlans', 'action' => 'usertransaction', $plan['plan_id']), array('role' => 'button', 'escape' => false, 'title' => 'View this plan users')); ?>
+                                        <?php echo $this->Html->link('<i class="fa fa-user"> </i>', array('plugin' => 'GintonicCMS', 'controller' => 'Plans', 'action' => 'usertransaction', $plan['plan_id']), array('role' => 'button', 'escape' => false, 'title' => 'View this plan users')); ?>
                                         &nbsp;
-                                        <?php echo $this->Html->link('<i class="fa fa-trash-o"> </i>', array('plugin' => 'GintonicCMS', 'controller' => 'SubscribePlans', 'action' => 'delete', $plan['id']), array('role' => 'button', 'escape' => false, 'title' => 'Delete this plan'), 'Are you sure? You want to delete this plan.'); ?>
+                                        <?php echo $this->Html->link('<i class="fa fa-trash-o"> </i>', array('plugin' => 'GintonicCMS', 'controller' => 'Plans', 'action' => 'delete', $plan['id']), array('role' => 'button', 'escape' => false, 'title' => 'Delete this plan'), 'Are you sure? You want to delete this plan.'); ?>
                                     </span>
                                 </td>
                             </tr>

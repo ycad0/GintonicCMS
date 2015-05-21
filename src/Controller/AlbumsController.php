@@ -73,6 +73,7 @@ class AlbumsController extends AppController
      */
     public function deleteImage()
     {
+        $this->autoRender = false;
         $message = __('Unable to delete image. Please try again...');
         $success = false;
         if (!empty($this->request->data['id']) && !empty($this->request->data['fileId'])) {
@@ -92,7 +93,6 @@ class AlbumsController extends AppController
             'message' => $message,
             'success' => $success
         ]);
-        exit;
     }
 
     /**

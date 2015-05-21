@@ -22,36 +22,33 @@ class MailboxCell extends Cell
      */
     public function display()
     {
-        $this->loadModel('GintonicCMS.Users');
+        $this->loadModel('GintonicCMS.Threads');
         $this->loadModel('GintonicCMS.Messages');
-        $this->loadModel('GintonicCMS.ThreadParticipants');
 
         $userId = $this->request->session()->read('Auth.User.id');
 
-        $threadIds = $this->ThreadParticipants->find('all')
-                ->where(['ThreadParticipants.user_id' => $userId])
-                ->combine('id', 'thread_id');
+        $threadIds = $this->Threads
+            ->find('withUsers', ['ids' => $userId])
+            ->combine('id', 'id');
+
         $participantsIds = [];
         $messages = [];
-        $threads = [];
+
         if (!empty($threadIds)) {
-            $participantsIds = $this->ThreadParticipants->find('all')
-                    ->where([
-                        'ThreadParticipants.user_id !=' => $userId,
-                        'thread_id IN' => $threadIds->toArray(),
-                        'MessageReadStatuses.status' => 0
-                    ])
-                    ->contain(['MessageReadStatuses'])
-                    ->combine('id', 'user_id');
-            if (!empty($participantsIds)) {
-                $messages = $this->Messages->find('all')
-                        ->where([
-                            'Messages.user_id IN ' => $participantsIds->toArray(),
-                            'thread_id IN ' => $threadIds->toArray()
-                        ])
-                        ->contain(['Sender' => ['Files']])
-                        ->group(['Messages.user_id'])
-                        ->order(['Messages.created' => 'asc']);
+            $participantsIds = $this->Threads
+                ->find('participant', ['userIds' => $userId, 'threadIds' => $threadIds->toArray()])
+                ->select('Users.id');
+
+            foreach ($participantsIds as $key => $value) {
+                $participantsUserIds[] = $value->_matchingData['Users']->id;
+            }
+
+            if (!empty($participantsUserIds)) {
+                $messages = $this->Messages
+                    ->find('withUsers', [
+                        'userIds' => $participantsUserIds,
+                        'threadIds' => $threadIds->toArray()
+                    ]);
             }
         }
         $this->set(compact('messages'));

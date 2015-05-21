@@ -22,4 +22,4 @@
  * THE SOFTWARE.
  */
 
-define(["JSXTransformer","text"],function(e,t){"use strict";var n={},r={version:"0.6.0",load:function(r,i,s,o){var u=o.jsx||{},a=u.fileExtension||".js",f={harmony:!!u.harmony,stripTypes:!!u.stripTypes},l=function(t){try{t=e.transform(t,f).code}catch(i){s.error(i)}o.isBuild?n[r]=t:typeof location!="undefined"&&(t+="\n//# sourceURL="+location.protocol+"//"+location.hostname+o.baseUrl+r+a),s.fromText(t)};l.error=function(e){s.error(e)},t.load(r+a,i,l,o)},write:function(e,t,r){if(n.hasOwnProperty(t)){var i=n[t];r.asModule(e+"!"+t,i)}}};return r});
+define(["JSXTransformer","text"],function(e,t){"use strict";var n={},r={version:"0.6.2",load:function(r,i,s,o){var u=o.jsx||{},a=u.fileExtension||".js",f={harmony:!!u.harmony,stripTypes:!!u.stripTypes},l=function(t){try{t=e.transform(t,f).code}catch(i){s.error(i)}o.isBuild?n[r]=t:typeof location!="undefined"&&(t+="\n//# sourceURL="+location.protocol+"//"+location.hostname+o.baseUrl+r+a),s.fromText(t)};l.error=function(e){s.error(e)},t.load(r+a,i,l,o)},write:function(e,t,r){if(n.hasOwnProperty(t)){var i=n[t];r.asModule(e+"!"+t,i)}}};return r});
