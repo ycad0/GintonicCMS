@@ -369,27 +369,4 @@ class UsersController extends AppController
         }
         $this->render('GintonicCMS.send_recovery', 'GintonicCMS.bare');
     }
-    
-    /**
-     * TODO: Write Document
-     */
-    public function SettingsController()
-    {
-        /**
-        $command = ROOT.'\\bin\\cake migrations migrate --plugin GintonicCMS';
-        debug($command);
-        $output = shell_exec($command);
-        debug($output);
-        */
-        $command = new Migrate();
-        $input = new ArrayInput(array('--plugin' => 'GintonicCMS'));
-        $output = new NullOutput();
-        $resultCode = $command->run($input, $output);
-        if($resultCode != 0 ){
-            debug('Error');
-        } else {
-            debug('Success');
-        }
-        exit;
-    }
 }
