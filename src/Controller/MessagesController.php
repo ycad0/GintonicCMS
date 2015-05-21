@@ -456,7 +456,6 @@ class MessagesController extends AppController
         $threadRecipientId = $this->ThreadParticipants->getThreadParticipant($threadId, $recipientId);
         $chats = $this->Messages->find()
             ->where(['Messages.thread_id' => $threadId])
-            ->contain(['Sender' => ['Files']])
             ->order(['Messages.created' => 'asc'])
             ->all();
         $recipientDetail = $this->Users->find()
