@@ -44,33 +44,37 @@ class AppController extends Controller
             'loginAction' => [
                 'controller' => 'Users',
                 'action' => 'signin',
-                'plugin' =>'GintonicCMS'
+                'plugin' => 'GintonicCMS'
             ],
             'loginRedirect' => [
                 'controller' => 'Users',
                 'action' => 'profile',
-                'plugin' =>'GintonicCMS'
+                'plugin' => 'GintonicCMS'
             ],
             'logoutRedirect' => [
                 'controller' => 'Users',
                 'action' => 'signin',
-                'plugin' =>'GintonicCMS'
+                'plugin' => 'GintonicCMS'
             ],
             'unauthorizedRedirect' => [
                 'controller' => 'Users',
                 'action' => 'signin',
-                'plugin' =>'GintonicCMS'
+                'plugin' => 'GintonicCMS'
             ]
         ]);
         parent::initialize();
     }
     
+    /**
+     * TODO: blockcomment
+     */
     public function beforeFilter(Event $event)
     {
         if ($this->request->params['controller'] == 'Pages') {
             $this->Auth->allow();
         }
     }
+    
     /**
      * TODO: blockcomment
      */

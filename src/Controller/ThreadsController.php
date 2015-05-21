@@ -34,11 +34,10 @@ class ThreadsController extends AppController
         $users = $this->Users->find()->where(
             'User.id' => $this->request->data['users']
         );
-
         $this->Threads->Users->link(
             $this->request->data['thread']['id'],
             $users->toArray(),
-        ) 
+        );
         echo json_encode($success, JSON_NUMERIC_CHECK);
     }
 
@@ -106,7 +105,7 @@ class ThreadsController extends AppController
         $this->autoRender = false;
         $threadCount = $this->Threads
             ->find('withUsers', $this->request->data['users'])
-            ->find('unread')
+            ->find('unread');
         echo json_encode($threadCount, JSON_NUMERIC_CHECK);
     }
     /**
@@ -121,5 +120,4 @@ class ThreadsController extends AppController
             ->count();
         echo json_encode($threadCount, JSON_NUMERIC_CHECK);
     }
-
 }
