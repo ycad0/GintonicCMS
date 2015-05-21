@@ -15,21 +15,10 @@ Router::scope('/', ['plugin' => 'GintonicCMS'], function ($routes) {
     $routes->connect('/messages/:action/*', ['controller' => 'Messages']);
 
     $routes->connect('/payments', ['controller' => 'Payments']);
-    $routes->connect('/payments/index/*', ['controller' => 'Payments', 'action'=>'index']);
-    $routes->connect('/payments/success/*', ['controller' => 'Payments', 'action'=>'success']);
-    $routes->connect('/payments/fail/*', ['controller' => 'Payments', 'action'=>'fail']);
-    $routes->connect('/payments/callbackSubscribes/*', ['controller' => 'Payments', 'action'=>'callbackSubscribes']);
-    $routes->connect('/payments/subscribe/*', ['controller' => 'Payments', 'action'=>'subscribe']);
-    $routes->connect('/payments/confirmPayment/*', ['controller' => 'payments', 'action'=>'confirmPayment']);
+    $routes->connect('/payments/:action/*', ['controller' => 'Payments']);
     
     $routes->connect('/plans', ['controller' => 'Plans', 'action'=>'index']);
-    $routes->connect('/plans/delete/*', ['controller' => 'Plans', 'action'=>'delete']);
-    $routes->connect('/plans/userSubscribe/*', ['controller' => 'Plans', 'action'=>'userSubscribe']);
-    $routes->connect('/plans/unsubscribeUser/*', ['controller' => 'Plans', 'action'=>'unsubscribeUser']);
-    $routes->connect('/plans/createPlans/*', ['controller' => 'Plans', 'action'=>'createPlans']);
-    $routes->connect('/plans/myplantransaction/*', ['controller' => 'Plans', 'action'=>'myplantransaction']);
-    $routes->connect('/plans/usertransaction/*', ['controller' => 'Plans', 'action'=>'usertransaction']);
-    $routes->connect('/plans/subscribeslist/*', ['controller' => 'Plans', 'action'=>'subscribeslist']);
+    $routes->connect('/plans/:action/*', ['controller' => 'Plans']);
 
     $routes->fallbacks('InflectedRoute');
 });
