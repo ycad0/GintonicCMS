@@ -1,5 +1,4 @@
 <?php
-
 namespace GintonicCMS\View\Helper;
 
 use Cake\Core\Configure;
@@ -10,8 +9,9 @@ use Cake\View\Helper\UrlHelper;
 
 class RequireHelper extends Helper
 {
+    
     public $helpers = ['Html', 'Url'];
-
+    
     /**
      * TODO: doccomment
      */
@@ -47,7 +47,7 @@ class RequireHelper extends Helper
         array_push($this->_View->viewVars['requiredeps'], "'" . $name . "'");
         return;
     }
-
+    
     /**
      * TODO: doccomment
      */
@@ -57,28 +57,28 @@ class RequireHelper extends Helper
             'require(["' . $name . '"]);' .
             '</script>';
     }
-
+    
     /**
      * TODO: doccomment
      */
     public function basemodule($base, $default)
     {
         $jsController = $base . Inflector::camelize($this->params['controller']);
-
+        
         // if action exists
         if (is_file($jsController . '/' . $this->params['action'] . '.js')) {
             $file = $base . Inflector::camelize($this->params['controller']) . '/' . $this->params['action'];
             $this->req($file);
             return;
         }
-
+        
         // if controller exists
         if (is_file($jsController . '.js')) {
             $file = $base . Inflector::camelize($this->params['controller']);
             $this->req($file);
             return;
         }
-
+        
         // if nothing else exists
         return $this->req($base . '/' . $default);
     }

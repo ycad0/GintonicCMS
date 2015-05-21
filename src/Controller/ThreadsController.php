@@ -11,37 +11,34 @@ class ThreadsController extends AppController
     /**
      * TODO: Write comment
      */
-    public function initialize()
-    {
-        parent::initialize();
-    }
-
-    /**
-     * TODO: Write comment
-     */
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
-        $this->Auth->allow();
-        return;
         $this->Auth->allow([
+            'addUsers',
             'create',
-            'addParticipants',
-            'removeParticipants',
-            'getThread',
+            'get',
+            'removeUsers',
             'retrieve',
-            'getUnreadCount',
-            'getUnreadThreads'
+            'unread'
+            'unreadCount',
         ]);
     }
 
     /**
      * TODO: Write comment
      */
-    public function isAuthorized($user = null)
+    public function addUsers()
     {
-        return true;
-        //parent::isAuthorized($user);
+        $this->autoRender = false;
+        $users = $this->Users->find()->where(
+            'User.id' => $this->request->data['users']
+        );
+        $this->Threads->Users->link(
+            $this->request->data['thread']['id'],
+            $users->toArray(),
+        );
+        echo json_encode($success, JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -50,76 +47,12 @@ class ThreadsController extends AppController
     public function create()
     {
         $this->autoRender = false;
-        $data = $this->request->data['participants'];
-        $threadUser = [];
-        foreach ($data as $key => $id) {
-            $threadUser['users'][] = ['id' => (int)$id];
-        }
-
-        $thread = $this->Threads->newEntity($threadUser, [
-            'associated' => ['Users']
-        ]);
-
+        $thread = $this->Threads->newEntity(
+            $this->request->data['users'],
+            ['associated' => ['Users']]
+        );
         $this->Threads->save($thread);
         echo json_encode($thread->id, JSON_NUMERIC_CHECK);
-    }
-
-    /**
-     * TODO: Write comment
-     */
-    public function addParticipants()
-    {
-        $this->autoRender = false;
-        $isAdded = $this->Threads->addParticipants($this->request->data['participants'], $this->request->data['threadId']);
-        echo json_encode($isAdded, JSON_NUMERIC_CHECK);
-    }
-
-    /**
-     * TODO: Write comment
-     */
-    public function removeParticipants()
-    {
-        $this->autoRender = false;
-        $isremoved = $this->Threads->removeParticipants($this->request->data['participants'], $this->request->data['threadId']);
-        echo json_encode($isremoved, JSON_NUMERIC_CHECK);
-    }
-
-    /**
-     * TODO: Write comment.
-     */
-    public function getThread()
-    {
-        $this->autoRender = false;
-        $threadDetails = $this->Threads->getThreadDetailById($this->request->data['threadId']);
-        echo json_encode($threadDetails, JSON_NUMERIC_CHECK);
-    }
-
-    /**
-     * TODO: Write comment
-     */
-    public function retrieve()
-    {
-        $this->autoRender = false;
-        $participants = $this->request->data['participants'];
-        $threads = $this->Threads
-            ->find('withUsers', ['ids' => $participants])
-            ->find('participantCount', ['count' => count($participants)])
-            ->order(['Threads.created' => 'DESC'])
-            ->first();
-        echo json_encode($threads, JSON_NUMERIC_CHECK);
-    }
-
-    /**
-     * TODO: Write Comment
-     */
-    public function unreadCount()
-    {
-        $this->autoRender = false;
-        //debug($this->Threads->find()->contain(['Messages.MessageReadStatuses'])->toArray());exit;
-        $threadCount = $this->Threads
-            ->find('unread', ['ids' => $this->request->data['participantId']])
-            ->count();
-        echo json_encode($threadCount, JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -128,8 +61,63 @@ class ThreadsController extends AppController
     public function get()
     {
         $this->autoRender = false;
-        $threadDetails = $this->Threads
-            ->find('withThreads', ['ids' => $this->request->data['threadIds']]);
-        echo json_encode($threadDetails, JSON_NUMERIC_CHECK);
+        $threads = $this->Threads
+            ->find('details', $this->request->data['threads']);
+        echo json_encode($threads, JSON_NUMERIC_CHECK);
+    }
+
+    /**
+     * TODO: Write comment
+     */
+    public function removeUsers()
+    {
+        $this->autoRender = false;
+        $users = $this->Users->find()->where(
+            'User.id' => $this->request->data['users']
+        );
+        $success = $this->Threads->Users->unlink(
+            $this->request->data['thread']['id'],
+            $users->toArray()
+        );
+        echo json_encode($success, JSON_NUMERIC_CHECK);
+    }
+
+    /**
+     * TODO: Write comment
+     */
+    public function retrieve()
+    {
+        $this->autoRender = false;
+        $users = $this->request->data['users'];
+        $threads = $this->Threads
+            ->find('withUsers', $users])
+            ->find('withUserCount', ['count' => count($users)])
+            ->order(['Threads.created' => 'DESC'])
+            ->first();
+        echo json_encode($threads, JSON_NUMERIC_CHECK);
+    }
+
+    /**
+     * TODO: Write Comment
+     */
+    public function unread()
+    {
+        $this->autoRender = false;
+        $threadCount = $this->Threads
+            ->find('withUsers', $this->request->data['users'])
+            ->find('unread');
+        echo json_encode($threadCount, JSON_NUMERIC_CHECK);
+    }
+    /**
+     * TODO: Write Comment
+     */
+    public function unreadCount()
+    {
+        $this->autoRender = false;
+        $threadCount = $this->Threads
+            ->find('withUsers', $this->request->data['users'])
+            ->find('unread')
+            ->count();
+        echo json_encode($threadCount, JSON_NUMERIC_CHECK);
     }
 }
