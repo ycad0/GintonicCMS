@@ -91,15 +91,12 @@ class ThreadsTable extends Table
     public function findWithUserCount(Query $query, array $options)
     {
         return $query
-            ->matching('Users', function ($q) use ($options) {
-                return $q
-                    ->select([
-                        'Threads.id',
-                        'count' => $q->func()->count('Users.id')
-                    ])
-                    ->group('Threads.id')
-                    ->having(['count' => $options['count']]);
-            });
+            ->matching('Users')
+            ->select([
+                'Threads.id',
+                'count' => 'COUNT(Users.id)'
+            ])
+            ->group('Threads.id HAVING count = '. $options['count']);
     }
 
     /**

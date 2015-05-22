@@ -20,7 +20,7 @@ class ThreadsController extends AppController
             'get',
             'removeUsers',
             'retrieve',
-            'unread'
+            'unread',
             'unreadCount',
         ]);
     }
@@ -31,12 +31,10 @@ class ThreadsController extends AppController
     public function addUsers()
     {
         $this->autoRender = false;
-        $users = $this->Users->find()->where(
-            'User.id' => $this->request->data['users']
-        );
+        $users = $this->Users->find()->where(['User.id' => $this->request->data['users']]);
         $this->Threads->Users->link(
             $this->request->data['thread']['id'],
-            $users->toArray(),
+            $users->toArray()
         );
         echo json_encode($success, JSON_NUMERIC_CHECK);
     }
@@ -72,16 +70,16 @@ class ThreadsController extends AppController
     public function removeUsers()
     {
         $this->autoRender = false;
-        $users = $this->Users->find()->where(
+        $users = $this->Users->find()->where([
             'User.id' => $this->request->data['users']
-        );
+        ]);
         $success = $this->Threads->Users->unlink(
             $this->request->data['thread']['id'],
             $users->toArray()
         );
         echo json_encode($success, JSON_NUMERIC_CHECK);
     }
-
+    
     /**
      * TODO: Write comment
      */
@@ -90,7 +88,7 @@ class ThreadsController extends AppController
         $this->autoRender = false;
         $users = $this->request->data['users'];
         $threads = $this->Threads
-            ->find('withUsers', $users])
+            ->find('withUsers', $users)
             ->find('withUserCount', ['count' => count($users)])
             ->order(['Threads.created' => 'DESC'])
             ->first();
