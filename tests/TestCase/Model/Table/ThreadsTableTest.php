@@ -55,15 +55,14 @@ class ThreadsTableTest extends TestCase
      */
     public function testInitialize()
     {
-        //$this->assertInstanceOf(
-        //    'Cake\ORM\Association\BelongsToMany',
-        //    $this->Threads->Users
-        //);
-        //$this->assertInstanceOf(
-        //    'Cake\ORM\Association\HasMany',
-        //    $this->Threads->Messages
-        //);
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->assertInstanceOf(
+            'Cake\ORM\Association\BelongsToMany',
+            $this->Threads->Users
+        );
+        $this->assertInstanceOf(
+            'Cake\ORM\Association\HasMany',
+            $this->Threads->Messages
+        );
     }
 
     /**
@@ -73,25 +72,22 @@ class ThreadsTableTest extends TestCase
      */
     public function testFindWithUsers()
     {
-        //$users = [
-        //    ['id' => 1],
-        //    ['id' => 2],
-        //    ['id' => 3],
-        //];
-        //$query = $this->Threads->find();
-        //$result = $query->hydrate(false)->toArray();
+        $users = [
+            ['id' => 1],
+            ['id' => 2],
+            ['id' => 3],
+        ];
 
-        //$query = $this->Threads->find('withUsers',$users);
-        //$this->assertInstanceOf('Cake\ORM\Query', $query);
-        //$result = $query->hydrate(false)->toArray();
-        //$expected = [
-        //    ['id' => 1, 'title' => 'First Article'],
-        //    ['id' => 2, 'title' => 'Second Article'],
-        //    ['id' => 3, 'title' => 'Third Article']
-        //];
+        $query = $this->Threads->find('withUsers',$users)->select(['id']);
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        
+        $expected = [
+            ['id' => 1],
+            ['id' => 2],
+        ];
 
-        //$this->assertEquals($expected, $result);
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->assertEquals($expected, $result);
     }
 
     /**
