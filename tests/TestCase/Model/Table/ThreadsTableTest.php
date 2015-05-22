@@ -95,7 +95,9 @@ class ThreadsTableTest extends TestCase
      */
     public function testFindDetails()
     {
-        $threads['threads'] = [1];
+        $threads = [
+            ['id' => 1]
+        ];
         $query = $this->Threads->find('details', $threads)
             ->select(['id'])
             ->contain(['Messages' => function($query){
@@ -109,7 +111,7 @@ class ThreadsTableTest extends TestCase
             }]);
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $result = $query->hydrate(false)->toArray();
-        
+
         $expected = [
             [
                 'id' => 1,
@@ -127,37 +129,6 @@ class ThreadsTableTest extends TestCase
                         'user' => [
                             'id' => 2,
                         ]
-                    ]
-                ]
-            ]
-        ];
-
-        $this->assertEquals($expected, $result);
-    }
-
-    /**
-     * Test findParticipant method
-     *
-     * @return void
-     */
-    public function testFindParticipant()
-    {
-        $threads['userIds'] = [
-            ['id' => 1],
-            ['id' => 2],
-            ['id' => 3],
-        ];
-        $threads['threadIds'] = 1;
-
-        $query = $this->Threads->find('participant', $threads)->select(['Users.id']);
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
-
-        $expected = [
-            [
-                '_matchingData' => [
-                    'Users' => [
-                        'id' => 2
                     ]
                 ]
             ]
@@ -195,9 +166,7 @@ class ThreadsTableTest extends TestCase
      */
     public function testFindUnread()
     {
-        $users = [];
-
-        $query = $this->Threads->find('unread', $users)->select('Messages.id');
+        $query = $this->Threads->find('unread')->select('Messages.id');
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $result = $query->hydrate(false)->toArray();
 

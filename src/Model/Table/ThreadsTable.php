@@ -76,29 +76,13 @@ class ThreadsTable extends Table
     public function findDetails(Query $query, array $options)
     {
         return $query
-            ->where(['Threads.id IN' => $options['threads']])
+            ->where(['Threads.id' => $options])
             ->contain([
                 'Messages' => [
                     'Users'
                 ]
             ])
             ->limit(10);
-    }
-    
-    /**
-     * TODO: doccomment
-     */
-    public function findParticipant(Query $query, array $options)
-    {
-        return $query
-            ->matching('Users', function ($q) use ($options) {
-                return $q
-                    ->select(['Users.id'])
-                    ->where([
-                        'Users.id NOT IN ' => $options['userIds'],
-                        'Threads.id' => $options['threadIds']
-                    ]);
-            });
     }
     
     /**
