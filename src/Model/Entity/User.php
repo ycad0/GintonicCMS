@@ -50,7 +50,7 @@ class User extends Entity
     /**
      * TODO: doccomment
      */
-    public function sendSignup($emailId = null)
+    public function sendSignup()
     {
         $email = new Email();
         $email->profile('default');
@@ -60,7 +60,7 @@ class User extends Entity
         ]);
         $email->template('GintonicCMS.signup')
             ->emailFormat('html')
-            ->to($emailId)
+            ->to($this->email)
             ->from(Configure::read('admin_mail'))
             ->subject('Account validation');
         return $email->send();
@@ -69,9 +69,8 @@ class User extends Entity
     /**
      * TODO: doccomment
      */
-    public function sendVerification($email = null)
+    public function sendVerification()
     {
-        $emailId = !empty($email) ? $email : $this->email;
         $email = new Email('default');
         $email->viewVars([
             'userId' => $this->id,
@@ -79,7 +78,7 @@ class User extends Entity
         ]);
         $email->template('GintonicCMS.resend_code')
             ->emailFormat('html')
-            ->to($emailId)
+            ->to($this->email)
             ->from([Configure::read('admin_mail') => Configure::read('site_name')])
             ->subject('Account validation');
         return $email->send();
@@ -88,10 +87,8 @@ class User extends Entity
     /**
      * TODO: doccomment
      */
-    public function sendRecovery($email = null)
+    public function sendRecovery()
     {
-        $emailId = !empty($email) ? $email : $this->email;
-
         $email = new Email('default');
         $email->viewVars([
             'userId' => $this->id,
@@ -99,7 +96,7 @@ class User extends Entity
         ]);
         $email->template('GintonicCMS.forgot_password')
             ->emailFormat('html')
-            ->to($emailId)
+            ->to($this->email)
             ->from([Configure::read('admin_mail') => Configure::read('site_name')])
             ->subject('Forgot Password');
         return $email->send();
