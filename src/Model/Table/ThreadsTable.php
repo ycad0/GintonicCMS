@@ -95,7 +95,8 @@ class ThreadsTable extends Table
             ->select([
                 'Threads.id'
             ])
-            ->group('Threads.id HAVING COUNT(Users.id) = ' . $options['count']);
+            ->group('Threads.id')
+            ->having('COUNT(Users.id) = ' . $options['count']);
     }
 
     /**
