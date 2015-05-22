@@ -149,14 +149,8 @@ class ThreadsTableTest extends TestCase
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $result = $query->hydrate(false)->toArray();
         $expected = [
-            [
-                'id' => 1,
-                'count' => '2'
-            ],
-            [
-                'id' => 3,
-                'count' => '2'
-            ]
+            ['id' => 1],
+            ['id' => 3]
         ];
 
         $this->assertEquals($expected, $result);

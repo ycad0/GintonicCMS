@@ -93,10 +93,9 @@ class ThreadsTable extends Table
         return $query
             ->matching('Users')
             ->select([
-                'Threads.id',
-                'count' => 'COUNT(Users.id)'
+                'Threads.id'
             ])
-            ->group('Threads.id HAVING count = ' . $options['count']);
+            ->group('Threads.id HAVING COUNT(Users.id) = ' . $options['count']);
     }
 
     /**
