@@ -57,96 +57,38 @@ class UsersTable extends Table
     /**
      * TODO: blockquote
      */
-    public function findUsersDetails(Query $query, array $options)
+    public function findAvatar(Query $query, array $options)
     {
         return $query
-                ->where($options)
-                ->contain(['Files' => ['fields' => ['Files.id', 'Files.filename']]])
-                ->first();
+            ->contain([
+                'Files' => [
+                    'fields' => ['Files.id', 'Files.filename']
+                ]
+            ]);
     }
 
     /**
-     * TODO: doccomment
+     * TODO: blockquote
      */
-    public function verifyUser(Entity $user, $token)
+    public function findProfile(Query $query, array $options)
     {
-        $user->verified = true;
-        if ($this->save($user)) {
-            return true;
-        }
-        return false;
+        return $query
+            ->find('avatar')
+            ->conditions(['Users.id' => $options])
+            ->first();
     }
 
     /**
      * TODO: doccomment
      */
-    public function sendPasswordRecovery(Entity $user)
-    {
-        //unset($user->password);
-        $user->token = md5(uniqid(rand(), true));
-        $user->token_creation = date("Y-m-d H:i:s");
-
-        $this->save($user);
-        if ($user->sendRecovery()) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * TODO: doccomment
-     */
-    public function verifyToken($userId, $token)
-    {
-        $user = $this->find('usersDetails', ['Users.id' => $userId]);
-
-        if (!empty($user) && $user->token == $token) {
-            $time = new Time($user->token_creation);
-            if (!$time->wasWithinLast('+1 day')) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * TODO: doccomment
-     */
-    public function sendVerification(Entity $user, $email)
-    {
-        $user->token = md5(uniqid(rand(), true));
-        $user->token_creation = date("Y-m-d H:i:s");
-        if ($this->save($user)) {
-            return $user->sendVerification();
-        }
-        return false;
-    }
-
-    /**
-     * TODO: doccomment
-     */
-    public function recoverPassword($userInfo, $userId)
-    {
-        $userInfo['id'] = $userId;
-        $userInfo['password'] = $userInfo['new_password'];
-        $userInfo['token'] = md5(uniqid(rand(), true));
-        $userInfo['token_creation'] = date("Y-m-d H:i:s");
-        $users = $this->newEntity($userInfo);
-        return $this->save($users);
-    }
-
-    /**
-     * TODO: doccomment
-     */
-    public function changePassword($passwordInfo, $userId = null)
+    public function changePassword($newPassword, $userId)
     {
         $user = $this->get($userId);
-        $passwordInfo['password'] = $passwordInfo['new_password'];
+
+        // TODO: make sure to test that the password is correctly
+        // encrypted and updated
         $users = $this->patchEntity($user, $passwordInfo);
 
-        if ($this->save($users)) {
-            return true;
-        }
-        return false;
+        return $this->save($users);
     }
 }
