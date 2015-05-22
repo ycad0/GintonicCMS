@@ -99,12 +99,12 @@ class UsersController extends AppController
             return $this->redirect($this->Auth->redirectUrl());
         }
 
-        $user = $this->Users->newEntity($this->request->data);
-        $user->accessible('password', true);
+       $user = $this->Users->newEntity()->accessible('password', true);
         if ($this->request->is(['post', 'put'])) {
             $user->token = md5(uniqid(rand(), true));
             $user->token_creation = date("Y-m-d H:i:s");
             
+            $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {
                 $user->sendSignup($this->request->data['email']);
                 $this->Flash->set(__('Please check your e-mail to validate your account'), [
