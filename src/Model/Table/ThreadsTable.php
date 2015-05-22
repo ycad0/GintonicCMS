@@ -53,7 +53,7 @@ class ThreadsTable extends Table
     }
 
     /**
-     * Dynamic finder that find threads where a given set of users are 
+     * Dynamic finder that find threads where a given set of users are
      * participants
      *
      * @param \Cake\ORM\Query $query the original query to append to
