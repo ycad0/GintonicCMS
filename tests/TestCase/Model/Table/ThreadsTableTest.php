@@ -151,8 +151,8 @@ class ThreadsTableTest extends TestCase
         
         $expected = [
             [
-                'id' => 1,
-                'count' => 7
+                'id' => 2,
+                'count' => '7'
             ]
         ];
 
