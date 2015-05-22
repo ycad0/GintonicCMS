@@ -18,12 +18,10 @@ class ThreadsTableTest extends TestCase
      */
     public $fixtures = [
         'plugin.gintonic_c_m_s.threads',
-        //'plugin.gintonic_c_m_s.messages',
-        //'plugin.gintonic_c_m_s.users',
-        //'plugin.gintonic_c_m_s.files',
-        //'plugin.gintonic_c_m_s.albums',
-        //'plugin.gintonic_c_m_s.threads_users',
-        //'plugin.gintonic_c_m_s.message_read_statuses'
+        'plugin.gintonic_c_m_s.messages',
+        'plugin.gintonic_c_m_s.users',
+        'plugin.gintonic_c_m_s.threads_users',
+        'plugin.gintonic_c_m_s.message_read_statuses'
     ];
 
     /**
@@ -57,14 +55,15 @@ class ThreadsTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->assertInstanceOf(
-            'Cake\ORM\Association\BelongsToMany',
-            $this->Threads->Users
-        );
-        $this->assertInstanceOf(
-            'Cake\ORM\Association\HasMany',
-            $this->Threads->Messages
-        );
+        //$this->assertInstanceOf(
+        //    'Cake\ORM\Association\BelongsToMany',
+        //    $this->Threads->Users
+        //);
+        //$this->assertInstanceOf(
+        //    'Cake\ORM\Association\HasMany',
+        //    $this->Threads->Messages
+        //);
+        $this->markTestIncomplete('Not implemented yet.');
     }
 
     /**
@@ -74,13 +73,14 @@ class ThreadsTableTest extends TestCase
      */
     public function testFindWithUsers()
     {
-        $users = [
-            ['id' => 1],
-            ['id' => 2],
-            ['id' => 3],
-        ];
-        $query = $this->Threads->find();
-        $result = $query->hydrate(false)->toArray();
+        //$users = [
+        //    ['id' => 1],
+        //    ['id' => 2],
+        //    ['id' => 3],
+        //];
+        //$query = $this->Threads->find();
+        //$result = $query->hydrate(false)->toArray();
+
         //$query = $this->Threads->find('withUsers',$users);
         //$this->assertInstanceOf('Cake\ORM\Query', $query);
         //$result = $query->hydrate(false)->toArray();
