@@ -71,17 +71,15 @@ class ThreadsTable extends Table
     }
 
     /**
-     * TODO: doccomment
+     * TODO: doccomment NOT IMPLEMENTED, need to load Files with Users.
      */
     public function findDetails(Query $query, array $options)
     {
         return $query
-            ->where(['Threads.id' => $options['threads']])
+            ->where(['Threads.id IN' => $options['threads']])
             ->contain([
                 'Messages' => [
-                    'Users' => [
-                        'Files'
-                    ]
+                    'Users'
                 ]
             ])
             ->limit(10);

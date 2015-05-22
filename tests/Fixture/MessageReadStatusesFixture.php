@@ -57,7 +57,7 @@ class MessageReadStatusesFixture extends TestFixture
             'id' => 6,
             'message_id' => 6,
             'user_id' => 5,
-            'status' => 1,
+            'status' => 2,
             'created' => '2010-04-18 15:50:00',
         ],
         [
