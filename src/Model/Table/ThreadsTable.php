@@ -71,7 +71,7 @@ class ThreadsTable extends Table
     }
 
     /**
-     * TODO: doccomment NOT IMPLEMENTED, need to load Files with Users.
+     * TODO: documment NOT IMPLEMENTED, need to load Files with Users.
      */
     public function findDetails(Query $query, array $options)
     {
@@ -96,6 +96,7 @@ class ThreadsTable extends Table
                 'Threads.id'
             ])
             ->group('Threads.id')
+            // TODO: find the pragmatic way to achieve this
             ->having('COUNT(Users.id) = ' . $options['count']);
     }
 
