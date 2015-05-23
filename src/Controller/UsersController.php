@@ -290,7 +290,8 @@ class UsersController extends AppController
         //}
 
         if ($this->request->is(['post', 'put'])) {
-            $user = $this->Users->findByEmail($this->request->data['email']);
+            $user = $this->Users->findByEmail($this->request->data['email'])->first();
+
             if (empty($user)) {
                 $this->Flash->set(__('No matching email address found.'), [
                     'element' => 'GintonicCMS.alert',

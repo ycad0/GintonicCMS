@@ -1,8 +1,10 @@
 <?php
+
 namespace GintonicCMS\Test\TestCase\Model\Entity;
 
 use Cake\TestSuite\TestCase;
 use GintonicCMS\Model\Entity\User;
+use Cake\ORM\Entity;
 
 /**
  * GintonicCMS\Model\Entity\User Test Case
@@ -34,13 +36,37 @@ class UserTest extends TestCase
     }
 
     /**
+     * Test getFullName method
+     *
+     * @return void
+     */
+    public function testGetFullName()
+    {
+        $entity = new User([
+            'id' => 1,
+            'first' => 'Matt',
+            'last' => 'Farrell',
+        ]);
+        $expected = 'Matt  Farrell';
+        $this->assertEquals($expected, $entity->get('fullName'));
+    }
+    
+    /**
      * Test sendRecovery method
      *
      * @return void
      */
     public function testSendRecovery()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        //$this->markTestIncomplete('Not implemented yet.');
+        $entity = new User([
+            'id' => 1,
+            'email' => 'hitesh@securemetasys.com',
+            'token' => 'jhfkjd456d4sgdsg'
+        ]);
+        debug($entity->sendRecovery());
+        exit;
+        
     }
 
     /**
@@ -70,7 +96,15 @@ class UserTest extends TestCase
      */
     public function testUpdateToken()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $entity = new User([
+            'id' => 1,
+            'verified' => 0,
+            'token' => 'jhfkjd456d4sgdsg',
+            'token_creation' => '2015-05-22 15:39:23'
+        ]);
+        $entity->updateToken();
+        $expected = date("Y-m-d H:i:s");
+        $this->assertEquals($expected, $entity->token_creation);
     }
 
     /**
@@ -80,6 +114,12 @@ class UserTest extends TestCase
      */
     public function testVerify()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $entity = new User([
+            'id' => 1,
+            'verified' => false,
+            'token' => 'jhfkjd456d4sgdsg',
+            'token_creation' => '2015-05-20 15:39:23'
+        ]);
+        $this->assertFalse($entity->verify('jhfkjd456d4sgdsg'));
     }
 }

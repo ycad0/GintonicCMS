@@ -1,4 +1,17 @@
 <?php
+/**
+ * GintonicCMS : Full Stack Content Management System (http://cms.gintonicweb.com)
+ * Copyright (c) Philippe Lafrance, Inc. (http://phillafrance.com)
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright (c) Philippe Lafrance (http://phillafrance.com)
+ * @link          http://cms.gintonicweb.com GintonicCMS Project
+ * @since         0.0.0
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ */
 
 namespace GintonicCMS\Model\Entity;
 
@@ -6,7 +19,11 @@ use Cake\Auth\DefaultPasswordHasher;
 use Cake\Core\Configure;
 use Cake\Network\Email\Email;
 use Cake\ORM\Entity;
+use Cake\I18n\Time;
 
+/**
+ * Represents the User Entity.
+ */
 class User extends Entity
 {
     protected $_accessible = [
@@ -18,7 +35,10 @@ class User extends Entity
     protected $_hidden = ['password'];
 
     /**
-     * TODO: doccomment
+     * Take plaintext password and return valid Hash of that password.
+     * 
+     * @param string $password plaintext password string
+     * @return string Hash password string
      */
     protected function _setPassword($password)
     {
@@ -26,7 +46,10 @@ class User extends Entity
     }
 
     /**
-     * TODO: doccomment
+     * Virtual filed for full name of user.
+     * return the concated string of first and last name of user as Full Name.
+     * 
+     * @return boolean | string full name of user.
      */
     protected function _getFullName()
     {
@@ -37,7 +60,13 @@ class User extends Entity
     }
 
     /**
-     * TODO: doccomment
+     * Return Query of File for given user id.
+     * user id is taken as condition.
+     * For example,
+     * $user = $this->Users->get($userId);
+     * $user->_getFiles();
+     * 
+     * @return Cake\ORM\Query $userFiles The amended query
      */
     protected function _getFiles()
     {
@@ -49,7 +78,12 @@ class User extends Entity
     }
 
     /**
-     * TODO: doccomment
+     * Send Recovery Email to given email id.
+     * For Example,
+     * $user = $this->Users->get($userId);
+     * $user->sendRecovery();
+     * 
+     * @return boolean True if email is send else False.
      */
     public function sendRecovery()
     {
@@ -67,7 +101,12 @@ class User extends Entity
     }
 
     /**
-     * TODO: doccomment
+     * Send Signup Email to given email id.
+     * For Example,
+     * $user = $this->Users->get($userId);
+     * $user->sendSignup();
+     * 
+     * @return boolean True if email is send else False.
      */
     public function sendSignup()
     {
@@ -86,7 +125,12 @@ class User extends Entity
     }
 
     /**
-     * TODO: doccomment
+     * Send Verification Email to given email id after successfull Signup of user.
+     * For Example,
+     * $user = $this->Users->get($userId);
+     * $user->sendVerification();
+     * 
+     * @return boolean True if email is send else False.
      */
     public function sendVerification()
     {
@@ -104,20 +148,24 @@ class User extends Entity
     }
 
     /**
-     * TODO: doccomment
+     * Update the Token when user send Varification mail again.
      */
     public function updateToken()
     {
-        $user->token = md5(uniqid(rand(), true));
-        $user->token_creation = date("Y-m-d H:i:s");
+        $this->token = md5(uniqid(rand(), true));
+        $this->token_creation = date("Y-m-d H:i:s");
     }
 
     /**
-     * TODO: doccomment
+     * Verify the Token recieved in url while changing the password
+     * or validating the account.
+     * 
+     * @param string $token unique token string.
+     * @return boolean return true if token is successfully verified else return false.
      */
     public function verify($token)
     {
-        $time = new Time($user->token_creation);
+        $time = new Time($this->token_creation);
         if ($this->token == $token && $time->wasWithinLast('+1 day')) {
             $this->verified = true;
         }
