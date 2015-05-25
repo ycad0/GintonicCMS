@@ -31,8 +31,7 @@ class PlansController extends AppController
      */
     public function index()
     {
-        $plans = $this->Plans->find()
-                ->all();
+        $plans = $this->Plans->find()->all();
         $this->set('plans', $plans);
     }
 
@@ -260,7 +259,7 @@ class PlansController extends AppController
     {
         $conditions = [
             'Transactions.paid' => 1,
-            'Transactions.transaction_type_id' => 2,
+            'Transactions.transactions_type_id' => 2,
         ];
         if ($allTransaction) {
             unset($conditions['Transactions.user_id']);
@@ -272,7 +271,7 @@ class PlansController extends AppController
             $conditions['Transactions.user_id'] = $this->request->session()->read('Auth.User.id');
         }
         if (empty($planId) && empty($userId) && empty($allTransaction)) {
-            $conditions['Transaction.user_id'] = $this->request->session()->read('Auth.User.id');
+            $conditions['Transactions.user_id'] = $this->request->session()->read('Auth.User.id');
         }
 
         $this->loadModel('GintonicCMS.Transactions');
@@ -284,9 +283,8 @@ class PlansController extends AppController
             $all = true;
         }
         $this->set(compact('all'));
-        $this->loadModel('GintonicCMS.Plans');
-        $planDetail = $this->Plans->find()
-                ->where(['Plans.plan_id' => $planId]);
+        
+        $planDetail = $this->Plans->find('planDetails', ['planId' => $planId]);
 
         $title = ' Transactions ' . (empty($planDetail->id) ? '' : ('for ' . $planDetail['plan_id'] . ' plan'));
         if (empty($planId) && empty($userId) && empty($allTransaction)) {
@@ -302,15 +300,16 @@ class PlansController extends AppController
     public function subscribeslist()
     {
         $this->loadModel('GintonicCMS.CustomersUsers');
-        $this->loadModel('GintonicCMS.Plans');
+        
         $userId = $this->request->session()->read('Auth.User.id');
         $customerId = $this->CustomersUsers->find('customerStripeId', ['userId' => $userId]);
-        $arrPlans = array();
+        $arrPlans = [];
+        
         if ($customerId) {
             try {
-                $customer = Stripe\Customer::retrieve($customerId);
+                $customer = Stripe\Customer::retrieve($customerId->customer_id);
                 if (!empty($customer->subscriptions)) {
-                    $subscribes = Stripe\Customer::retrieve($customerId)->subscriptions->all();
+                    $subscribes = Stripe\Customer::retrieve($customerId->customer_id)->subscriptions->all();
                     $plans = $this->Plans->find('list', [
                         'keyField' => 'plan_id',
                         'valueField' => 'plan_id'

@@ -17,14 +17,22 @@ class UsersController extends AppController
         $this->Auth->allow([
             'signin',
             'signup',
-            'signout',
             'verify',
             'recover',
             'updateAvatar',
             'profile',
-            'sendVerification',
-            'sendRecovery'
         ]);
+    }
+
+    /**
+     * TODO: Write Comment.
+     */
+    public function isAuthorized($user = null)
+    {
+        if (!empty($user)) {
+            return true;
+        }
+        return parent::isAuthorized($user);
     }
 
     /**
@@ -32,15 +40,6 @@ class UsersController extends AppController
      */
     public function view($userId)
     {
-        // TODO: move this condition into isAuthorized()
-        //if (!$this->request->session()->check('Auth.User.id')) {
-        //    $this->Flash->set(__('You are not a authorised to access this page'), [
-        //        'element' => 'GintonicCMS.alert',
-        //        'params' => ['class' => 'alert-waning']
-        //    ]);
-        //    return $this->redirect($this->Auth->redirectUrl());
-        //}
-
         $user = $this->Users->find('profile', $userId);
         $this->set(compact('user'));
     }
@@ -50,15 +49,6 @@ class UsersController extends AppController
      */
     public function edit()
     {
-        // TODO: move this condition into isAuthorized()
-        //if (!$this->request->session()->check('Auth.User.id')) {
-        //    $this->Flash->set(__('You are not a authorised to access this page'), [
-        //        'element' => 'GintonicCMS.alert',
-        //        'params' => ['class' => 'alert-danger']
-        //    ]);
-        //    return $this->redirect($this->request->referer());
-        //}
-
         $userId = $this->request->session()->read('Auth.User.id');
         $user = $this->Users->find('profile', $userId);
 
@@ -95,8 +85,6 @@ class UsersController extends AppController
         $this->render('GintonicCMS.signup', 'GintonicCMS.bare');
         $user = $this->Users->newEntity()->accessible('password', true);
         if ($this->request->is(['post', 'put'])) {
-            // TODO: write a test that validates that the token is correctly
-            // saved. Careful: this is a guarded field
             $user->updateToken();
             $user = $this->Users->patchEntity($user, $this->request->data);
 
@@ -217,6 +205,11 @@ class UsersController extends AppController
                     'params' => ['class' => 'alert-success']
                 ]);
                 return $this->redirect($this->Auth->redirectUrl());
+            } else {
+                $this->Flash->set(__('Error occure while updating you password. Please try again.'), [
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-danger']
+                ]);
             }
         }
     }
@@ -260,9 +253,6 @@ class UsersController extends AppController
      */
     public function sendVerification()
     {
-        // TODO: validate that we're logged in before allowing users through
-        // isAuthorized
-
         $userId = $this->request->session()->read('Auth.User.id');
         $user = $this->Users->get($userId);
 
@@ -280,17 +270,9 @@ class UsersController extends AppController
      */
     public function sendRecovery()
     {
-        // TODO: this conditions needs to go in isAuthorized
-        //if ($this->Auth->user()) {
-        //    $this->Flash->set(__('You are already signed in.'), [
-        //        'element' => 'GintonicCMS.alert',
-        //        'params' => ['class' => 'alert-warning']
-        //    ]);
-        //    return $this->redirect($this->Auth->redirectUrl());
-        //}
-
         if ($this->request->is(['post', 'put'])) {
-            $user = $this->Users->findByEmail($this->request->data['email']);
+            $user = $this->Users->findByEmail($this->request->data['email'])->first();
+
             if (empty($user)) {
                 $this->Flash->set(__('No matching email address found.'), [
                     'element' => 'GintonicCMS.alert',

@@ -28,7 +28,7 @@ class UsersFixture extends TestFixture
         [
             'id' => 1,
             'file_id' => 1,
-            'email' => 'test1@gmail.com',
+            'email' => 'hitesh@securemetasys.com',
             'password' => '123456',
             'role' => 'player',
             'first' => 'Test1',

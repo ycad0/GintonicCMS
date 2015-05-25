@@ -144,16 +144,13 @@ class ThreadsTableTest extends TestCase
      */
     public function testFindWithUserCount()
     { 
-        $query = $this->Threads->find('withUserCount', ['count' => 2])
-            ->select(['id']);
+        $query = $this->Threads
+            ->find('withUserCount', ['count' => 2]);
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $result = $query->hydrate(false)->toArray();
-        
         $expected = [
-            [
-                'id' => 2,
-                'count' => 7
-            ]
+            ['id' => 1],
+            ['id' => 3]
         ];
 
         $this->assertEquals($expected, $result);

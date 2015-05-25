@@ -29,7 +29,11 @@ class ThreadsTable extends Table
 {
 
     /**
-     * TODO: doccomment
+     * Initilize the Thread Table.
+     * also set Relationship of this Table with other tables and add
+     * required behaviour for this Table.
+     *
+     * @param array $config configuration array for Table.
      */
     public function initialize(array $config)
     {
@@ -71,7 +75,13 @@ class ThreadsTable extends Table
     }
 
     /**
-     * TODO: doccomment NOT IMPLEMENTED, need to load Files with Users.
+     * Dynamic finder that find thread details by taking thread ids as argument.
+     * Thread details consist of Messages of each Thread provided in argument.
+     * And each Message also contain details of related Users of that Message.
+     *
+     * @param \Cake\ORM\Query $query the original query to append to
+     * @param array $options the list of thread id formatted according to cake stadards
+     * @return \Cake\ORM\Query The amended query
      */
     public function findDetails(Query $query, array $options)
     {
@@ -86,24 +96,32 @@ class ThreadsTable extends Table
     }
     
     /**
-     * TODO: doccomment
+     * Dynamic finder that find thread Id based on total number of participants.
+     * it's take Total Number of participant as agrument and find the thread id,
+     * which have exact that numbers of participants.
+     *
+     * @param \Cake\ORM\Query $query the original query to append to
+     * @param array $options total numbers of participants formatted according to cake stadards
+     * @return \Cake\ORM\Query The amended query
      */
     public function findWithUserCount(Query $query, array $options)
     {
         return $query
-            ->matching('Users', function ($q) use ($options) {
-                return $q
-                    ->select([
-                        'Threads.id',
-                        'count' => $q->func()->count('Users.id')
-                    ])
-                    ->group('Threads.id')
-                    ->having(['count' => $options['count']]);
-            });
+            ->matching('Users')
+            ->select([
+                'Threads.id'
+            ])
+            ->group('Threads.id')
+            // TODO: find the pragmatic way to achieve this
+            ->having('COUNT(Users.id) = ' . $options['count']);
     }
 
     /**
-     * TODO: Write Comment
+     * Dynamic finder that find thread Id which has unread messages.
+     *
+     * @param \Cake\ORM\Query $query the original query to append to
+     * @param array $options not required
+     * @return \Cake\ORM\Query The amended query
      */
     public function findUnread(Query $query, array $options)
     {
@@ -116,7 +134,11 @@ class ThreadsTable extends Table
     }
     
     /**
-     * TODO: Write Comment
+     * Dynamic finder that find thread Id which has deleted messages.
+     *
+     * @param \Cake\ORM\Query $query the original query to append to
+     * @param array $options not required
+     * @return \Cake\ORM\Query The amended query
      */
     public function findDeleted(Query $query, array $options)
     {
