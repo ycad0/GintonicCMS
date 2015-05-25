@@ -58,14 +58,21 @@ class UserTest extends TestCase
      */
     public function testSendRecovery()
     {
-        //$this->markTestIncomplete('Not implemented yet.');
-        $entity = new User([
-            'id' => 1,
-            'email' => 'hitesh@securemetasys.com',
-            'token' => 'jhfkjd456d4sgdsg'
-        ]);
-        debug($entity->sendRecovery());
-        exit;
+        $this->markTestIncomplete('Not implemented yet.');
+//        $entity = new User([
+//            'id' => 1,
+//            'email' => 'hitesh@securemetasys.com',
+//            'token' => 'jhfkjd456d4sgdsg'
+//        ]);
+////        debug($entity->sendRecovery());
+//        $email = $this->getMock('Cake\Network\Email\Email', ['profile']);
+//        $email->expects($this->once())
+//            ->method('profile')
+//            ->with('GintonicCMS.default');
+//        
+//        $entity->Email = $email;
+//        $entity->sendRecovery();
+//        exit;
         
     }
 

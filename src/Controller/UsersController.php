@@ -95,8 +95,6 @@ class UsersController extends AppController
         $this->render('GintonicCMS.signup', 'GintonicCMS.bare');
         $user = $this->Users->newEntity()->accessible('password', true);
         if ($this->request->is(['post', 'put'])) {
-            // TODO: write a test that validates that the token is correctly
-            // saved. Careful: this is a guarded field
             $user->updateToken();
             $user = $this->Users->patchEntity($user, $this->request->data);
 
@@ -217,6 +215,11 @@ class UsersController extends AppController
                     'params' => ['class' => 'alert-success']
                 ]);
                 return $this->redirect($this->Auth->redirectUrl());
+            } else {
+                $this->Flash->set(__('Error occure while updating you password. Please try again.'), [
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-danger']
+                ]);
             }
         }
     }

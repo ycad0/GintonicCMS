@@ -15,8 +15,6 @@
 
 namespace GintonicCMS\Model\Table;
 
-use Cake\I18n\Time;
-use Cake\ORM\Entity;
 use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -34,7 +32,7 @@ class UsersTable extends Table
      * validation may contain like username must not empty,
      * role of the user is require,
      * email address must be valid and unique across the existing records.
-     * 
+     *
      * @param Cake\Validation\Validator $validator Instance of validator
      * @return Cake\Validation\Validator Instance of validator
      */
@@ -55,10 +53,20 @@ class UsersTable extends Table
     }
 
     /**
+     * TODO: Write Document.
+     */
+    public function validationChangePassword(Validator $validator)
+    {
+        return $validator
+            ->notEmpty('current_password', ['message' => __('Current Password is required')])
+            ->notEmpty('new_password', ['message' => __('New Password is required')])
+            ->notEmpty('confirm_password', ['message' => __('Confirm Password is required')]);
+    }
+    /**
      * Initilize the Users Table.
      * also set Relationship of this Table with other tables and add
      * required behaviour for this Table.
-     * 
+     *
      * @param array $config configuration array for Table.
      */
     public function initialize(array $config)
@@ -118,19 +126,17 @@ class UsersTable extends Table
     /**
      * Change the user password. its take new password and user Id
      * as argument and return true if password change successfully else false.
-     * 
+     *
      * @param string $newPassword new password supplied by user.
-     * @param integer $userId unique id of user.
+     * @param int $userId unique id of user.
      * @return true|false return True if password change successfully else return false.
      */
-    public function changePassword($newPassword, $userId)
+    public function changePassword($passwordInfo, $userId)
     {
         $user = $this->get($userId);
-
         // TODO: make sure to test that the password is correctly
         // encrypted and updated
-        $users = $this->patchEntity($user, $passwordInfo);
-
+        $users = $this->patchEntity($user, $passwordInfo, ['validate' => 'changePassword']);
         return $this->save($users);
     }
 }

@@ -32,7 +32,7 @@ class ThreadsTable extends Table
      * Initilize the Thread Table.
      * also set Relationship of this Table with other tables and add
      * required behaviour for this Table.
-     * 
+     *
      * @param array $config configuration array for Table.
      */
     public function initialize(array $config)
@@ -78,7 +78,7 @@ class ThreadsTable extends Table
      * Dynamic finder that find thread details by taking thread ids as argument.
      * Thread details consist of Messages of each Thread provided in argument.
      * And each Message also contain details of related Users of that Message.
-     * 
+     *
      * @param \Cake\ORM\Query $query the original query to append to
      * @param array $options the list of thread id formatted according to cake stadards
      * @return \Cake\ORM\Query The amended query

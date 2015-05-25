@@ -17,9 +17,9 @@ namespace GintonicCMS\Model\Entity;
 
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Core\Configure;
+use Cake\I18n\Time;
 use Cake\Network\Email\Email;
 use Cake\ORM\Entity;
-use Cake\I18n\Time;
 
 /**
  * Represents the User Entity.
@@ -36,7 +36,7 @@ class User extends Entity
 
     /**
      * Take plaintext password and return valid Hash of that password.
-     * 
+     *
      * @param string $password plaintext password string
      * @return string Hash password string
      */
@@ -48,7 +48,7 @@ class User extends Entity
     /**
      * Virtual filed for full name of user.
      * return the concated string of first and last name of user as Full Name.
-     * 
+     *
      * @return boolean | string full name of user.
      */
     protected function _getFullName()
@@ -65,7 +65,7 @@ class User extends Entity
      * For example,
      * $user = $this->Users->get($userId);
      * $user->_getFiles();
-     * 
+     *
      * @return Cake\ORM\Query $userFiles The amended query
      */
     protected function _getFiles()
@@ -82,7 +82,7 @@ class User extends Entity
      * For Example,
      * $user = $this->Users->get($userId);
      * $user->sendRecovery();
-     * 
+     *
      * @return boolean True if email is send else False.
      */
     public function sendRecovery()
@@ -105,7 +105,7 @@ class User extends Entity
      * For Example,
      * $user = $this->Users->get($userId);
      * $user->sendSignup();
-     * 
+     *
      * @return boolean True if email is send else False.
      */
     public function sendSignup()
@@ -129,7 +129,7 @@ class User extends Entity
      * For Example,
      * $user = $this->Users->get($userId);
      * $user->sendVerification();
-     * 
+     *
      * @return boolean True if email is send else False.
      */
     public function sendVerification()
@@ -159,7 +159,7 @@ class User extends Entity
     /**
      * Verify the Token recieved in url while changing the password
      * or validating the account.
-     * 
+     *
      * @param string $token unique token string.
      * @return boolean return true if token is successfully verified else return false.
      */
