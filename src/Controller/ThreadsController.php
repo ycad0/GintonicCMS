@@ -3,7 +3,6 @@
 namespace GintonicCMS\Controller;
 
 use Cake\Event\Event;
-use Cake\ORM\TableRegistry;
 use GintonicCMS\Controller\AppController;
 
 class ThreadsController extends AppController
@@ -26,16 +25,24 @@ class ThreadsController extends AppController
     }
 
     /**
+     * TODO: Write Comment.
+     */
+    public function isAuthorized($user = null)
+    {
+        if (!empty($user)) {
+            return true;
+        }
+        return parent::isAuthorized($user);
+    }
+
+    /**
      * TODO: Write comment
      */
     public function addUsers()
     {
         $this->autoRender = false;
         $users = $this->Users->find()->where(['User.id' => $this->request->data['users']]);
-        $this->Threads->Users->link(
-            $this->request->data['thread']['id'],
-            $users->toArray()
-        );
+        $success = $this->Threads->Users->link($this->request->data['thread']['id'], $users->toArray());
         echo json_encode($success, JSON_NUMERIC_CHECK);
     }
 
@@ -45,10 +52,7 @@ class ThreadsController extends AppController
     public function create()
     {
         $this->autoRender = false;
-        $thread = $this->Threads->newEntity(
-            $this->request->data['users'],
-            ['associated' => ['Users']]
-        );
+        $thread = $this->Threads->newEntity($this->request->data['users'], ['associated' => ['Users']]);
         $this->Threads->save($thread);
         echo json_encode($thread->id, JSON_NUMERIC_CHECK);
     }
@@ -59,8 +63,7 @@ class ThreadsController extends AppController
     public function get()
     {
         $this->autoRender = false;
-        $threads = $this->Threads
-            ->find('details', $this->request->data['threads']);
+        $threads = $this->Threads->find('details', $this->request->data['threads']);
         echo json_encode($threads, JSON_NUMERIC_CHECK);
     }
 
@@ -73,13 +76,10 @@ class ThreadsController extends AppController
         $users = $this->Users->find()->where([
             'User.id' => $this->request->data['users']
         ]);
-        $success = $this->Threads->Users->unlink(
-            $this->request->data['thread']['id'],
-            $users->toArray()
-        );
+        $success = $this->Threads->Users->unlink($this->request->data['thread']['id'], $users->toArray());
         echo json_encode($success, JSON_NUMERIC_CHECK);
     }
-    
+
     /**
      * TODO: Write comment
      */
@@ -106,6 +106,7 @@ class ThreadsController extends AppController
             ->find('unread');
         echo json_encode($threadCount, JSON_NUMERIC_CHECK);
     }
+
     /**
      * TODO: Write Comment
      */
