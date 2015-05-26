@@ -1,4 +1,5 @@
 <?php
+
 namespace GintonicCMS\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
@@ -10,7 +11,6 @@ use GintonicCMS\Model\Table\ThreadsTable;
  */
 class ThreadsTableTest extends TestCase
 {
-
     /**
      * Fixtures
      *
@@ -18,12 +18,10 @@ class ThreadsTableTest extends TestCase
      */
     public $fixtures = [
         'plugin.gintonic_c_m_s.threads',
-        //'plugin.gintonic_c_m_s.messages',
-        //'plugin.gintonic_c_m_s.users',
-        //'plugin.gintonic_c_m_s.files',
-        //'plugin.gintonic_c_m_s.albums',
-        //'plugin.gintonic_c_m_s.threads_users',
-        //'plugin.gintonic_c_m_s.message_read_statuses'
+        'plugin.gintonic_c_m_s.messages',
+        'plugin.gintonic_c_m_s.users',
+        'plugin.gintonic_c_m_s.threads_users',
+        'plugin.gintonic_c_m_s.message_read_statuses'
     ];
 
     /**
@@ -58,12 +56,10 @@ class ThreadsTableTest extends TestCase
     public function testInitialize()
     {
         $this->assertInstanceOf(
-            'Cake\ORM\Association\BelongsToMany',
-            $this->Threads->Users
+            'Cake\ORM\Association\BelongsToMany', $this->Threads->Users
         );
         $this->assertInstanceOf(
-            'Cake\ORM\Association\HasMany',
-            $this->Threads->Messages
+            'Cake\ORM\Association\HasMany', $this->Threads->Messages
         );
     }
 
@@ -79,19 +75,17 @@ class ThreadsTableTest extends TestCase
             ['id' => 2],
             ['id' => 3],
         ];
-        $query = $this->Threads->find();
-        $result = $query->hydrate(false)->toArray();
-        //$query = $this->Threads->find('withUsers',$users);
-        //$this->assertInstanceOf('Cake\ORM\Query', $query);
-        //$result = $query->hydrate(false)->toArray();
-        //$expected = [
-        //    ['id' => 1, 'title' => 'First Article'],
-        //    ['id' => 2, 'title' => 'Second Article'],
-        //    ['id' => 3, 'title' => 'Third Article']
-        //];
 
-        //$this->assertEquals($expected, $result);
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->Threads->find('withUsers', $users)->select(['id']);
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $expected = [
+            ['id' => 1],
+            ['id' => 2],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -101,17 +95,46 @@ class ThreadsTableTest extends TestCase
      */
     public function testFindDetails()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
+        $threads = [
+            ['id' => 1]
+        ];
+        $query = $this->Threads->find('details', $threads)
+            ->select(['id'])
+            ->contain(['Messages' => function($query){
+                return $query
+                    ->select(['id', 'thread_id'])
+                    ->contain([
+                        'Users'=>function($q){
+                        return $q
+                            ->select('Users.id');
+                    }]);
+            }]);
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
 
-    /**
-     * Test findParticipant method
-     *
-     * @return void
-     */
-    public function testFindParticipant()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $expected = [
+            [
+                'id' => 1,
+                'messages' => [
+                    [
+                        'id' => 1,
+                        'thread_id' => 1,
+                        'user' => [
+                            'id' => 1
+                        ]
+                    ],
+                    [
+                        'id' => 2,
+                        'thread_id' => 1,
+                        'user' => [
+                            'id' => 2,
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -120,8 +143,17 @@ class ThreadsTableTest extends TestCase
      * @return void
      */
     public function testFindWithUserCount()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+    { 
+        $query = $this->Threads
+            ->find('withUserCount', ['count' => 2]);
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            ['id' => 1],
+            ['id' => 3]
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -131,7 +163,34 @@ class ThreadsTableTest extends TestCase
      */
     public function testFindUnread()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->Threads->find('unread')->select('Messages.id');
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $expected = [
+            [
+                '_matchingData' => [
+                    'Messages' => [
+                        'id' => 3
+                    ]
+                ]
+            ],
+            [
+                '_matchingData' => [
+                    'Messages' => [
+                        'id' => 5
+                    ]
+                ]
+            ],
+            [
+                '_matchingData' => [
+                    'Messages' => [
+                        'id' => 7
+                    ]
+                ]
+            ]
+        ];
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -141,6 +200,21 @@ class ThreadsTableTest extends TestCase
      */
     public function testFindDeleted()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $users = [];
+
+        $query = $this->Threads->find('deleted', $users)->select('Messages.id');
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $expected = [
+            [
+                '_matchingData' => [
+                    'Messages' => [
+                        'id' => 6
+                    ]
+                ]
+            ]
+        ];
+        $this->assertEquals($expected, $result);
     }
 }

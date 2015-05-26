@@ -23,13 +23,7 @@ class AlbumsController extends AppController
     {
         $this->loadModel('Users');
         $loggedInUserId = $this->request->session()->read('Auth.User.id');
-        $album = $this->Albums->find('all')
-            ->where(['Albums.user_id' => $userId])
-            ->contain([
-                'Files' => [
-                    'fields' => ['Files.id', 'Files.filename', 'Files.dir']
-                ]
-            ]);
+        $album = $this->Albums->find('withUserId', ['userId' => $userId]);
         $this->set(compact('loggedInUserId', 'album', 'userId'));
     }
 
@@ -102,17 +96,11 @@ class AlbumsController extends AppController
     {
         $this->layout = 'ajax';
         $album = '';
+            
         if (!empty($this->request->data['fileIds'])) {
             $userId = $this->request->data['userId'];
             $loggedInUserId = $this->request->data['loggedInUserId'];
-
-            $album = $this->Albums->find('all')
-                ->where(['Albums.file_id' => $this->request->data['fileIds']])
-                ->contain([
-                    'Files' => [
-                        'fields' => ['Files.id', 'Files.filename', 'Files.dir']
-                    ]
-                ]);
+            $album = $this->Albums->find('withFileIds', ['fileIds' => $this->request->data['fileIds']]);
             $this->set(compact('album', 'userId', 'loggedInUserId'));
         }
         $this->render('GintonicCMS.Element/Albums/photo_galery');

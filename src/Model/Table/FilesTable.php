@@ -4,11 +4,11 @@ namespace GintonicCMS\Model\Table;
 
 use Cake\Filesystem\File;
 use Cake\Filesystem\Folder;
+use Cake\ORM\Query;
 use Cake\ORM\Table;
 
 class FilesTable extends Table
 {
-
     /**
      * TODO: doccomment
      */
@@ -151,5 +151,14 @@ class FilesTable extends Table
     public function convertName($title, $ext, $userId)
     {
         return sha1($title) . '_' . $userId . '.' . $ext;
+    }
+
+    /**
+     * TODO: Write Document
+     */
+    public function findWithFileIds(Query $query, array $option)
+    {
+        return $query
+            ->where(['Files.id IN' => $option['fileIds']]);
     }
 }
