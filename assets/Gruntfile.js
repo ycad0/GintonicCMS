@@ -125,7 +125,8 @@ module.exports = function(grunt) {
     less: {
         build: {
           options: {
-              compress: true
+              compress: true,
+              paths: ['./', grunt.option('gintonic')+'assets/src/less/']
           },
           files: {
             "../webroot/css/default.css": "src/less/default.less",
@@ -135,7 +136,8 @@ module.exports = function(grunt) {
         },
         dev: {
           options: {
-              compress: false
+              compress: false,
+              paths: ['./', grunt.option('gintonic')+'assets/src/less/']
           },
           files: {
             "../webroot/css/default.css": "src/less/default.less",
