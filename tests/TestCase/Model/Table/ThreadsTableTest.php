@@ -70,16 +70,11 @@ class ThreadsTableTest extends TestCase
      */
     public function testFindWithUsers()
     {
-        $users = [
-            ['id' => 1],
-            ['id' => 2],
-            ['id' => 3],
-        ];
+        $users = [1];
 
         $query = $this->Threads->find('withUsers', $users)->select(['id']);
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $result = $query->hydrate(false)->toArray();
-
         $expected = [
             ['id' => 1],
             ['id' => 2],

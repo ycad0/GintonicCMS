@@ -41,8 +41,9 @@ class ThreadsController extends AppController
     public function addUsers()
     {
         $this->autoRender = false;
-        $users = $this->Users->find()->where(['User.id' => $this->request->data['users']]);
-        $success = $this->Threads->Users->link($this->request->data['thread']['id'], $users->toArray());
+        $users = $this->Threads->Users->find()->where(['Users.id IN' => $this->request->data['users']]);
+        $thread = $this->Threads->get($this->request->data['threadId']);
+        $success = $this->Threads->Users->link($thread, $users->toArray());
         echo json_encode($success, JSON_NUMERIC_CHECK);
     }
 
@@ -54,6 +55,10 @@ class ThreadsController extends AppController
         $this->autoRender = false;
         $thread = $this->Threads->newEntity($this->request->data['users'], ['associated' => ['Users']]);
         $this->Threads->save($thread);
+        
+        $users = $this->Threads->Users->find()->where(['Users.id IN' => $this->request->data['users']]);
+        $this->Threads->Users->link($thread, $users->toArray());
+        
         echo json_encode($thread->id, JSON_NUMERIC_CHECK);
     }
 
@@ -63,7 +68,7 @@ class ThreadsController extends AppController
     public function get()
     {
         $this->autoRender = false;
-        $threads = $this->Threads->find('details', $this->request->data['threads']);
+        $threads = $this->Threads->find('details', [$this->request->data['threads']]);
         echo json_encode($threads, JSON_NUMERIC_CHECK);
     }
 
@@ -73,10 +78,11 @@ class ThreadsController extends AppController
     public function removeUsers()
     {
         $this->autoRender = false;
-        $users = $this->Users->find()->where([
-            'User.id' => $this->request->data['users']
+        $users = $this->Threads->Users->find()->where([
+            'Users.id IN' => $this->request->data['users']
         ]);
-        $success = $this->Threads->Users->unlink($this->request->data['thread']['id'], $users->toArray());
+        $thread = $this->Threads->get($this->request->data['threadId']);
+        $success = $this->Threads->Users->unlink($thread, $users->toArray());
         echo json_encode($success, JSON_NUMERIC_CHECK);
     }
 
