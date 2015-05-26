@@ -79,7 +79,6 @@ class AppController extends Controller
      */
     public function isAuthorized($user = null)
     {
-        return true;
         if (!empty($user) && $user['role'] == 'admin') {
             return true;
         }
