@@ -20,16 +20,17 @@ class RequireHelper extends Helper
         if (strpos($url, '//') === false) {
             $url = $this->Url->assetUrl($url, ['pathPrefix' => Configure::read('App.jsBaseUrl')]);
         }
+
         $modules = '';
         if (!is_null($this->_View->get('requiredeps'))) {
             $modules = "require([" . implode(',', $this->_View->get('requiredeps')) . "]);";
         }
         $output = $this->Html->script(
-            'GintonicCMS.config',
+            $requireLib,
             ['data-main' => $url]
         );
         $output .= "<script type='text/javascript'>";
-        $output .= "require(['" . $url . "'], function () {";
+        $output .= "require(['" . substr($url,1) . "'], function () {";
         $output .= $modules;
         $output .= '});</script>';
 
