@@ -1,9 +1,7 @@
 <?php
 namespace GintonicCMS\Controller\Admin;
 
-use Cake\Core\Configure;
 use Cake\Event\Event;
-use Cake\ORM\TableRegistry;
 use GintonicCMS\Controller\AppController;
 
 class UsersController extends AppController
@@ -35,7 +33,7 @@ class UsersController extends AppController
      */
     public function add()
     {
-        $this->request->data["validated"] = 1;
+        $this->request->data["verified"] = 1;
         $user = $this->Users->newEntity($this->request->data);
         if ($this->request->is('post')) {
             if ($this->Users->save($user)) {

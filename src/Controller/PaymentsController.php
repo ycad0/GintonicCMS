@@ -201,10 +201,8 @@ class PaymentsController extends AppController
     public function getCustomerId($userId = null, $stripeEmail = null, $stripeToken = null)
     {
         if (!empty($userId)) {
-            $userCustomer = $this->CustomersUsers->find()
-                ->where(['CustomersUsers.user_id' => $userId])
-                ->first();
-
+            $userCustomer = $this->CustomersUsers->find('customerStripeId', ['userId' => $userId]);
+            
             if (!empty($userCustomer)) {
                 return $userCustomer->customer_id;
             } else {
@@ -274,9 +272,7 @@ class PaymentsController extends AppController
         if (!empty($this->request->data['stripeToken'])) {
             try {
                 $userId = $this->request->session()->read('Auth.User.id');
-
                 $customer = $this->__createCustomer($this->request->data['email'], $this->request->data['stripeToken']);
-
                 $charge = $this->__createCharge($customer->id, ((float)$this->request->data['amount']) * 100);
 
                 $arrDetail = [

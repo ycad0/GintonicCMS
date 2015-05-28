@@ -1,11 +1,7 @@
 <?php
 namespace GintonicCMS\Controller;
 
-use Cake\Controller\Controller;
-use Cake\Core\Configure;
 use Cake\Event\Event;
-use Cake\Network\Exception\NotFoundException;
-use Cake\ORM\TableRegistry;
 use GintonicCMS\Controller\AppController;
 
 class FilesController extends AppController
@@ -52,8 +48,14 @@ class FilesController extends AppController
             ]);
             return $this->redirect(['plugin' => 'GintonicCMS', 'controller' => 'Users', 'action' => 'signin']);
         }
+        
+        $userFiles = $this->request->session()->read('Auth.User.file.id');
         $arrConditions = [];
-        $arrConditions = ['Files.id NOT IN' => $this->request->session()->read('Auth.User.file.id')];
+        
+        if (!empty($userFiles)) {
+            $arrConditions = ['Files.id NOT IN' => $this->request->session()->read('Auth.User.file.id')];
+        }
+        
         if ($this->request->session()->read('Auth.User.role') != 'admin') {
             $arrConditions = ['Files.user_id' => $this->request->session()->read('Auth.User.id')];
         }
@@ -105,9 +107,7 @@ class FilesController extends AppController
     {
         $this->layout = 'ajax';
         $fileIds = explode(', ', $id);
-        foreach ($fileIds as $key => $id) {
-            $files[] = $this->Files->get($id);
-        }
+        $files = $this->Files->find('withFileIds', ['fileIds' => $fileIds]);
         $this->set('files', $files);
     }
 

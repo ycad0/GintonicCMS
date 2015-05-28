@@ -14,7 +14,6 @@ use Symfony\Component\Console\Output\NullOutput;
 
 class SettingsController extends AppController
 {
-
     /**
      * TODO: Write Document
      */
