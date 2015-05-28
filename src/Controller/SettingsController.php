@@ -50,6 +50,7 @@ class SettingsController extends AppController
      */
     public function nodeInstall()
     {
+        ini_set('max_execution_time', 0);
         $this->autoRender = false;
         exec('cd ..' . DS . 'assets && npm install');
         $status = [
@@ -64,6 +65,7 @@ class SettingsController extends AppController
      */
     public function bowerInstall()
     {
+        ini_set('max_execution_time', 0);
         $this->autoRender = false;
         //exec('cd ..' . DS . 'assets'.DS.'node_modules' . DS . 'bower' . DS . 'bin && bower install');
         exec('cd ..' . DS . 'assets && bower install');
@@ -79,6 +81,7 @@ class SettingsController extends AppController
      */
     public function gruntDev()
     {
+        ini_set('max_execution_time', 0);
         $this->autoRender = false;
         $path = Plugin::path('GintonicCMS');
         exec('cd ..' . DS . 'assets && grunt dev --gintonic=' . $path);
@@ -94,6 +97,7 @@ class SettingsController extends AppController
      */
     public function grunt()
     {
+        ini_set('max_execution_time', 0);
         $this->autoRender = false;
         $path = Plugin::path('GintonicCMS');
         exec('cd ..' . DS . 'assets && grunt --gintonic=' . $path);
