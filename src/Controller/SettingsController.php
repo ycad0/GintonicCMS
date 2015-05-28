@@ -193,4 +193,12 @@ class SettingsController extends AppController
         }
         $this->set(compact('status'));
     }
+    
+    /**
+     * TODO: Write Document
+     */
+    public function assets()
+    {
+        
+    }
 }
