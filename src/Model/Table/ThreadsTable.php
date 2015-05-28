@@ -16,7 +16,6 @@ namespace GintonicCMS\Model\Table;
 
 use Cake\ORM\Query;
 use Cake\ORM\Table;
-use Cake\ORM\TableRegistry;
 
 /**
  * Represents the Threads Table
@@ -49,7 +48,7 @@ class ThreadsTable extends Table
         $this->addAssociations([
             'hasMany' => ['GintonicCMS.Messages'],
             'belongsToMany' => [
-                'Users' => [
+                'GintonicCMS.Users' => [
                     'saveStrategy' => 'append'
                 ]
             ]
@@ -70,7 +69,7 @@ class ThreadsTable extends Table
             ->matching('Users', function ($q) use ($users) {
                 return $q
                     ->select(['Threads.id'])
-                    ->where(['Users.id' => $users]);
+                    ->where(['Users.id IN' => $users]);
             });
     }
 
@@ -86,7 +85,7 @@ class ThreadsTable extends Table
     public function findDetails(Query $query, array $options)
     {
         return $query
-            ->where(['Threads.id' => $options])
+            ->where(['Threads.id IN' => $options])
             ->contain([
                 'Messages' => [
                     'Users'

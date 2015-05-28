@@ -196,9 +196,6 @@ class UsersController extends AppController
         if ($this->request->is(['post', 'put'])) {
             $userId = $this->request->session()->read('Auth.User.id');
 
-            // TODO: validations removed here, they need to go into the Model
-            // -> password match
-            // -> password not empty
             if ($this->Users->changePassword($this->request->data, $userId)) {
                 $this->Flash->set(__('Password has been updated Successfully.'), [
                     'element' => 'GintonicCMS.alert',
@@ -247,7 +244,7 @@ class UsersController extends AppController
         $this->set(compact('userId', 'token'));
         $this->render('GintonicCMS.recover', 'GintonicCMS.bare');
     }
-    
+
     /**
      * TODO: Write comment
      */

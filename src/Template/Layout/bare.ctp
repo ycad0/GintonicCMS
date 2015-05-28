@@ -29,7 +29,7 @@
 
         <?php echo $this->Require->req('jquery');?>
         <?php echo $this->Require->req('bootstrap');?>
-        <?php echo $this->Require->load($this->Url->build('/',TRUE).'gintonic_c_m_s/js/config'); ?>
+        <?php echo $this->Require->load('GintonicCMS.config'); ?>
 
     </body>
 </html>

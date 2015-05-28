@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GintonicCMS : Full Stack Content Management System (http://cms.gintonicweb.com)
  * Copyright (c) Philippe Lafrance, Inc. (http://phillafrance.com)
@@ -12,9 +13,9 @@
  * @since         0.0.0
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
-
 namespace GintonicCMS\Model\Table;
 
+use Cake\Auth\DefaultPasswordHasher;
 use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -39,17 +40,17 @@ class UsersTable extends Table
     public function validationDefault(Validator $validator)
     {
         return $validator
-            ->notEmpty('email', __('A username is required'))
-            ->notEmpty('role', __('A role is required'))
-            ->add('email', [
-                'unique' => [
-                    'rule' => ['validateUnique'],
-                    'provider' => 'table',
-                    'message' => __('Email adress already exists.')
-                ]
-            ])
-            ->requirePresence('password')
-            ->notEmpty('password', ['message' => __('Please enter password.')]);
+                ->notEmpty('email', __('A username is required'))
+                ->notEmpty('role', __('A role is required'))
+                ->add('email', [
+                    'unique' => [
+                        'rule' => ['validateUnique'],
+                        'provider' => 'table',
+                        'message' => __('Email adress already exists.')
+                    ]
+                ])
+                ->requirePresence('password')
+                ->notEmpty('password', ['message' => __('Please enter password.')]);
     }
 
     /**
@@ -58,10 +59,11 @@ class UsersTable extends Table
     public function validationChangePassword(Validator $validator)
     {
         return $validator
-            ->notEmpty('current_password', ['message' => __('Current Password is required')])
-            ->notEmpty('new_password', ['message' => __('New Password is required')])
-            ->notEmpty('confirm_password', ['message' => __('Confirm Password is required')]);
+                ->notEmpty('current_password', ['message' => __('Current Password is required')])
+                ->notEmpty('new_password', ['message' => __('New Password is required')])
+                ->notEmpty('confirm_password', ['message' => __('Confirm Password is required')]);
     }
+
     /**
      * Initilize the Users Table.
      * also set Relationship of this Table with other tables and add
@@ -101,11 +103,11 @@ class UsersTable extends Table
     public function findAvatar(Query $query, array $options)
     {
         return $query
-            ->contain([
-                'Files' => [
-                    'fields' => ['Files.id', 'Files.filename']
-                ]
-            ]);
+                ->contain([
+                    'Files' => [
+                        'fields' => ['Files.id', 'Files.filename']
+                    ]
+                ]);
     }
 
     /**
@@ -118,9 +120,9 @@ class UsersTable extends Table
     public function findProfile(Query $query, array $options)
     {
         return $query
-            ->find('avatar')
-            ->conditions(['Users.id' => $options])
-            ->first();
+                ->find('avatar')
+                ->conditions(['Users.id' => $options])
+                ->first();
     }
 
     /**
@@ -134,9 +136,13 @@ class UsersTable extends Table
     public function changePassword($passwordInfo, $userId)
     {
         $user = $this->get($userId);
-        // TODO: make sure to test that the password is correctly
-        // encrypted and updated
-        $users = $this->patchEntity($user, $passwordInfo, ['validate' => 'changePassword']);
-        return $this->save($users);
+        $verify = (new DefaultPasswordHasher)
+            ->check($passwordInfo['current_password'], $user->password);
+        if ($verify) {
+            $user->password = $passwordInfo['new_password'];
+            $users = $this->patchEntity($user, $passwordInfo, ['validate' => 'changePassword']);
+            return $this->save($users);
+        }
+        return false;
     }
 }
