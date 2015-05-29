@@ -9,6 +9,7 @@ use Cake\Datasource\ConnectionManager;
 use Cake\Event\Event;
 use GintonicCMS\Controller\AppController;
 use Migrations\Command\Migrate;
+use PDOException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 
@@ -19,7 +20,29 @@ class SettingsController extends AppController
      */
     public function beforeFilter(Event $event)
     {
-        $this->Auth->allow();
+        if (!$this->__databaseConnection()) {
+            $this->Auth->allow();
+            return;
+        }
+
+        if (!$this->__tableExists()) {
+            $this->Auth->allow();
+            return;
+        }
+
+        if (!$this->__adminRecordExists()) {
+            $this->Auth->allow();
+            return;
+        }
+        return $this->isAuthorized();
+    }
+
+    /**
+     * TODO: Write Document
+     */
+    public function isAuthorized($user = null)
+    {
+        return parent::isAuthorized($user);
     }
 
     /**
@@ -38,11 +61,16 @@ class SettingsController extends AppController
      */
     public function migrate()
     {
-        $command = new Migrate();
-        $input = new ArrayInput(array('--plugin' => 'GintonicCMS'));
-        $output = new NullOutput();
-        $resultCode = $command->run($input, $output);
-        $this->set(compact('resultCode'));
+        $missingConnection = true;
+        if ($this->__databaseConnection()) {
+            $missingConnection = false;
+            $command = new Migrate();
+            $input = new ArrayInput(array('--plugin' => 'GintonicCMS'));
+            $output = new NullOutput();
+            $resultCode = $command->run($input, $output);
+            $this->set(compact('resultCode'));
+        }
+        $this->set(compact('missingConnection'));
     }
 
     /**
@@ -130,20 +158,9 @@ class SettingsController extends AppController
                 'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
             ];
 
-            try {
-                ConnectionManager::config('userDb', $default);
-                $connection = ConnectionManager::get('userDb');
-                $connected = $connection->connect();
-            } catch (MissingConnectionException $connectionError) {
-                $connected = false;
-                $errorMsg = $connectionError->getMessage();
-                if (method_exists($connectionError, 'getAttributes')) {
-                    $attributes = $connectionError->getAttributes();
-                    if (isset($errorMsg['message'])) {
-                        $errorMsg .= '<br />' . $attributes['message'];
-                    }
-                }
-            }
+            ConnectionManager::config('userDb', $default);
+            $connected = $this->__databaseConnection('userDb');
+
             if ($connected) {
                 file_put_contents('../config/gintonic.database.json', json_encode($default, JSON_PRETTY_PRINT));
             }
@@ -161,19 +178,30 @@ class SettingsController extends AppController
      */
     public function createAdmin()
     {
-        if ($this->request->is(['post', 'put'])) {
-            $this->loadModel('GintonicCMS.Users');
-            $user = $this->Users->newEntity()->accessible('password', true);
-            $success = false;
-            $this->request->data['password'] = (new DefaultPasswordHasher)->hash($this->request->data['password']);
-            $this->request->data['verified'] = 1;
-            $this->request->data['role'] = 'admin';
-            $userInfo = $this->Users->patchEntity($user, $this->request->data);
-            if ($this->Users->save($userInfo)) {
-                $success = true;
+        if (!$this->__tableExists('users')) {
+            $tableExists = false;
+        } else {
+            $tableExists = true;
+            if ($this->__adminRecordExists()) {
+                $recordExists = true;
+            } else {
+                $recordExists = false;
+                if ($this->request->is(['post', 'put'])) {
+                    $this->loadModel('GintonicCMS.Users');
+                    $user = $this->Users->newEntity()->accessible('password', true);
+                    $success = false;
+                    $this->request->data['password'] = (new DefaultPasswordHasher)->hash($this->request->data['password']);
+                    $this->request->data['verified'] = 1;
+                    $this->request->data['role'] = 'admin';
+                    $userInfo = $this->Users->patchEntity($user, $this->request->data);
+                    if ($this->Users->save($userInfo)) {
+                        $success = true;
+                    }
+                    $this->set(compact('success'));
+                }
             }
-            $this->set(compact('success'));
         }
+        $this->set(compact('tableExists', 'recordExists'));
     }
 
     /**
@@ -197,12 +225,57 @@ class SettingsController extends AppController
         }
         $this->set(compact('status'));
     }
-    
+
     /**
      * TODO: Write Document
      */
     public function assets()
     {
-        
+        //assets view
+    }
+
+    /**
+     * TODO: Write Document.
+     */
+    private function __databaseConnection($dataSource = 'default')
+    {
+        try {
+            $connection = ConnectionManager::get($dataSource);
+            $connected = $connection->connect();
+        } catch (MissingConnectionException $connectionError) {
+            $connected = false;
+        }
+        return $connected;
+    }
+
+    /**
+     * TODO: Write Document.
+     */
+    private function __tableExists($tableName = 'users')
+    {
+        try {
+            $db = ConnectionManager::get('default');
+            $collection = $db->schemaCollection();
+            $tables = $collection->listTables();
+            if (in_array($tableName, $tables)) {
+                return true;
+            }
+        } catch (PDOException $connectionError) {
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * TODO: Write Document.
+     */
+    private function __adminRecordExists()
+    {
+        $conditions = ['Users.role' => 'admin'];
+        $this->loadModel('GintonicCMS.Users');
+        if ($this->Users->exists($conditions)) {
+            return true;
+        }
+        return false;
     }
 }
