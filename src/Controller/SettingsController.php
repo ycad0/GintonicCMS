@@ -1,8 +1,21 @@
 <?php
 
+/**
+ * GintonicCMS : Full Stack Content Management System (http://cms.gintonicweb.com)
+ * Copyright (c) Philippe Lafrance, Inc. (http://phillafrance.com)
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright (c) Philippe Lafrance (http://phillafrance.com)
+ * @link          http://cms.gintonicweb.com GintonicCMS Project
+ * @since         0.0.0
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ */
+
 namespace GintonicCMS\Controller;
 
-use Cake\Auth\DefaultPasswordHasher;
 use Cake\Core\Plugin;
 use Cake\Database\Exception\MissingConnectionException;
 use Cake\Datasource\ConnectionManager;
@@ -13,13 +26,28 @@ use PDOException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 
+/**
+ * Represents the Settings Controller
+ * Settings Controller is used to Configure settings of
+ * GintonicCMS Plugin.
+ */
 class SettingsController extends AppController
 {
+
     /**
-     * TODO: Write Document
+     * Call before executoin of every request, also set some action
+     * to access without login.
+     * access login as below.
+     * if database is not created then it will allow all action to users.
+     * if database is created but users table is not created then it will allow all action to users.
+     * if users table is created but there is no any admin account then it will allow all action to users.
+     * if admin record is found in users table then it ask Authentication in order to access actions of this controller.
+     *
+     * @param Cake\Event\Event $event Describe the Events.
      */
     public function beforeFilter(Event $event)
     {
+        parent::beforeFilter($event);
         if (!$this->__databaseConnection()) {
             $this->Auth->allow();
             return;
@@ -34,11 +62,13 @@ class SettingsController extends AppController
             $this->Auth->allow();
             return;
         }
-        return $this->isAuthorized();
     }
 
     /**
-     * TODO: Write Document
+     * Used to Authorized User to access requested action.
+     *
+     * @param array $user contain user detail.
+     * @return boolean Return true if action is allowed else return false.
      */
     public function isAuthorized($user = null)
     {
@@ -57,7 +87,8 @@ class SettingsController extends AppController
     }
 
     /**
-     * TODO: Write Document
+     * Used to migrate the database of CMS.
+     * it use bin/cake migrations migrate --plugin GintonicCMS command to migrate database.
      */
     public function migrate()
     {
@@ -74,7 +105,8 @@ class SettingsController extends AppController
     }
 
     /**
-     * TODO: Write Document
+     * Used to install node modules.
+     * it uses 'node install' command to install node dependencies
      */
     public function nodeInstall()
     {
@@ -89,7 +121,8 @@ class SettingsController extends AppController
     }
 
     /**
-     * TODO: Write Document
+     * Used to install bower modules.
+     * it uses 'bower install' command to install bower Modules.
      */
     public function bowerInstall()
     {
@@ -105,7 +138,8 @@ class SettingsController extends AppController
     }
 
     /**
-     * TODO: Write Document
+     * Used to Compile dependency code
+     * It won't minify and optimize code.
      */
     public function gruntDev()
     {
@@ -121,7 +155,8 @@ class SettingsController extends AppController
     }
 
     /**
-     * TODO: Write Document
+     * Used to Compile dependency code
+     * Will optimize code and minify it so it takes much longer to run.
      */
     public function grunt()
     {
@@ -137,7 +172,8 @@ class SettingsController extends AppController
     }
 
     /**
-     * TODO: Write Document
+     * Used to configure database options.
+     * @param string $mode use to identify operation like edit.
      */
     public function databaseSetup($mode = '')
     {
@@ -174,7 +210,8 @@ class SettingsController extends AppController
     }
 
     /**
-     * TODO: Write Document
+     * Create Admin account.
+     * if there is already one admin account in user table then it won't allow to create another account.
      */
     public function createAdmin()
     {
@@ -205,29 +242,33 @@ class SettingsController extends AppController
     }
 
     /**
-     * TODO: Write Document
+     * Write Configure variable in gintonic.php.
+     * gintonic.php will be included from bootstrap.php of project.
+     * It write admin email and Cookie information.
      */
     public function setupVariable()
     {
-        $status = false;
-        $cookieKey = substr(str_shuffle("0123456789#@$%^&!abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 37);
-        $default = "<?php\n" .
-            "return [\n" .
-            "    'admin_mail' =>'admin@gintonicweb.com',\n" .
-            "    'Cookie' =>[\n" .
-            "        'key'=>'" . $cookieKey . "',\n" .
-            "        'name'=>'gintonic',\n" .
-            "        'loginDuration'=>'+2 weeks'\n" .
-            "    ]\n" .
-            "];\n";
-        if (file_put_contents('../config/gintonic.php', $default)) {
-            $status = true;
+        if ($this->request->is(['post', 'put'])) {
+            $status = false;
+            $cookieKey = substr(str_shuffle("0123456789#@$%^&!abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 37);
+            $default = "<?php\n" .
+                "return [\n" .
+                "    'admin_mail' =>'" . $this->request->data['email'] . "',\n" .
+                "    'Cookie' =>[\n" .
+                "        'key'=>'" . $cookieKey . "',\n" .
+                "        'name'=>'gintonic',\n" .
+                "        'loginDuration'=>'+2 weeks'\n" .
+                "    ]\n" .
+                "];\n";
+            if (file_put_contents('../config/gintonic.php', $default)) {
+                $status = true;
+            }
+            $this->set(compact('status'));
         }
-        $this->set(compact('status'));
     }
 
     /**
-     * TODO: Write Document
+     * Display view to build assets.
      */
     public function assets()
     {
@@ -235,7 +276,10 @@ class SettingsController extends AppController
     }
 
     /**
-     * TODO: Write Document.
+     * Test database connection.
+     *
+     * @param type $dataSource name of data source.
+     * @return boolean True if database is connected, False else.
      */
     private function __databaseConnection($dataSource = 'default')
     {
@@ -249,7 +293,10 @@ class SettingsController extends AppController
     }
 
     /**
-     * TODO: Write Document.
+     * Check whether table is exists in database or not.
+     *
+     * @param string $tableName Name of the table to check.
+     * @return boolean True if table exists, False else.
      */
     private function __tableExists($tableName = 'users')
     {
@@ -267,7 +314,9 @@ class SettingsController extends AppController
     }
 
     /**
-     * TODO: Write Document.
+     * Check for admin account.
+     *
+     * @return boolean True if admin account exists, False else.
      */
     private function __adminRecordExists()
     {
