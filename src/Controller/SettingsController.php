@@ -190,7 +190,7 @@ class SettingsController extends AppController
                     $this->loadModel('GintonicCMS.Users');
                     $user = $this->Users->newEntity()->accessible('password', true);
                     $success = false;
-                    $this->request->data['password'] = (new DefaultPasswordHasher)->hash($this->request->data['password']);
+                    $user->password = $this->request->data['password'];
                     $this->request->data['verified'] = 1;
                     $this->request->data['role'] = 'admin';
                     $userInfo = $this->Users->patchEntity($user, $this->request->data);
