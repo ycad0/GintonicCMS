@@ -11,4 +11,4 @@ This plugin is currently under development and is known to contain some issues.
 
 ## Documentation
 
-Progress reports and documentation can be found at [http://cms.gintonicweb.com](http://cms.gintonicweb.com)
+Progress reports and documentation can be found at [http://gintoniccms.com](http://gintoniccms.com)

@@ -44,7 +44,7 @@ class SettingsController extends AppController
 
     public function node_install()
     {
-        debug(shell_exec('cd ..' . DS . 'assets && npm install 2>&1'));
+        debug(exec('cd ..' . DS . 'assets && npm install 2>&1'));
         exit;
     }
 
