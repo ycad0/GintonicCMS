@@ -205,13 +205,13 @@ class SettingsController extends AppController
         $resultCode = $command->run($input, $output);
 
         // TODO: get the interpretation of the error codes
-        if($resultCode == 'Error??'){
-            $this->Flash->set(__('Error while running the migrations'), [
-                'element' => 'GintonicCMS.alert',
-                'params' => ['class' => 'alert-danger']
-            ]);
-            return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
-        }
+        //if($resultCode == 'Error??'){
+        //    $this->Flash->set(__('Error while running the migrations'), [
+        //        'element' => 'GintonicCMS.alert',
+        //        'params' => ['class' => 'alert-danger']
+        //    ]);
+        //    return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
+        //}
 
         // Check if the users table exists
         if(!$this->__tableExists('users')){
@@ -235,14 +235,15 @@ class SettingsController extends AppController
                     'params' => ['class' => 'alert-success']
                 ]);
                 return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
+            } else {
+                $this->Flash->set(__('Unable to add Users'), [
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-danger']
+                ]);
+                return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
             }
         }
 
-        $this->Flash->set(__('Unable to add Users'), [
-            'element' => 'GintonicCMS.alert',
-            'params' => ['class' => 'alert-danger']
-        ]);
-        return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
     }
 
     /**
