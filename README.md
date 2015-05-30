@@ -3,7 +3,7 @@
 [![Coverage Status](https://coveralls.io/repos/gintonicweb/GintonicCMS/badge.svg?branch=master)](https://coveralls.io/r/gintonicweb/GintonicCMS?branch=master)
 [![Software License](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.txt)
 
-Built on top of CakePHP 3, GintonicCMS provides a robust and extensible core for your apps by wrapping powerful tools and a seamless base.
+CMS based on CakePHP 3, Bootstrap 3, and RequireJS 2
 
 ## Warning
 

@@ -18,7 +18,7 @@ use Cake\Event\Event;
 use GintonicCMS\Controller\AppController;
 
 /**
- * Represents the Threads Table
+ * Represents the Threads Controller
  *
  * A thread is a sequence of messages sent by registered users (participants).
  * A thread can be used to represent a chat log, or could also be used to track
