@@ -175,7 +175,6 @@ class SettingsController extends AppController
 
     /**
      * Used to configure database options.
-     * @param string $mode use to identify operation like edit.
      */
     public function databaseSetup()
     {
@@ -183,7 +182,7 @@ class SettingsController extends AppController
         Configure::load('app');
         $default = Configure::read('Datasources.default');
         if ($this->request->is(['post', 'put'])) {
-            $default = array_merge($default, $this->request->data) ;
+            $default = array_merge($default, $this->request->data);
             ConnectionManager::config('userDb', $default);
             if ($this->__databaseConnection('userDb')) {
                 Configure::write('Datasources.default', $default);
