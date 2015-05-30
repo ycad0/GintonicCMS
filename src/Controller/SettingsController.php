@@ -89,24 +89,6 @@ class SettingsController extends AppController
     }
 
     /**
-     * Used to migrate the database of CMS.
-     * it use bin/cake migrations migrate --plugin GintonicCMS command to migrate database.
-     */
-    public function migrate()
-    {
-        $missingConnection = true;
-        if ($this->__databaseConnection()) {
-            $missingConnection = false;
-            $command = new Migrate();
-            $input = new ArrayInput(array('--plugin' => 'GintonicCMS'));
-            $output = new NullOutput();
-            $resultCode = $command->run($input, $output);
-            $this->set(compact('resultCode'));
-        }
-        $this->set(compact('missingConnection'));
-    }
-
-    /**
      * Used to install node modules.
      * it uses 'node install' command to install node dependencies
      */
@@ -207,30 +189,60 @@ class SettingsController extends AppController
      */
     public function createAdmin()
     {
-        if (!$this->__tableExists('users')) {
-            $tableExists = false;
-        } else {
-            $tableExists = true;
-            if ($this->__adminRecordExists()) {
-                $recordExists = true;
-            } else {
-                $recordExists = false;
-                if ($this->request->is(['post', 'put'])) {
-                    $this->loadModel('GintonicCMS.Users');
-                    $user = $this->Users->newEntity()->accessible('password', true);
-                    $success = false;
-                    $user->password = $this->request->data['password'];
-                    $this->request->data['verified'] = 1;
-                    $this->request->data['role'] = 'admin';
-                    $userInfo = $this->Users->patchEntity($user, $this->request->data);
-                    if ($this->Users->save($userInfo)) {
-                        $success = true;
-                    }
-                    $this->set(compact('success'));
-                }
+        // Lets make sure that we can connect to the database first
+        if(!$this->__databaseConnection()){
+            $this->Flash->set(__('Impossible to connect to the database'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
+            ]);
+            return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
+        }
+
+        // Run GintonicCMS migrations
+        $command = new Migrate();
+        $input = new ArrayInput(array('--plugin' => 'GintonicCMS'));
+        $output = new NullOutput();
+        $resultCode = $command->run($input, $output);
+
+        // TODO: get the interpretation of the error codes
+        if($resultCode == 'Error??'){
+            $this->Flash->set(__('Error while running the migrations'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
+            ]);
+            return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
+        }
+
+        // Check if the users table exists
+        if(!$this->__tableExists('users')){
+            $this->Flash->set(__('Unexpected error with Users table'), [
+                'element' => 'GintonicCMS.alert',
+                'params' => ['class' => 'alert-danger']
+            ]);
+            return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
+        }
+
+        if ($this->request->is(['post', 'put'])) {
+            $this->loadModel('GintonicCMS.Users');
+            $user = $this->Users->newEntity()->accessible('password', true);
+            $user->password = $this->request->data['password'];
+            $this->request->data['verified'] = 1;
+            $this->request->data['role'] = 'admin';
+            $userInfo = $this->Users->patchEntity($user, $this->request->data);
+            if ($this->Users->save($userInfo)) {
+                $this->Flash->set(__('GintonicCMS successfully installed'), [
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-success']
+                ]);
+                return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
             }
         }
-        $this->set(compact('tableExists', 'recordExists'));
+
+        $this->Flash->set(__('Unable to add Users'), [
+            'element' => 'GintonicCMS.alert',
+            'params' => ['class' => 'alert-danger']
+        ]);
+        return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
     }
 
     /**
