@@ -186,7 +186,7 @@ class SettingsController extends AppController
             ConnectionManager::config('userDb', $default);
             if ($this->__databaseConnection('userDb')) {
                 Configure::write('Datasources.default', $default);
-                Configure::dump('default');
+                Configure::dump('app');
                 return $this->redirect([
                     'controller' => 'Pages',
                     'action' => 'home'
