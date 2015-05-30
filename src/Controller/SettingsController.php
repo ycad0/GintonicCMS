@@ -16,6 +16,8 @@
 
 namespace GintonicCMS\Controller;
 
+use Cake\Core\Configure;
+use Cake\Core\Configure\Engine\PhpConfig;
 use Cake\Core\Plugin;
 use Cake\Database\Exception\MissingConnectionException;
 use Cake\Datasource\ConnectionManager;
@@ -175,38 +177,29 @@ class SettingsController extends AppController
      * Used to configure database options.
      * @param string $mode use to identify operation like edit.
      */
-    public function databaseSetup($mode = '')
+    public function databaseSetup()
     {
+        Configure::config('default', new PhpConfig());
+        Configure::load('app');
+        $default = Configure::read('Datasources.default');
         if ($this->request->is(['post', 'put'])) {
-            $default = [
-                'className' => 'Cake\Database\Connection',
-                'driver' => 'Cake\Database\Driver\Mysql',
-                'persistent' => false,
-                'port' => 'nonstandard_port_number',
-                'host' => $this->request->data['host'],
-                'username' => $this->request->data['username'],
-                'password' => $this->request->data['password'],
-                'database' => $this->request->data['database'],
-                'encoding' => 'utf8',
-                'timezone' => 'UTC',
-                'cacheMetadata' => true,
-                'quoteIdentifiers' => false,
-                'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
-            ];
-
+            $default = array_merge($default, $this->request->data) ;
             ConnectionManager::config('userDb', $default);
-            $connected = $this->__databaseConnection('userDb');
-
-            if ($connected) {
-                file_put_contents('../config/gintonic.database.json', json_encode($default, JSON_PRETTY_PRINT));
+            if ($this->__databaseConnection('userDb')) {
+                Configure::write('Datasources.default', $default);
+                Configure::dump('default');
+                return $this->redirect([
+                    'controller' => 'Pages',
+                    'action' => 'home'
+                ]);
+            } else {
+                $this->Flash->set(__('Impossible to connect to the database'), [
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-danger']
+                ]);
             }
-            $this->set(compact('connected'));
         }
-
-        if (!empty($mode)) {
-            $default = json_decode(file_get_contents('../config/gintonic.database.json'), true);
-            $this->request->data = $default;
-        }
+        $this->request->data = $default;
     }
 
     /**
