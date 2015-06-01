@@ -35,7 +35,6 @@ use Symfony\Component\Console\Output\NullOutput;
  */
 class SettingsController extends AppController
 {
-
     /**
      * Call before executoin of every request, also set some action
      * to access without login.
@@ -50,31 +49,10 @@ class SettingsController extends AppController
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
-        if (!$this->__databaseConnection()) {
+        Configure::load('gintonic');
+        if (!Configure::read('Gintonic.install.lock')) {
             $this->Auth->allow();
-            return;
         }
-
-        if (!$this->__tableExists()) {
-            $this->Auth->allow();
-            return;
-        }
-
-        if (!$this->__adminRecordExists()) {
-            $this->Auth->allow();
-            return;
-        }
-    }
-
-    /**
-     * Path to the plugin config file
-     *
-     * @param string $vendorDir path to composer-vendor dir
-     * @return string absolute file path
-     */
-    protected static function _configFile($vendorDir)
-    {
-        return $vendorDir . DIRECTORY_SEPARATOR . 'cakephp-plugins.php';
     }
 
     /**
@@ -83,14 +61,21 @@ class SettingsController extends AppController
      */
     public function nodeInstall()
     {
-        ini_set('max_execution_time', 0);
         $this->autoRender = false;
-        exec('cd ..' . DS . 'assets && npm install');
-        $status = [
-            'status' => 'ok',
-            'message' => 'Node Install Successfully'
+        chdir('..' . DS . 'assets');
+        exec('npm install', $output, $errCode);
+
+        if(!$errCode){
+            Configure::load('gintonic');
+            Configure::write('Gintonic.install.npm', true);
+            Configure::dump('gintonic', 'default', ['Gintonic']);
+        }
+        $response = [
+            'message' => $output,
+            'errCode' => $errCode
         ];
-        echo json_encode($status);
+        $this->set(compact('response'));
+        $this->set('_serialize', ['response']);
     }
 
     /**
@@ -99,15 +84,20 @@ class SettingsController extends AppController
      */
     public function bowerInstall()
     {
-        ini_set('max_execution_time', 0);
         $this->autoRender = false;
-        //exec('cd ..' . DS . 'assets'.DS.'node_modules' . DS . 'bower' . DS . 'bin && bower install');
-        exec('cd ..' . DS . 'assets && bower install');
-        $status = [
-            'status' => 'ok',
-            'message' => 'Bower Install Successfully'
+        chdir('..' . DS . 'assets');
+        exec('node_modules' . DS . 'bower' . DS . 'bin' . DS . 'bower install', $output, $errCode);
+        if(!$errCode){
+            Configure::load('gintonic');
+            Configure::write('Gintonic.install.bower', true);
+            Configure::dump('gintonic', 'default', ['Gintonic']);
+        }
+        $response = [
+            'message' => $output,
+            'errCode' => $errCode
         ];
-        echo json_encode($status);
+        $this->set(compact('response'));
+        $this->set('_serialize', ['response']);
     }
 
     /**
@@ -116,15 +106,21 @@ class SettingsController extends AppController
      */
     public function gruntDev()
     {
-        ini_set('max_execution_time', 0);
-        $this->autoRender = false;
         $path = Plugin::path('GintonicCMS');
-        exec('cd ..' . DS . 'assets && grunt dev --gintonic=' . $path);
-        $status = [
-            'status' => 'ok',
-            'message' => 'Grunt dev run Successfully'
+
+        chdir('..' . DS . 'assets');
+        exec('node_modules' . DS . 'grunt-cli' . DS . 'bin' . DS . 'grunt dev --gintonic=' . $path, $output, $errCode);
+        if(!$errCode){
+            Configure::load('gintonic');
+            Configure::write('Gintonic.install.grunt', true);
+            Configure::dump('gintonic', 'default', ['Gintonic']);
+        }
+        $response = [
+            'message' => $output,
+            'errCode' => $errCode
         ];
-        echo json_encode($status);
+        $this->set(compact('response'));
+        $this->set('_serialize', ['response']);
     }
 
     /**
@@ -133,15 +129,22 @@ class SettingsController extends AppController
      */
     public function grunt()
     {
-        ini_set('max_execution_time', 0);
         $this->autoRender = false;
         $path = Plugin::path('GintonicCMS');
-        exec('cd ..' . DS . 'assets && grunt --gintonic=' . $path);
-        $status = [
-            'status' => 'ok',
-            'message' => 'Grunt run Successfully'
+
+        chdir('..' . DS . 'assets');
+        exec('node_modules' . DS . 'grunt-cli' . DS . 'bin' . DS . 'grunt --gintonic=' . $path, $output, $errCode);
+        if(!$errCode){
+            Configure::load('gintonic');
+            Configure::write('Gintonic.install.grunt', true);
+            Configure::dump('gintonic', 'default', ['Gintonic']);
+        }
+        $response = [
+            'message' => $output,
+            'errCode' => $errCode
         ];
-        echo json_encode($status);
+        $this->set(compact('response'));
+        $this->set('_serialize', ['response']);
     }
 
     /**
@@ -149,15 +152,14 @@ class SettingsController extends AppController
      */
     public function databaseSetup()
     {
-        Configure::config('default', new PhpConfig());
-        Configure::load('app');
+        Configure::load('datasources');
         $default = Configure::read('Datasources.default');
         if ($this->request->is(['post', 'put'])) {
             $default = array_merge($default, $this->request->data);
             ConnectionManager::config('userDb', $default);
             if ($this->__databaseConnection('userDb')) {
                 Configure::write('Datasources.default', $default);
-                Configure::dump('app', 'default', ['Datasources.default']);
+                Configure::dump('datasources', 'default', ['Datasources']);
                 return $this->redirect([
                     'controller' => 'Pages',
                     'action' => 'home'
@@ -178,9 +180,6 @@ class SettingsController extends AppController
      */
     public function createAdmin()
     {
-        Configure::config('default', new PhpConfig());
-        Configure::load('app');
-
         // Lets make sure that we can connect to the database first
         if(!$this->__databaseConnection()){
             $this->Flash->set(__('Impossible to connect to the database'), [
@@ -213,8 +212,10 @@ class SettingsController extends AppController
             ]);
             return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
         }
-        Configure::delete('Gintonic.install.migration');
-        Configure::dump('app', 'default', ['Gintonic.install']);
+
+        Configure::load('gintonic');
+        Configure::write('Gintonic.install.migration', true);
+        Configure::dump('gintonic', 'default', ['Gintonic']);
 
         if ($this->request->is(['post', 'put'])) {
             $this->loadModel('GintonicCMS.Users');
@@ -224,8 +225,8 @@ class SettingsController extends AppController
             $this->request->data['role'] = 'admin';
             $userInfo = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($userInfo)) {
-                Configure::delete('Gintonic.install.admin');
-                Configure::dump('app', 'default', ['Gintonic.install']);
+                Configure::write('Gintonic.install.admin', true);
+                Configure::dump('gintonic', 'default', ['Gintonic']);
                 $this->Flash->set(__('GintonicCMS successfully installed'), [
                     'element' => 'GintonicCMS.alert',
                     'params' => ['class' => 'alert-success']
@@ -249,19 +250,20 @@ class SettingsController extends AppController
      */
     public function configure()
     {
-        Configure::config('default', new PhpConfig());
-        Configure::load('app');
+        Configure::load('gintonic');
+        Configure::load('email');
+
         if ($this->request->is(['post', 'put'])) {
-            $newKey = hash('sha256', php_uname() . microtime(true));
-            $cookie = [
-                'key' => $newKey,
-                'name' => 'gintonic',
-                'loginDuration' => '+2 weeks',
-            ];
+
             Configure::write('Email.default.from', $this->request->data['email']);
-            Configure::write('Gintonic.Cookie', $cookie);
-            Configure::delete('Gintonic.install.config');
-            Configure::dump('app', 'default', ['Gintonic.install', 'Email.default']);
+            Configure::dump('email', 'default', ['Email','EmailTransport']);
+
+            $newKey = hash('sha256', php_uname() . microtime(true));
+            Configure::write('Gintonic.cookie.key', $newKey);
+            Configure::write('Gintonic.install.config', true);
+            Configure::dump('gintonic', 'default', ['Gintonic']);
+
+            return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
         }
     }
 

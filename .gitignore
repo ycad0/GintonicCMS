@@ -11,5 +11,6 @@
 /assets/src/less/lib/*
 /assets/src/fonts/lib/*
 /webroot/js/build.txt
+/webroot/fonts/*
 *.orig
 *.swp

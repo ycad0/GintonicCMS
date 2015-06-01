@@ -25,7 +25,7 @@ class AppController extends Controller
         $this->loadComponent('GintonicCMS.Cookie');
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Auth', [
-            'authorize' => 'controller',
+            'authorize' => 'Controller',
             'authenticate' => [
                 'Form' => [
                     'fields' => [

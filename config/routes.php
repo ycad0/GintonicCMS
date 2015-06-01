@@ -4,6 +4,8 @@ use Cake\Routing\Router;
 
 Router::scope('/', ['plugin' => 'GintonicCMS'], function ($routes) {
 
+    $routes->extensions(['json']);
+    
     $routes->connect('/signin', ['controller' => 'Users', 'action' => 'signin']);
     $routes->connect('/signout', ['controller' => 'Users', 'action' => 'signout']);
     $routes->connect('/signup', ['controller' => 'Users', 'action' => 'signup']);
