@@ -67,17 +67,6 @@ class SettingsController extends AppController
     }
 
     /**
-     * Used to Authorized User to access requested action.
-     *
-     * @param array $user contain user detail.
-     * @return boolean Return true if action is allowed else return false.
-     */
-    public function isAuthorized($user = null)
-    {
-        return parent::isAuthorized($user);
-    }
-
-    /**
      * Path to the plugin config file
      *
      * @param string $vendorDir path to composer-vendor dir
@@ -156,7 +145,7 @@ class SettingsController extends AppController
     }
 
     /**
-     * Used to configure database options.
+     * TODO: doc comments
      */
     public function databaseSetup()
     {
@@ -189,6 +178,9 @@ class SettingsController extends AppController
      */
     public function createAdmin()
     {
+        Configure::config('default', new PhpConfig());
+        Configure::load('app');
+
         // Lets make sure that we can connect to the database first
         if(!$this->__databaseConnection()){
             $this->Flash->set(__('Impossible to connect to the database'), [
@@ -221,6 +213,8 @@ class SettingsController extends AppController
             ]);
             return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
         }
+        Configure::delete('Gintonic.install.migration');
+        Configure::dump('app', 'default', ['Gintonic.install']);
 
         if ($this->request->is(['post', 'put'])) {
             $this->loadModel('GintonicCMS.Users');
@@ -230,6 +224,8 @@ class SettingsController extends AppController
             $this->request->data['role'] = 'admin';
             $userInfo = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($userInfo)) {
+                Configure::delete('Gintonic.install.admin');
+                Configure::dump('app', 'default', ['Gintonic.install']);
                 $this->Flash->set(__('GintonicCMS successfully installed'), [
                     'element' => 'GintonicCMS.alert',
                     'params' => ['class' => 'alert-success']
@@ -251,24 +247,21 @@ class SettingsController extends AppController
      * gintonic.php will be included from bootstrap.php of project.
      * It write admin email and Cookie information.
      */
-    public function setupVariable()
+    public function configure()
     {
+        Configure::config('default', new PhpConfig());
+        Configure::load('app');
         if ($this->request->is(['post', 'put'])) {
-            $status = false;
-            $cookieKey = substr(str_shuffle("0123456789#@$%^&!abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 37);
-            $default = "<?php\n" .
-                "return [\n" .
-                "    'admin_mail' =>'" . $this->request->data['email'] . "',\n" .
-                "    'Cookie' =>[\n" .
-                "        'key'=>'" . $cookieKey . "',\n" .
-                "        'name'=>'gintonic',\n" .
-                "        'loginDuration'=>'+2 weeks'\n" .
-                "    ]\n" .
-                "];\n";
-            if (file_put_contents('../config/gintonic.php', $default)) {
-                $status = true;
-            }
-            $this->set(compact('status'));
+            $newKey = hash('sha256', php_uname() . microtime(true));
+            $cookie = [
+                'key' => $newKey,
+                'name' => 'gintonic',
+                'loginDuration' => '+2 weeks',
+            ];
+            Configure::write('Email.default.from', $this->request->data['email']);
+            Configure::write('Gintonic.Cookie', $cookie);
+            Configure::delete('Gintonic.install.config');
+            Configure::dump('app', 'default', ['Gintonic.install', 'Email.default']);
         }
     }
 
@@ -277,7 +270,7 @@ class SettingsController extends AppController
      */
     public function assets()
     {
-        //assets view
+        // assets view
     }
 
     /**
