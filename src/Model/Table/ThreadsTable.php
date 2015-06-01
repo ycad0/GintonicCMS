@@ -149,4 +149,23 @@ class ThreadsTable extends Table
                     ]);
             });
     }
+
+    /**
+     * Dynamic finder that find participants of given thread id
+     *
+     * @param \Cake\ORM\Query $query the original query to append to
+     * @param array $options not required
+     * @return \Cake\ORM\Query The amended query
+     */
+    public function findParticipants(Query $query, array $options)
+    {
+        return $query
+            ->matching('Users', function ($q) use ($options) {
+                return $q
+                    ->where([
+                        'Threads.id' => $options['threadId'],
+                    ]);
+            })
+            ->select(['Threads.id', 'Users.id', 'Users.first', 'Users.last']);
+    }
 }
