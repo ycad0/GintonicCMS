@@ -61,7 +61,6 @@ class SettingsController extends AppController
      */
     public function nodeInstall()
     {
-        $this->autoRender = false;
         chdir('..' . DS . 'assets');
         exec('npm install', $output, $errCode);
 
@@ -84,7 +83,6 @@ class SettingsController extends AppController
      */
     public function bowerInstall()
     {
-        $this->autoRender = false;
         chdir('..' . DS . 'assets');
         exec('node_modules' . DS . 'bower' . DS . 'bin' . DS . 'bower install', $output, $errCode);
         if(!$errCode){
@@ -129,7 +127,6 @@ class SettingsController extends AppController
      */
     public function grunt()
     {
-        $this->autoRender = false;
         $path = Plugin::path('GintonicCMS');
 
         chdir('..' . DS . 'assets');
@@ -210,6 +207,7 @@ class SettingsController extends AppController
                 'element' => 'GintonicCMS.alert',
                 'params' => ['class' => 'alert-danger']
             ]);
+        $this->autoRender = false;
             return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
         }
 
