@@ -56,6 +56,19 @@ class SettingsController extends AppController
     }
 
     /**
+     * TODO: doc bloc
+     */
+    public function lock()
+    {
+        Configure::load('gintonic');
+        Configure::write('Gintonic.install.lock', true);
+        Configure::dump('gintonic', 'default', ['Gintonic']);
+        return $this->redirect([
+            'controller' => 'Pages',
+            'action' => 'home'
+        ]);
+    }
+    /**
      * Used to install node modules.
      * it uses 'node install' command to install node dependencies
      */

@@ -6,7 +6,7 @@ define(function(require) {
         var $btn = $(this).button('loading')
         $.ajax({
             // todo: use relative path
-            url: '/gintonic_c_m_s/settings/nodeInstall.json',
+            url: '/settings/nodeInstall.json',
             success: function (data) {
                 var response = data['response']
                 $btn.button('reset')
@@ -27,7 +27,7 @@ define(function(require) {
         var $btn = $(this).button('loading')
         $.ajax({
             // todo: use relative path
-            url: '/gintonic_c_m_s/settings/bowerInstall.json',
+            url: '/settings/bowerInstall.json',
             success: function (data) {
                 var response = data['response'];
                 $btn.button('reset')
@@ -48,7 +48,7 @@ define(function(require) {
         var $btn = $(this).button('loading')
         $.ajax({
             // todo: use relative path
-            url: '/gintonic_c_m_s/settings/grunt.json',
+            url: '/settings/grunt.json',
             success: function (data) {
                 var response = data['response'];
                 $btn.button('reset')

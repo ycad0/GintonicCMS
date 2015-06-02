@@ -22,6 +22,7 @@ Router::scope('/', ['plugin' => 'GintonicCMS'], function ($routes) {
     $routes->connect('/plans', ['controller' => 'Plans', 'action'=>'index']);
     $routes->connect('/plans/:action/*', ['controller' => 'Plans']);
 
+	$routes->connect('/settings/:action/*', ['controller' => 'Settings']);
 	
     $routes->fallbacks('InflectedRoute');
 });
@@ -34,6 +35,5 @@ Router::plugin('GintonicCMS', function ($routes) {
 
     $routes->extensions(['json']);
     $routes->fallbacks('InflectedRoute');
-	$routes->connect('/settings/:action/*', ['controller' => 'Settings']);
 
 });
