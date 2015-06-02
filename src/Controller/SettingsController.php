@@ -77,7 +77,7 @@ class SettingsController extends AppController
         chdir('..' . DS . 'assets');
         exec('npm install', $output, $errCode);
 
-        if(!$errCode){
+        if (!$errCode) {
             Configure::load('gintonic');
             Configure::write('Gintonic.install.npm', true);
             Configure::dump('gintonic', 'default', ['Gintonic']);
@@ -98,7 +98,7 @@ class SettingsController extends AppController
     {
         chdir('..' . DS . 'assets');
         exec('node_modules' . DS . 'bower' . DS . 'bin' . DS . 'bower install', $output, $errCode);
-        if(!$errCode){
+        if (!$errCode) {
             Configure::load('gintonic');
             Configure::write('Gintonic.install.bower', true);
             Configure::dump('gintonic', 'default', ['Gintonic']);
@@ -121,7 +121,7 @@ class SettingsController extends AppController
 
         chdir('..' . DS . 'assets');
         exec('node_modules' . DS . 'grunt-cli' . DS . 'bin' . DS . 'grunt dev --gintonic=' . $path, $output, $errCode);
-        if(!$errCode){
+        if (!$errCode) {
             Configure::load('gintonic');
             Configure::write('Gintonic.install.grunt', true);
             Configure::dump('gintonic', 'default', ['Gintonic']);
@@ -144,7 +144,7 @@ class SettingsController extends AppController
 
         chdir('..' . DS . 'assets');
         exec('node_modules' . DS . 'grunt-cli' . DS . 'bin' . DS . 'grunt --gintonic=' . $path, $output, $errCode);
-        if(!$errCode){
+        if (!$errCode) {
             Configure::load('gintonic');
             Configure::write('Gintonic.install.grunt', true);
             Configure::dump('gintonic', 'default', ['Gintonic']);
@@ -191,7 +191,7 @@ class SettingsController extends AppController
     public function createAdmin()
     {
         // Lets make sure that we can connect to the database first
-        if(!$this->__databaseConnection()){
+        if (!$this->__databaseConnection()) {
             $this->Flash->set(__('Impossible to connect to the database'), [
                 'element' => 'GintonicCMS.alert',
                 'params' => ['class' => 'alert-danger']
@@ -215,12 +215,12 @@ class SettingsController extends AppController
         //}
 
         // Check if the users table exists
-        if(!$this->__tableExists('users')){
+        if (!$this->__tableExists('users')) {
             $this->Flash->set(__('Unexpected error with Users table'), [
                 'element' => 'GintonicCMS.alert',
                 'params' => ['class' => 'alert-danger']
             ]);
-        $this->autoRender = false;
+            $this->autoRender = false;
             return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
         }
 
@@ -251,7 +251,6 @@ class SettingsController extends AppController
                 return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
             }
         }
-
     }
 
     /**
@@ -265,9 +264,8 @@ class SettingsController extends AppController
         Configure::load('email');
 
         if ($this->request->is(['post', 'put'])) {
-
             Configure::write('Email.default.from', $this->request->data['email']);
-            Configure::dump('email', 'default', ['Email','EmailTransport']);
+            Configure::dump('email', 'default', ['Email', 'EmailTransport']);
 
             $newKey = hash('sha256', php_uname() . microtime(true));
             Configure::write('Gintonic.cookie.key', $newKey);
