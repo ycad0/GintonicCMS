@@ -44,22 +44,29 @@ class AppController extends Controller
             'loginAction' => [
                 'controller' => 'Users',
                 'action' => 'signin',
-                'plugin' => 'GintonicCMS'
+                'plugin' => 'GintonicCMS',
+                'prefix' =>  false   
             ],
             'loginRedirect' => [
                 'controller' => 'Users',
                 'action' => 'view',
-                'plugin' => 'GintonicCMS'
+                'plugin' => 'GintonicCMS',
+                'prefix' =>  false   
+
             ],
             'logoutRedirect' => [
                 'controller' => 'Pages',
                 'action' => 'home',
-                'plugin' => 'GintonicCMS'
+                'plugin' => 'GintonicCMS',
+                'prefix' =>  false   
+
             ],
             'unauthorizedRedirect' => [
                 'controller' => 'Users',
                 'action' => 'signin',
-                'plugin' => 'GintonicCMS'
+                'plugin' => 'GintonicCMS',
+                'prefix' =>  false   
+
             ]
         ]);
         parent::initialize();

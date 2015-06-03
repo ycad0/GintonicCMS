@@ -1,35 +1,48 @@
 requirejs.config({
     baseUrl: '/',
-    urlArgs: "bust=0",
+    urlArgs: 'bust=0',
     paths: {
         // Base Paths
         lib: 'gintonic_c_m_s/js/lib',
         gintonic: 'gintonic_c_m_s/js',
 
         // Libs
-        react: "gintonic_c_m_s/js/lib/react/react-with-addons.min",
-        JSXTransformer: "gintonic_c_m_s/js/lib/jsx-requirejs-plugin/JSXTransformer",
-        jsx: "gintonic_c_m_s/js/lib/jsx-requirejs-plugin/jsx",
-        text: "gintonic_c_m_s/js/lib/requirejs-text/text",
-
-        jquery: '//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min',
-        bootstrap: '//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min',
-        jqueryvalidate: '//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min',
-        slimscroll: '//cdnjs.cloudflare.com/ajax/libs/jQuery-slimScroll/1.3.3/jquery.slimscroll.min',
-        prettify: '//cdn.rawgit.com/google/code-prettify/master/loader/run_prettify'
+        react: 'gintonic_c_m_s/js/lib/react/react-with-addons.min',
+        JSXTransformer: 'gintonic_c_m_s/js/lib/jsx-requirejs-plugin/JSXTransformer',
+        jsx: 'gintonic_c_m_s/js/lib/jsx-requirejs-plugin/jsx',
+        text: 'gintonic_c_m_s/js/lib/requirejs-text/text',
+        jquery: 'gintonic_c_m_s/js/lib/jquery/jquery',
+        bootstrap: 'gintonic_c_m_s/js/lib/bootstrap/bootstrap',
     },
     jsx: {
         fileExtension: '.jsx'
     },
     
     shim: {
-        slimscroll :  {
-            deps: ["jquery"],
-            exports: 'slimscroll'
-        },
-        bootstrap : ["jquery"],
-        jqueryvalidate : ["jquery"],
-        wysiwyg : ["jquery"],
-        stripe : ["jquery"]
+        'bootstrap': [
+            'jquery'
+        ],
+        'lib/admin-lte/app': [
+            'jquery',
+            'bootstrap'
+        ],
+        'lib/jvectormap/jquery-jvectormap-1.2.2.min': [
+            'jquery'
+        ],
+        'lib/jvectormap/jquery-jvectormap-world-mill-en': [
+            'jquery',
+            'lib/jvectormap/jquery-jvectormap-1.2.2.min'
+        ],
+        'lib/slimScroll/jquery.slimscroll': [
+            'jquery'
+        ],
+        'lib/admin-lte/pages/dashboard2': [
+            'jquery',
+            'bootstrap'
+        ],
+        'lib/admin-lte/demo': [
+            'jquery',
+            'bootstrap'
+        ]
     }
 });

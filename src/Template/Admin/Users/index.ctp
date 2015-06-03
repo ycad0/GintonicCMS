@@ -1,6 +1,5 @@
 <?php
 use Cake\I18n\Time;
-
 $this->assign('pagetitle', __('Users') . '<small>' . __('User Management') . '</small>');
 $this->Html->addCrumb(__('Users'));
 $this->Helpers()->load('GintonicCMS.Require');

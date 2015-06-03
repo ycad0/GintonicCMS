@@ -18,6 +18,12 @@ module.exports = function(grunt) {
                 },
                 {
                     expand: true,
+                    cwd: 'bower_components/admin-lte/dist/css',
+                    src: ['**'],
+                    dest: 'src/css/lib/admin-lte/'
+                },
+                {
+                    expand: true,
                     cwd: 'bower_components/admin-lte/dist/js',
                     src: ['**'],
                     dest: 'src/js/lib/admin-lte/'
@@ -54,6 +60,12 @@ module.exports = function(grunt) {
                 },
                 {
                     expand: true,
+                    cwd: 'bower_components/bootstrap/dist/js',
+                    src: ['**'],
+                    dest: 'src/js/lib/bootstrap'
+                },
+                {
+                    expand: true,
                     cwd: 'bower_components/fontawesome/less',
                     src: ['**'],
                     dest: 'src/less/lib/fontawesome'
@@ -63,6 +75,18 @@ module.exports = function(grunt) {
                     cwd: 'bower_components/fontawesome/fonts',
                     src: ['**'],
                     dest: 'src/fonts/lib/fontawesome'
+                },
+                {
+                    expand: true,
+                    cwd: 'bower_components/ionicons/less',
+                    src: ['**'],
+                    dest: 'src/less/lib/ionicons'
+                },
+                {
+                    expand: true,
+                    cwd: 'bower_components/ionicons/fonts',
+                    src: ['**'],
+                    dest: 'src/fonts/lib/ionicons'
                 },
                 {
                     expand: true,
@@ -104,6 +128,12 @@ module.exports = function(grunt) {
                     src: ['**'],
                     dest: '../webroot/fonts/'
                 },
+                {
+                    expand: true,
+                    cwd: 'bower_components/ionicons/fonts',
+                    src: ['**'],
+                    dest: '../webroot/fonts/'
+                }
             ]
         },
         build: {
@@ -120,6 +150,12 @@ module.exports = function(grunt) {
                     src: ['**'],
                     dest: '../webroot/fonts/'
                 },
+                {
+                    expand: true,
+                    cwd: 'bower_components/ionicons/fonts',
+                    src: ['**'],
+                    dest: '../webroot/fonts/'
+                }
             ]
         }
 

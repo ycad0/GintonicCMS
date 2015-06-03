@@ -1,59 +1,26 @@
-@import "variables.less";
+// This part is Gintonic and general wrapping of the stuff
+//========================================================
+// our local version of bootstrap
+@import "bootstrap.less";
+
+// Fonts 
 @import "lib/fontawesome/font-awesome.less";
-@import "lib/bootstrap/bootstrap.less";
+@import "lib/ionicons/ionicons.less";
 
-.logo{
-    img{
-        height:60%;
-    }
-}
-.top-links a{
-    margin-left: 10px;
-}
-.modal-backdrop {
-    z-index: 0 !important;
-}
+// Plugins css
+@import "plugins.less";
+
+// The different versions of the admin theme
+@import (less) "../css/lib/admin-lte/skins/_all-skins.min.css";
 
 
-.pace-done.fixed.skin-blue .navbar-brand{
-    width: 69px;
-}
-
-.left-side.sidebar-offcanvas .user-panel{
-    text-align: center;
-}
-
-.user-panel .pull-left.image{
-    float: none !important;
-}
-
-.navbar-header .logo.navbar-inverse{
-    background-color: #222;
-}
-
-.admin-special-header button.navbar-toggle{
-    right: 0;
-    top: 0;
-    position: absolute;
-}
-
-.account-wall{
-    padding: 0 0 20px;
-}
-img.site-logo{
-   width: 60%; 
-}
-
-/*!
- *   AdminLTE v2.1.0
- *   Author: Almsaeed Studio
- *	 Website: Almsaeed Studio <http://almsaeedstudio.com>
- *   License: Open source - MIT
- *           Please visit http://opensource.org/licenses/MIT for more information
-!*/
+// From here is the standard adminLTE less file
+//=============================================
 
 //google fonts
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic);
+
+@import (reference) "lib/bootstrap/mixins.less";
 
 //MISC
 //----
