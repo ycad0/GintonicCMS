@@ -39,17 +39,17 @@ class UsersTable extends Table
     public function validationDefault(Validator $validator)
     {
         return $validator
-                ->notEmpty('email', __('A username is required'))
-                ->notEmpty('role', __('A role is required'))
-                ->add('email', [
-                    'unique' => [
-                        'rule' => ['validateUnique'],
-                        'provider' => 'table',
-                        'message' => __('Email adress already exists.')
-                    ]
-                ])
-                ->requirePresence('password')
-                ->notEmpty('password', ['message' => __('Please enter password.')]);
+            ->notEmpty('email', __('A username is required'))
+            ->notEmpty('role', __('A role is required'))
+            ->add('email', [
+                'unique' => [
+                    'rule' => ['validateUnique'],
+                    'provider' => 'table',
+                    'message' => __('Email adress already exists.')
+                ]
+            ])
+            ->requirePresence('password')
+            ->notEmpty('password', ['message' => __('Please enter password.')]);
     }
 
     /**
@@ -58,9 +58,9 @@ class UsersTable extends Table
     public function validationChangePassword(Validator $validator)
     {
         return $validator
-                ->notEmpty('current_password', ['message' => __('Current Password is required')])
-                ->notEmpty('new_password', ['message' => __('New Password is required')])
-                ->notEmpty('confirm_password', ['message' => __('Confirm Password is required')]);
+            ->notEmpty('current_password', ['message' => __('Current Password is required')])
+            ->notEmpty('new_password', ['message' => __('New Password is required')])
+            ->notEmpty('confirm_password', ['message' => __('Confirm Password is required')]);
     }
 
     /**
@@ -93,23 +93,6 @@ class UsersTable extends Table
     }
 
     /**
-     * Dynamic finder that find User Avatar.
-     *
-     * @param \Cake\ORM\Query $query the original query to append to
-     * @param array $options null
-     * @return \Cake\ORM\Query The amended query
-     */
-    public function findAvatar(Query $query, array $options)
-    {
-        return $query
-                ->contain([
-                    'Files' => [
-                        'fields' => ['Files.id', 'Files.filename']
-                    ]
-                ]);
-    }
-
-    /**
      * Dynamic finder that find User Profile.
      *
      * @param \Cake\ORM\Query $query the original query to append to
@@ -119,9 +102,9 @@ class UsersTable extends Table
     public function findProfile(Query $query, array $options)
     {
         return $query
-                ->find('avatar')
-                ->conditions(['Users.id' => $options])
-                ->first();
+            //->find('avatar')
+            ->where(['Users.id' => $options])
+            ->first();
     }
 
     /**

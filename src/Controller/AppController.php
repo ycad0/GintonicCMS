@@ -48,12 +48,12 @@ class AppController extends Controller
             ],
             'loginRedirect' => [
                 'controller' => 'Users',
-                'action' => 'profile',
+                'action' => 'view',
                 'plugin' => 'GintonicCMS'
             ],
             'logoutRedirect' => [
-                'controller' => 'Users',
-                'action' => 'signin',
+                'controller' => 'Pages',
+                'action' => 'home',
                 'plugin' => 'GintonicCMS'
             ],
             'unauthorizedRedirect' => [

@@ -38,9 +38,12 @@ class UsersController extends AppController
     /**
      * TODO: blockquote
      */
-    public function view($userId)
+    public function view($id = null)
     {
-        $user = $this->Users->find('profile', $userId);
+        if(empty($id) && $this->request->session()->read('Auth.User.id')){
+            $id = $this->request->session()->read('Auth.User.id');
+        }
+        $user = $this->Users->find('profile', ['id' => $id]);
         $this->set(compact('user'));
     }
 
@@ -150,20 +153,6 @@ class UsersController extends AppController
             'params' => ['class' => 'alert-info']
         ]);
         return $this->redirect($this->Auth->logout());
-    }
-
-    /**
-     * TODO: blockquote
-     */
-    public function profile()
-    {
-        if (!$this->request->session()->check('Auth.User.id')) {
-            $this->Flash->set(__('You are not signed in'), [
-                'element' => 'GintonicCMS.alert',
-                'params' => ['class' => 'alert-danger']
-            ]);
-            return $this->redirect($this->Auth->logout());
-        }
     }
 
     /**
