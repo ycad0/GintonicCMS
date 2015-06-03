@@ -31,6 +31,11 @@ Router::scope('/', ['plugin' => 'GintonicCMS'], function ($routes) {
     $routes->connect('/subscribe_plans/usertransaction/*', ['controller' => 'SubscribePlans', 'action'=>'usertransaction']);
     $routes->connect('/subscribe_plans/subscribeslist/*', ['controller' => 'SubscribePlans', 'action'=>'subscribeslist']);
 
+    
+
+    $routes->connect('/social_signup/google/*', ['controller' => 'SocialSignups', 'action'=>'google']);
+    $routes->connect('/social_signup/facebook/*', ['controller' => 'SocialSignups', 'action'=>'facebook']);
+    
     $routes->fallbacks('InflectedRoute');
 });
 
