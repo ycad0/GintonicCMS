@@ -40,7 +40,7 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
-        if(empty($id) && $this->request->session()->read('Auth.User.id')){
+        if (empty($id) && $this->request->session()->read('Auth.User.id')) {
             $id = $this->request->session()->read('Auth.User.id');
         }
         $user = $this->Users->find('profile', ['id' => $id]);
