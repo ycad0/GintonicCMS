@@ -3,6 +3,7 @@ requirejs.config({
     urlArgs: 'bust=0',
     paths: {
         // Base Paths
+        app: 'js/app',
         lib: 'gintonic_c_m_s/js/lib',
         gintonic: 'gintonic_c_m_s/js',
 
