@@ -45,27 +45,27 @@ class AppController extends Controller
                 'controller' => 'Users',
                 'action' => 'signin',
                 'plugin' => 'GintonicCMS',
-                'prefix' =>  false
+                'prefix' => false
             ],
             'loginRedirect' => [
                 'controller' => 'Users',
                 'action' => 'view',
                 'plugin' => 'GintonicCMS',
-                'prefix' =>  false
+                'prefix' => false
 
             ],
             'logoutRedirect' => [
                 'controller' => 'Pages',
                 'action' => 'home',
                 'plugin' => 'GintonicCMS',
-                'prefix' =>  false
+                'prefix' => false
 
             ],
             'unauthorizedRedirect' => [
                 'controller' => 'Users',
                 'action' => 'signin',
                 'plugin' => 'GintonicCMS',
-                'prefix' =>  false
+                'prefix' => false
 
             ]
         ]);
