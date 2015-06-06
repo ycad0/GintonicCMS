@@ -16,15 +16,16 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body class="skin-blue sidebar-mini">
+  <body class="sidebar-mini">
     <div class="wrapper">
 
       <?= $this->element('navbar') ?>
       <?= $this->element('sidebar') ?>
       <div class="content-wrapper">
         <?= $this->element('heading') ?>
+        <?php echo $this->Flash->render(); ?>
         <section class="content">
-            <?= $this->element('demo') ?>
+            <?php echo $this->fetch('content'); ?>	                    
         </section>
       </div>
       <?= $this->element('footer') ?>
@@ -33,13 +34,7 @@
 
     <?= $this->Require->req('lib/fastclick/fastclick'); ?>
     <?= $this->Require->req('lib/admin-lte/app'); ?>
-    <?= $this->Require->req('lib/sparkline/jquery.sparkline'); ?>
-    <?= $this->Require->req('lib/jvectormap/jquery-jvectormap-1.2.2.min'); ?>
-    <?= $this->Require->req('lib/jvectormap/jquery-jvectormap-world-mill-en'); ?>
-    <?= $this->Require->req('lib/slimScroll/jquery.slimscroll'); ?>
-    <?= $this->Require->req('lib/chartjs/Chart.min'); ?>
     <?= $this->Require->req('lib/admin-lte/pages/dashboard2'); ?>
-    <?= $this->Require->req('lib/admin-lte/demo'); ?>
     <?= $this->Require->req('jquery'); ?>
     <?= $this->Require->req('bootstrap'); ?>
     <?= $this->Require->load('GintonicCMS.config'); ?>
