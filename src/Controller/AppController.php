@@ -89,7 +89,6 @@ class AppController extends Controller
         if (!empty($user) && $user['role'] == 'admin') {
             return true;
         }
-        //return parent::isAuthorized($user);
         return false;
     }
 }

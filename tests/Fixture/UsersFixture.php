@@ -8,10 +8,8 @@ class UsersFixture extends TestFixture
 {
     public $fields = [
         'id' => ['type' => 'integer'],
-        'file_id' => ['type' => 'integer'],
         'email' => ['type' => 'string', 'length' => 255],
         'password' => ['type' => 'string', 'length' => 255],
-        'role' => ['type' => 'string', 'length' => 255],
         'first' => ['type' => 'string', 'length' => 255],
         'last' => ['type' => 'string', 'length' => 255],
         'verified' => ['type' => 'integer'],
@@ -27,10 +25,8 @@ class UsersFixture extends TestFixture
     public $records = [
         [
             'id' => 1,
-            'file_id' => 1,
             'email' => 'hitesh@securemetasys.com',
             'password' => '123456',
-            'role' => 'player',
             'first' => 'Test1',
             'last' => 'Test1',
             'verified' => 1,
@@ -41,10 +37,8 @@ class UsersFixture extends TestFixture
         ],
         [
             'id' => 2,
-            'file_id' => 2,
             'email' => 'test2@gmail.com',
             'password' => '123456',
-            'role' => 'player',
             'first' => 'Test2',
             'last' => 'Test2',
             'verified' => 1,
@@ -55,10 +49,8 @@ class UsersFixture extends TestFixture
         ],
         [
             'id' => 3,
-            'file_id' => 3,
             'email' => 'test3@gmail.com',
             'password' => '123456',
-            'role' => 'player',
             'first' => 'Test3',
             'last' => 'Test3',
             'verified' => 1,
@@ -69,10 +61,8 @@ class UsersFixture extends TestFixture
         ],
         [
             'id' => 4,
-            'file_id' => 4,
             'email' => 'test4@gmail.com',
             'password' => '123456',
-            'role' => 'player',
             'first' => 'Test4',
             'last' => 'Test4',
             'verified' => 1,
@@ -83,10 +73,8 @@ class UsersFixture extends TestFixture
         ],
         [
             'id' => 5,
-            'file_id' => 5,
             'email' => 'test@gmail.com',
             'password' => '123456',
-            'role' => 'player',
             'first' => 'Test5',
             'last' => 'Test5',
             'verified' => 1,
