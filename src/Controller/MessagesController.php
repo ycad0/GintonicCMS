@@ -3,8 +3,8 @@
 namespace GintonicCMS\Controller;
 
 use App\Controller\AppController;
-use Cake\Event\Event;
 use Cake\Core\Plugin;
+use Cake\Event\Event;
 
 class MessagesController extends AppController
 {
@@ -48,7 +48,7 @@ class MessagesController extends AppController
             'threadId' => $this->request->data['thread_id']
         ]);
         
-        foreach ($threadUsers as $key => $user){
+        foreach ($threadUsers as $key => $user) {
             $this->request->data['message_read_statuses'][] = [
                 'user_id' => $user['_matchingData']['Users']['id'],
                 'status' => 0
@@ -57,11 +57,12 @@ class MessagesController extends AppController
         
         $this->request->data['user_id'] = $this->request->Session()->read('Auth.User.id');
         
-        $message = $this->Messages->newEntity($this->request->data,[
-            'associated' => ['MessageReadStatuses']
-        ]);
+        $message = $this->Messages->newEntity(
+            $this->request->data,
+            ['associated' => ['MessageReadStatuses']]
+        );
         $status['status'] = 'fail';
-        if($this->Messages->save($message)){
+        if ($this->Messages->save($message)) {
             $status['status'] = 'ok';
         }
         echo json_encode($status);
@@ -76,7 +77,7 @@ class MessagesController extends AppController
         $status['status'] = 'fail';
         $userId = $this->request->Session()->read('Auth.User.id');
         
-        if($this->Messages->markAsRead($this->request->data['messageIds'], $userId)){
+        if ($this->Messages->markAsRead($this->request->data['messageIds'], $userId)) {
             $status['status'] = 'ok';
         }
         echo json_encode($status);
@@ -91,7 +92,7 @@ class MessagesController extends AppController
         $status['status'] = 'fail';
         $userId = $this->request->Session()->read('Auth.User.id');
         
-        if($this->Messages->markAsDelete($this->request->data['messageIds'], $userId)){
+        if ($this->Messages->markAsDelete($this->request->data['messageIds'], $userId)) {
             $status['status'] = 'ok';
         }
         echo json_encode($status);
@@ -106,7 +107,7 @@ class MessagesController extends AppController
         $status['status'] = 'fail';
         $userId = $this->request->Session()->read('Auth.User.id');
         
-        if($this->Messages->markAsUnread($this->request->data['messageIds'], $userId)){
+        if ($this->Messages->markAsUnread($this->request->data['messageIds'], $userId)) {
             $status['status'] = 'ok';
         }
         echo json_encode($status);
