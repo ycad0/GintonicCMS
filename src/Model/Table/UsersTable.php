@@ -45,11 +45,11 @@ class UsersTable extends Table
                 'unique' => [
                     'rule' => ['validateUnique'],
                     'provider' => 'table',
-                    'message' => __('Email adress already exists.')
+                    'message' => __('This email is already registered')
                 ]
             ])
             ->requirePresence('password')
-            ->notEmpty('password', ['message' => __('Please enter password.')]);
+            ->notEmpty('password', ['message' => __('Password cannot be blank')]);
     }
 
     /**
@@ -59,8 +59,7 @@ class UsersTable extends Table
     {
         return $validator
             ->notEmpty('current_password', ['message' => __('Current Password is required')])
-            ->notEmpty('new_password', ['message' => __('New Password is required')])
-            ->notEmpty('confirm_password', ['message' => __('Confirm Password is required')]);
+            ->notEmpty('new_password', ['message' => __('New Password is required')]);
     }
 
     /**
@@ -73,7 +72,6 @@ class UsersTable extends Table
     public function initialize(array $config)
     {
         parent::initialize($config);
-        $this->primaryKey('id');
         $this->addBehavior('Timestamp', [
             'events' => [
                 'Model.beforeSave' => [
@@ -82,12 +80,7 @@ class UsersTable extends Table
                 ]
             ]
         ]);
-        $this->addBehavior('GintonicCMS.File', [
-            'allowedTypes' => ['image/png', 'image/jpeg', 'image/gif']
-        ]);
-
         $this->addAssociations([
-            'belongsTo' => ['GintonicCMS.Files'],
             'belongsToMany' => ['GintonicCMS.Threads']
         ]);
     }
@@ -102,7 +95,6 @@ class UsersTable extends Table
     public function findProfile(Query $query, array $options)
     {
         return $query
-            //->find('avatar')
             ->where(['Users.id' => $options])
             ->first();
     }

@@ -23,8 +23,8 @@
       <?= $this->element('sidebar') ?>
       <div class="content-wrapper">
         <?= $this->element('heading') ?>
-        <?php echo $this->Flash->render(); ?>
         <section class="content">
+            <?php echo $this->Flash->render(); ?>
             <?= $this->fetch('content') ?>
         </section>
       </div>

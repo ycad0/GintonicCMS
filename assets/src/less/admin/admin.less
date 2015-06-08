@@ -1,6 +1,11 @@
 // This part is Gintonic and general wrapping of the stuff
 //========================================================
-@import "../lib/bootstrap/bootstrap.less";
+
+.import-bootstrap(){
+    // Bootstrap variables need to be scoped
+    @import "../lib/bootstrap/bootstrap.less";
+}
+.import-bootstrap();
 
 // Fonts 
 @import "../lib/fontawesome/font-awesome.less";
@@ -20,8 +25,8 @@
 
 //MISC
 //----
-@import "../lib/admin-lte/core.less";
 @import "variables.less";
+@import "../lib/admin-lte/core.less";
 @import "../lib/admin-lte/mixins.less";
 
 //Skin

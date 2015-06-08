@@ -6,12 +6,20 @@ use GintonicCMS\Controller\AppController;
 
 class UsersController extends AppController
 {
+    public $paginate = [
+        'limit' => 25,
+        'order' => [
+            'Users.created' => 'desc'
+        ]
+    ];
+
     /**
      * TODO: blockquote
      */
-    public function beforeFilter(Event $event)
+    public function initialize()
     {
-        $this->layout = 'default';
+        parent::initialize();
+        $this->loadComponent('Paginator');
     }
 
     /**
@@ -19,12 +27,6 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $arrConditions = ['Users.role <> ' => 'admin'];
-        $this->paginate = array(
-            'conditions' => $arrConditions,
-            'order' => array('Users.created' => 'desc'),
-            'limit' => 5
-        );
         $this->set('users', $this->paginate('Users'));
     }
 
@@ -33,9 +35,8 @@ class UsersController extends AppController
      */
     public function add()
     {
-        $this->request->data["verified"] = 1;
-        $user = $this->Users->newEntity($this->request->data);
         if ($this->request->is('post')) {
+            $user = $this->Users->newEntity($this->request->data);
             if ($this->Users->save($user)) {
                 $this->Flash->set(__('The user has been saved successfully.'), [
                     'element' => 'GintonicCMS.alert',
@@ -50,8 +51,8 @@ class UsersController extends AppController
                 'element' => 'GintonicCMS.alert',
                 'params' => ['class' => 'alert-danger']
             ]);
+            $this->set('user', $user);
         }
-        $this->set('user', $user);
     }
 
     /**
