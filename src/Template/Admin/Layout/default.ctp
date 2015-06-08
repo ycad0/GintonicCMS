@@ -16,7 +16,7 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body class="sidebar-mini">
+  <body class="skin-blue sidebar-mini">
     <div class="wrapper">
 
       <?= $this->element('navbar') ?>
@@ -25,7 +25,7 @@
         <?= $this->element('heading') ?>
         <?php echo $this->Flash->render(); ?>
         <section class="content">
-            <?php echo $this->fetch('content'); ?>	                    
+            <?= $this->fetch('content') ?>
         </section>
       </div>
       <?= $this->element('footer') ?>
@@ -34,7 +34,6 @@
 
     <?= $this->Require->req('lib/fastclick/fastclick'); ?>
     <?= $this->Require->req('lib/admin-lte/app'); ?>
-    <?= $this->Require->req('lib/admin-lte/pages/dashboard2'); ?>
     <?= $this->Require->req('jquery'); ?>
     <?= $this->Require->req('bootstrap'); ?>
     <?= $this->Require->load('GintonicCMS.config'); ?>

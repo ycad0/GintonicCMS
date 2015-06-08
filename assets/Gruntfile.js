@@ -200,9 +200,9 @@ module.exports = function(grunt) {
               paths: ['./', gintonic+'assets/src/less/']
           },
           files: {
-            "../webroot/css/default.css": "src/less/default.less",
-            "../webroot/css/bare.css": "src/less/bare.less",
-            "../webroot/css/admin.css": "src/less/admin.less"
+            "../webroot/css/default.css": "src/less/default/default.less",
+            "../webroot/css/bare.css": "src/less/default/bare.less",
+            "../webroot/css/admin.css": "src/less/admin/admin.less"
           }
         },
         dev: {
@@ -211,9 +211,9 @@ module.exports = function(grunt) {
               paths: ['./', gintonic+'assets/src/less/']
           },
           files: {
-            "../webroot/css/default.css": "src/less/default.less",
-            "../webroot/css/bare.css": "src/less/bare.less",
-            "../webroot/css/admin.css": "src/less/admin.less"
+            "../webroot/css/default.css": "src/less/default/default.less",
+            "../webroot/css/bare.css": "src/less/default/bare.less",
+            "../webroot/css/admin.css": "src/less/admin/admin.less"
           }
         }
     }

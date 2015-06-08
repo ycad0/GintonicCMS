@@ -2,10 +2,10 @@
 @import "bootstrap.less";
 
 // Font awesome
-@import "lib/fontawesome/font-awesome.less";
+@import "../lib/fontawesome/font-awesome.less";
 
 // Gintonic features
-@import "gintonic/users.less";
+@import "../gintonic/users.less";
 
 /* Sticky footer styles
 -------------------------------------------------- */
@@ -17,15 +17,6 @@ html {
 body {
   /* Margin bottom by footer height */
   margin-bottom: 80px;
-  padding-top: 51px;
-}
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-  background-color: #f5f5f5;
 }
 
 /* Bugfixes
@@ -34,28 +25,6 @@ body {
 // haven't figured out why this is needed
 .modal-backdrop.in{
     z-index:0 !important;
-}
-
-/* Custom site css
--------------------------------------------------- */
-
-.navbar-brand > img{
-    height:100%;
-    width:auto;
-}
-.footer > .container {
-  padding: 20px 15px 0 15px;
-}
-code {
-  font-size: 80%;
-}
-img.site-logo{
-   width: 60%; 
-}
-.navbar .connect{
-    a{
-        display: inline-block;
-    }
 }
 
 /* Utilities
@@ -72,7 +41,8 @@ img.site-logo{
     margin: 0 auto;
 }
 
-/* Gintonic theme */
+/* Gintonic Theme
+-------------------------------------------------- */
 
 .jumbotron{
     background-color: @brand-primary;

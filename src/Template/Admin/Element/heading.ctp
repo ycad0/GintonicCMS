@@ -1,11 +1,13 @@
-<!-- Content Header (Page header) -->
 <section class="content-header">
-  <h1>
-    Dashboard
-    <small>Version 2.0</small>
-  </h1>
-  <ol class="breadcrumb">
-    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-    <li class="active">Dashboard</li>
-  </ol>
+    <h1>
+        <?= $this->request->params['controller'] ?>
+        <small><?= $this->request->params['action'] ?></small>
+    </h1>
+    <?= $this->Html->getCrumbList(
+        ['class' => 'breadcrumb'],
+        [
+            'text' => 'Admin',
+            'url' => ['controller' => 'users', 'action' => 'index']
+        ]
+    ) ?>
 </section>
