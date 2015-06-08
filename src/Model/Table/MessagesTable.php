@@ -8,7 +8,9 @@ use Cake\ORM\TableRegistry;
 
 class MessagesTable extends Table
 {
-
+    const UNREAD = 0;
+    const READ = 1;
+    const DELETED = 2;
     /**
      * TODO: doccomment
      */
@@ -71,5 +73,47 @@ class MessagesTable extends Table
             ->contain(['Users' => ['Files']])
             ->group(['Messages.user_id'])
             ->order(['Messages.created' => 'asc']);
+    }
+
+    /**
+     * Mark Messages as read.
+     * @param array $messageIds array of message id that need to mark as read
+     * @param int $userId user id of the user of which messages will mark as read.
+     * @return int total affected rows count.
+     */
+    public function markAsRead($messageIds, $userId)
+    {
+        return $this->MessageReadStatuses->updateAll(['status' => self::READ], [
+            'user_id' => $userId,
+            'message_id IN' => $messageIds
+        ]);
+    }
+
+    /**
+     * Mark Messages as deleted.
+     * @param array $messageIds array of message id that need to mark as read
+     * @param int $userId user id of the user of which messages will mark as read.
+     * @return int total affected rows count.
+     */
+    public function markAsDelete($messageIds, $userId)
+    {
+        return $this->MessageReadStatuses->updateAll(['status' => self::DELETED], [
+            'user_id' => $userId,
+            'message_id IN' => $messageIds
+        ]);
+    }
+
+    /**
+     * Mark Messages as unread.
+     * @param array $messageIds array of message id that need to mark as unread
+     * @param int $userId user id of the user of which messages will mark as read.
+     * @return int total affected rows count.
+     */
+    public function markAsUnread($messageIds, $userId)
+    {
+        return $this->MessageReadStatuses->updateAll(['status' => self::UNREAD], [
+            'user_id' => $userId,
+            'message_id IN' => $messageIds
+        ]);
     }
 }
