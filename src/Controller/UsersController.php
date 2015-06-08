@@ -19,8 +19,6 @@ class UsersController extends AppController
             'signup',
             'verify',
             'recover',
-            'updateAvatar',
-            'profile',
         ]);
     }
 

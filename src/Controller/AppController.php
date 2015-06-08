@@ -21,6 +21,7 @@ class AppController extends Controller
      */
     public function initialize()
     {
+        $this->loadComponent('Acl.Acl');
         $this->loadComponent('Flash');
         $this->loadComponent('GintonicCMS.Cookie');
         $this->loadComponent('RequestHandler');
@@ -81,13 +82,14 @@ class AppController extends Controller
             $this->Auth->allow();
         }
     }
+
     /**
      * TODO: blockcomment
      */
     public function isAuthorized($user = null)
     {
-        if (!empty($user) && $user['role'] == 'admin') {
-            return true;
+        if (!empty($user)) {
+            return $this->Acl->check(['Users' => $user], 'all');
         }
         return false;
     }

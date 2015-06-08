@@ -204,6 +204,10 @@ class SettingsController extends AppController
         $input = new ArrayInput(array('--plugin' => 'GintonicCMS'));
         $output = new NullOutput();
         $resultCode = $command->run($input, $output);
+        $input = new ArrayInput(array('--plugin' => 'Acl'));
+        $resultCode = $command->run($input, $output);
+
+
 
         // TODO: get the interpretation of the error codes
         //if($resultCode == 'Error??'){
@@ -242,6 +246,24 @@ class SettingsController extends AppController
                     'element' => 'GintonicCMS.alert',
                     'params' => ['class' => 'alert-success']
                 ]);
+
+                // Init permissions
+                $aro = $this->Acl->Aro->newEntity();
+                $aro->alias = 'admin';
+                $this->Acl->Aro->save($aro);
+
+                $aro = $this->Acl->Aro->newEntity();
+                $aro->model = 'Users';
+                $aro->parent_id = '1'; // id of 'admin' role
+                $aro->foreign_key = '1'; // id of the user
+                $this->Acl->Aro->save($aro);
+
+                $aco = $this->Acl->Aco->newEntity();
+                $aco->alias = 'all';
+                $this->Acl->Aco->save($aco);
+
+                $this->Acl->allow(['Users' => ['id' => 1]],'all');
+                
                 return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
             } else {
                 $this->Flash->set(__('Unable to add Users'), [
