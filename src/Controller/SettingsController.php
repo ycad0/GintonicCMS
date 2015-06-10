@@ -262,7 +262,7 @@ class SettingsController extends AppController
                 $aco->alias = 'all';
                 $this->Acl->Aco->save($aco);
 
-                $this->Acl->allow(['Users' => ['id' => 1]],'all');
+                $this->Acl->allow(['Users' => ['id' => 1]], 'all');
                 
                 return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
             } else {

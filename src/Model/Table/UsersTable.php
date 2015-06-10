@@ -16,7 +16,9 @@ namespace GintonicCMS\Model\Table;
 
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\ORM\Query;
+use Cake\ORM\ResultSet;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -81,8 +83,60 @@ class UsersTable extends Table
             ]
         ]);
         $this->addAssociations([
-            'belongsToMany' => ['GintonicCMS.Threads']
+            'belongsToMany' => ['GintonicCMS.Threads'],
+            'hasMany' => [
+                'Acl.Aros'=>[
+                    'conditions' => ['Aros.model' => 'Users'],
+                    'foreignKey' => 'foreign_key'
+                ]
+            ]
         ]);
+    }
+
+    /**
+     * TODO: docblock
+     */
+    public function bindRoles(ResultSet $users)
+    {
+        // Avoid loading the association and condition in current model by using
+        // the aros directly from the TableRegistry
+        $aros = TableRegistry::get('Aros');
+
+        return $users->map(function ($row) use (&$aros) {
+            $row->roles = [];
+
+            // For each aros a user belongs to
+            foreach($row->aros as $aro){
+
+                // Find all parent roles
+                $roles = $aros
+                    ->find('path', ['for' => $aro['id']])
+                    ->select(['id'])
+                    ->distinct();
+
+                // List all roles which have an alias
+                $roleNames = $aros->find()
+                    ->where([
+                        'Aros.id IN' => $roles,
+                    ])
+                    ->where(['alias IS NOT' => null])
+                    ->hydrate(false);
+
+                $row->roles[] = $roleNames->toArray();
+            }
+
+            // extract nested roles
+            foreach($row->roles as $key => $rolegroup){
+                foreach($rolegroup as $role){
+                    $row->roles[] = $role;
+                }
+                unset($row->roles[$key]);
+            }
+
+            // reset array indexes
+            $row->roles = array_values($row->roles);
+            return $row;
+        });
     }
 
     /**

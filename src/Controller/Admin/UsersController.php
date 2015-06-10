@@ -3,6 +3,7 @@ namespace GintonicCMS\Controller\Admin;
 
 use Cake\Event\Event;
 use GintonicCMS\Controller\AppController;
+use Cake\ORM\TableRegistry;
 
 class UsersController extends AppController
 {
@@ -27,7 +28,30 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $this->set('users', $this->paginate('Users'));
+        $aros = TableRegistry::get('Aros');
+        $users = $this->Users->find() 
+            ->contain(['Aros']);
+        $users = $this->Users->bindRoles($this->paginate($users));
+        $this->set('users', $users);
+    }
+
+    /**
+     * TODO: blockquote
+     */
+    public function permissions()
+    {
+        $aros = TableRegistry::get('Aros');
+        $roles = $aros->find()
+            ->where(['alias IS NOT' => null])
+            ->find('threaded')
+            ->toArray();
+
+        $acos = TableRegistry::get('Acos');
+        $permissions = $acos->find()
+            ->where(['alias IS NOT' => null])
+            ->find('threaded')
+            ->toArray();
+        $this->set(compact('roles', 'permissions'));
     }
 
     /**

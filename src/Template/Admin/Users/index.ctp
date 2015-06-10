@@ -21,6 +21,7 @@
                     <th><?php echo $this->Paginator->sort('id'); ?></th>
                     <th><?php echo $this->Paginator->sort('first',__('First Name')); ?></th>
                     <th><?php echo $this->Paginator->sort('last',__('Last Name')); ?></th>
+                    <th><?php echo $this->Paginator->sort('role'); ?></th>
                     <th><?php echo $this->Paginator->sort('email'); ?></th>
                     <th><?php echo $this->Paginator->sort('modified',__('Last Updated')); ?></th>
                 </tr>
@@ -29,6 +30,13 @@
                     <td><?= $user->id ?></td>
                     <td><?= $user->first ?></td>
                     <td><?= $user->last ?></td>
+                    <td>
+                        <?php $roles = [] ?>
+                        <?php foreach($user->roles as $role): ?>
+                            <?php $roles[] = $role['alias'] ?>
+                        <?php endforeach ?>
+                        <?= implode(', ', $roles) ?>
+                    </td>
                     <td><?= $user->email ?></td>
                     <td><?= $user->modified ?></td>
                 </tr>
