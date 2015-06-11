@@ -41,7 +41,7 @@ class UsersController extends AppController
         if (empty($id) && $this->request->session()->read('Auth.User.id')) {
             $id = $this->request->session()->read('Auth.User.id');
         }
-        $user = $this->Users->find('profile', ['id' => $id]);
+        $user = $this->Users->get($id);
         $this->set(compact('user'));
     }
 
@@ -50,8 +50,8 @@ class UsersController extends AppController
      */
     public function edit()
     {
-        $userId = $this->request->session()->read('Auth.User.id');
-        $user = $this->Users->find('profile', $userId);
+        $id = $this->request->session()->read('Auth.User.id');
+        $user = $this->Users->get($id);
 
         if ($this->request->is(['post', 'put'])) {
             // TODO: make sure to test that password is not editable here,

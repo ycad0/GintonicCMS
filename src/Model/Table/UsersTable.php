@@ -24,8 +24,8 @@ use Cake\Validation\Validator;
 /**
  * Represents the Users Table
  *
- * Contain the actions for user related things like change password,
- * find profile etc.
+ * A user is the most elementary unit of information necessary to manage
+ * connections and permissions.
  */
 class UsersTable extends Table
 {
@@ -139,19 +139,6 @@ class UsersTable extends Table
         });
     }
 
-    /**
-     * Dynamic finder that find User Profile.
-     *
-     * @param \Cake\ORM\Query $query the original query to append to
-     * @param array $options containing id of User.
-     * @return \Cake\ORM\Query The amended query
-     */
-    public function findProfile(Query $query, array $options)
-    {
-        return $query
-            ->where(['Users.id' => $options])
-            ->first();
-    }
 
     /**
      * Change the user password. its take new password and user Id
