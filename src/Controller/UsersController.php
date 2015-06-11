@@ -20,6 +20,11 @@ class UsersController extends AppController
             'verify',
             'recover',
         ]);
+
+        $this->Cookie->config('path', '/');
+        $this->Cookie->config([
+            'httpOnly' => true
+        ]);
     }
 
     /**
@@ -122,7 +127,7 @@ class UsersController extends AppController
             if ($user) {
                 $this->Auth->setUser($user);
                 if (isset($this->request->data['remember'])) {
-                    $this->Cookie->rememberMe($this->request->session()->read('Auth'));
+                    $this->Cookie->write('User', $user);
                 }
                 if ($user->verified) {
                     $this->Flash->set(__('Login successful. Please validate your email address.'), [
@@ -150,6 +155,7 @@ class UsersController extends AppController
             'element' => 'GintonicCMS.alert',
             'params' => ['class' => 'alert-info']
         ]);
+        $this->Cookie->delete('User');
         return $this->redirect($this->Auth->logout());
     }
 

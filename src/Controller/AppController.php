@@ -23,7 +23,7 @@ class AppController extends Controller
     {
         $this->loadComponent('Acl.Acl');
         $this->loadComponent('Flash');
-        $this->loadComponent('GintonicCMS.Cookie');
+        $this->loadComponent('Cookie');
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Auth', [
             'authorize' => 'Controller',
@@ -71,6 +71,7 @@ class AppController extends Controller
             ]
         ]);
         parent::initialize();
+        $this->autoLogin();
     }
 
     /**
@@ -92,5 +93,17 @@ class AppController extends Controller
             return $this->Acl->check(['Users' => $user], 'all');
         }
         return false;
+    }
+
+    /**
+     * TODO: blockcomment
+     */
+    public function autoLogin()
+    {
+        if (!$this->Cookie->read('User')) {
+            return;
+        }
+        $user = $this->Cookie->read('User');
+        $this->Auth->setUser($user);
     }
 }
