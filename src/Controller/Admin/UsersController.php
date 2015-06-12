@@ -2,8 +2,8 @@
 namespace GintonicCMS\Controller\Admin;
 
 use Cake\Event\Event;
-use GintonicCMS\Controller\AppController;
 use Cake\ORM\TableRegistry;
+use GintonicCMS\Controller\AppController;
 
 class UsersController extends AppController
 {
@@ -29,7 +29,7 @@ class UsersController extends AppController
     public function index()
     {
         $aros = TableRegistry::get('Aros');
-        $users = $this->Users->find() 
+        $users = $this->Users->find()
             ->contain(['Aros']);
         $users = $this->Users->bindRoles($this->paginate($users));
         $this->set('users', $users);

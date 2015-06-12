@@ -85,7 +85,7 @@ class UsersTable extends Table
         $this->addAssociations([
             'belongsToMany' => ['GintonicCMS.Threads'],
             'hasMany' => [
-                'Acl.Aros'=>[
+                'Acl.Aros' => [
                     'conditions' => ['Aros.model' => 'Users'],
                     'foreignKey' => 'foreign_key'
                 ]
@@ -105,36 +105,22 @@ class UsersTable extends Table
         return $users->map(function ($row) use (&$aros) {
             $row->roles = [];
 
-            // For each aros a user belongs to
-            foreach($row->aros as $aro){
-
-                // Find all parent roles
+            foreach ($row->aros as $aro) {
                 $roles = $aros
                     ->find('path', ['for' => $aro['id']])
                     ->select(['id'])
                     ->distinct();
-
-                // List all roles which have an alias
-                $roleNames = $aros->find()
+                $roleGroup = $aros->find()
                     ->where([
                         'Aros.id IN' => $roles,
                     ])
                     ->where(['alias IS NOT' => null])
                     ->hydrate(false);
-
-                $row->roles[] = $roleNames->toArray();
-            }
-
-            // extract nested roles
-            foreach($row->roles as $key => $rolegroup){
-                foreach($rolegroup as $role){
+                foreach ($roleGroup as $role) {
                     $row->roles[] = $role;
                 }
-                unset($row->roles[$key]);
             }
 
-            // reset array indexes
-            $row->roles = array_values($row->roles);
             return $row;
         });
     }

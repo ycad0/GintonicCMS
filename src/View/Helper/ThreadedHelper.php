@@ -14,10 +14,10 @@ class ThreadedHelper extends Helper
     public function ul(array $items, $key)
     {
         $output = '<ul>';
-        foreach($items as $item){
+        foreach ($items as $item) {
             $output .= '<li>' . $item[$key];
 
-            if(!empty($item['children'])){
+            if (!empty($item['children'])) {
                 $output .= $this->ul($item['children'], $key);
             }
 
