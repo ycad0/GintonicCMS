@@ -1,15 +1,36 @@
 <?php
-
+/**
+ * GintonicCMS : Full Stack Content Management System (http://gintoniccms.com)
+ * Copyright (c) Philippe Lafrance (http://phillafrance.com)
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright (c) Philippe Lafrance (http://phillafrance.com)
+ * @link          http://gintoniccms.com GintonicCMS Project
+ * @since         0.0.0
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ */
 namespace GintonicCMS\Controller;
 
 use Cake\Event\Event;
 use GintonicCMS\Controller\AppController;
 
+/**
+* Users Controller
+*
+* Meant to handle the mechanics of logging users in, password management and
+* authentication. This base class is intended to stay as lean as possible while
+* being easily reusable from any application.
+*/
 class UsersController extends AppController
 {
-
     /**
-     * TODO: Write Comment
+     * Defines the methods that should be allowed for non logged-in users.
+     *
+     * @param Event $event An Event instance
+     * @return void
      */
     public function beforeFilter(Event $event)
     {
@@ -28,7 +49,11 @@ class UsersController extends AppController
     }
 
     /**
-     * TODO: Write Comment.
+     * Authorization method. We can grant all permissions to everything 
+     * on the website by adding a user to the group named 'all'.
+     * 
+     * @param array|null $user The user to check the authorization of.
+     * @return bool True if $user is authorized, otherwise false
      */
     public function isAuthorized($user = null)
     {
@@ -39,7 +64,10 @@ class UsersController extends AppController
     }
 
     /**
-     * TODO: blockquote
+     * View users information (name and password). If no user is specified,
+     * show own profile.
+     *
+     * @param int $id the id of the user we want to consult
      */
     public function view($id = null)
     {
@@ -51,17 +79,16 @@ class UsersController extends AppController
     }
 
     /**
-     * TODO: blockquote
+     * Allows users to edit their own information
+     *
+     * @return void
      */
     public function edit()
     {
         $id = $this->request->session()->read('Auth.User.id');
         $user = $this->Users->get($id);
-
+        $user->accessible('password', true);
         if ($this->request->is(['post', 'put'])) {
-            // TODO: make sure to test that password is not editable here,
-            // password and token are guarded fields and they should be treated
-            // accordingly
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {
                 $this->Flash->set(__('User has been updated'), [

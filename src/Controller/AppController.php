@@ -1,23 +1,45 @@
 <?php
-
+/**
+ * GintonicCMS : Full Stack Content Management System (http://gintoniccms.com)
+ * Copyright (c) Philippe Lafrance (http://phillafrance.com)
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright (c) Philippe Lafrance (http://phillafrance.com)
+ * @link          http://gintoniccms.com GintonicCMS Project
+ * @since         0.0.0
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ */
 namespace GintonicCMS\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 
+/**
+* Application Controller
+*
+* Use this controller as the base class for your apps by inheriting it in your
+* application
+*/
 class AppController extends Controller
 {
+    /**
+     * Base helpers that loads javascript via require and wraps forms with 
+     * bootstrap markup.
+     */
     public $helpers = [
         'GintonicCMS.Require',
-        'GintonicCMS.User',
-        'GintonicCMS.Media',
         'Form' => ['className' => 'GintonicCMS.Form'],
         'Paginator' => ['className' => 'GintonicCMS.Paginator'],
     ];
 
     /**
-     * TODO: blockcomment
+     * We use this controller as the base controller for our whole app. Here we
+     * handle everything related to authentication. It's then easy to extend it
+     * from the application.
      */
     public function initialize()
     {
@@ -71,11 +93,16 @@ class AppController extends Controller
             ]
         ]);
         parent::initialize();
-        $this->autoLogin();
+        $this->__autoLogin();
     }
 
     /**
-     * TODO: blockcomment
+     * Called before each action, allows everyone to use the "pages" controller
+     * without specific permissions.
+     *
+     * @param Event $event An Event instance
+     * @return void
+     * @link http://book.cakephp.org/3.0/en/controllers.html#request-life-cycle-callbacks
      */
     public function beforeFilter(Event $event)
     {
@@ -85,7 +112,12 @@ class AppController extends Controller
     }
 
     /**
-     * TODO: blockcomment
+     * Authorization method. We can grant all permissions to everything 
+     * on the website by adding a user to the group named 'all'.
+     * 
+     * @param array|null $user The user to check the authorization of.
+     * @return bool True if $user is authorized, otherwise false
+     * @link https://github.com/cakephp/acl
      */
     public function isAuthorized($user = null)
     {
@@ -96,9 +128,10 @@ class AppController extends Controller
     }
 
     /**
-     * TODO: blockcomment
+     * If the use is already identified via the cookie, we log him in 
+     * automatically. 
      */
-    public function autoLogin()
+    private function __autoLogin()
     {
         if (!$this->Cookie->read('User')) {
             return;

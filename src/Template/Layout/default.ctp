@@ -23,7 +23,12 @@
     <body>
 
         <?php echo $this->element('GintonicCMS.Menus/top_menu')?>
-        <?php echo $this->Flash->render(); ?>
+
+        <div class="container">
+            <div class="row">
+                <?php echo $this->Flash->render(); ?>
+            </div>
+        </div>
 
         <?php echo $this->fetch('content'); ?>	                    
 

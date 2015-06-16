@@ -5,12 +5,12 @@
                 $this->Html->image(
                     'GintonicCMS.logo.png',
                     [
-                        "class" => "img-responsive profile-img navbar-img",
+                        "class" => "img-responsive navbar-img",
                         "alt" => 'GintonicCMS'
                     ]
                 ),
                 '/',
-                ['escape'=>false,'class'=>['navbar-brand']]
+                ['escape' => false,'class' => ['navbar-brand']]
             );?>
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#user-menu">
                 <span class="sr-only">Toggle navigation</span>
@@ -20,7 +20,7 @@
             </button>
         </div>
         <div class="collapse navbar-collapse" id="user-menu">
-            <?php if($this->request->session()->check('Auth.User')): ?>
+            <?php if ($this->request->session()->check('Auth.User')) : ?>
             <ul class="nav navbar-nav">
             </ul>
             <?php endif; ?>
@@ -28,7 +28,9 @@
                 <?php if($this->request->session()->check('Auth.User')): ?>
                 <li class="dropdown">
                     <?= $this->Html->link(
-                        ($this->request->session()->read('Auth.User.first').' '.$this->request->session()->read('Auth.User.last')).'<span class="caret"></span>',
+                        $this->request->session()->read('Auth.User.first') . ' ' . 
+                        $this->request->session()->read('Auth.User.last') . 
+                        '<span class="caret"></span>',
                         '#',
                         [
                             'escape'=>false,
@@ -40,21 +42,8 @@
                     ) ?>
                     <ul class="dropdown-menu" role="menu">
                         <li>
-                            <?php if($this->request->session()->read('Auth.User.role') == 'admin'): ?>
-                                <?= $this->Html->link(
-                                    __('Administration'),
-                                    [
-                                        'controller'=>'Users',
-                                        'action' => 'index',
-                                        'prefix' => 'admin'
-                                    ],
-                                    ['escape' => false]
-                                ) ?>
-                            <?php endif; ?>
-                        </li>
-                        <li>
                             <?= $this->Html->link(
-                                __('Profile'),
+                                __('Preferences'),
                                 ['controller'=>'Users', 'action'=>'edit'],
                                 ['escape'=>false]
                             ) ?>
@@ -62,7 +51,7 @@
                         <?php echo $this->fetch('topMenuActions'); ?>
                         <li>
                             <?= $this->Html->link(
-                                __('Signout'),
+                                __('Sign out'),
                                 [
                                     'plugin'=>'GintonicCMS',
                                     'controller'=>'Users',
