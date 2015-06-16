@@ -23,10 +23,7 @@ use Cake\Database\Exception\MissingConnectionException;
 use Cake\Datasource\ConnectionManager;
 use Cake\Event\Event;
 use GintonicCMS\Controller\AppController;
-use Migrations\Command\Migrate;
 use PDOException;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
 
 /**
  * Represents the Settings Controller
@@ -53,6 +50,7 @@ class SettingsController extends AppController
         if (!Configure::read('Gintonic.install.lock')) {
             $this->Auth->allow();
         }
+        $this->loadComponent('GintonicCMS.Setup');
     }
 
     /**
@@ -167,7 +165,7 @@ class SettingsController extends AppController
         if ($this->request->is(['post', 'put'])) {
             $default = array_merge($default, $this->request->data);
             ConnectionManager::config('userDb', $default);
-            if ($this->__databaseConnection('userDb')) {
+            if ($this->Setup->databaseConnection('userDb')) {
                 Configure::write('Datasources.default', $default);
                 Configure::dump('datasources', 'default', ['Datasources']);
                 return $this->redirect([
@@ -191,7 +189,7 @@ class SettingsController extends AppController
     public function createAdmin()
     {
         // Lets make sure that we can connect to the database first
-        if (!$this->__databaseConnection()) {
+        if (!$this->Setup->databaseConnection()) {
             $this->Flash->set(__('Impossible to connect to the database'), [
                 'element' => 'GintonicCMS.alert',
                 'params' => ['class' => 'alert-danger']
@@ -199,46 +197,32 @@ class SettingsController extends AppController
             return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
         }
 
-        // Run GintonicCMS migrations
-        $command = new Migrate();
-        $input = new ArrayInput(array('--plugin' => 'GintonicCMS'));
-        $output = new NullOutput();
-        $resultCode = $command->run($input, $output);
-        $input = new ArrayInput(array('--plugin' => 'Acl'));
-        $resultCode = $command->run($input, $output);
-
-
-
-        // TODO: get the interpretation of the error codes
-        //if($resultCode == 'Error??'){
-        //    $this->Flash->set(__('Error while running the migrations'), [
-        //        'element' => 'GintonicCMS.alert',
-        //        'params' => ['class' => 'alert-danger']
-        //    ]);
-        //    return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
-        //}
-
-        // Check if the users table exists
-        if (!$this->__tableExists('users')) {
-            $this->Flash->set(__('Unexpected error with Users table'), [
-                'element' => 'GintonicCMS.alert',
-                'params' => ['class' => 'alert-danger']
-            ]);
-            $this->autoRender = false;
-            return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
-        }
-
-        Configure::load('gintonic');
-        Configure::write('Gintonic.install.migration', true);
-        Configure::dump('gintonic', 'default', ['Gintonic']);
-
         if ($this->request->is(['post', 'put'])) {
+
+            $this->Setup->runMigration('Acl');
+            $this->Setup->runMigration('GintonicCMS');
+
+            // Check if the users table exists
+            if (!$this->Setup->tableExists('users')) {
+                $this->Flash->set(__('Unexpected error with Users table'), [
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-danger']
+                ]);
+                $this->autoRender = false;
+                return $this->redirect(['controller' => 'Pages', 'action' => 'home']);
+            }
+
+            Configure::load('gintonic');
+            Configure::write('Gintonic.install.migration', true);
+            Configure::dump('gintonic', 'default', ['Gintonic']);
+
             $this->loadModel('GintonicCMS.Users');
             $user = $this->Users->newEntity()->accessible('password', true);
             $user->password = $this->request->data['password'];
             $this->request->data['verified'] = 1;
             $this->request->data['role'] = 'admin';
             $userInfo = $this->Users->patchEntity($user, $this->request->data);
+
             if ($this->Users->save($userInfo)) {
                 Configure::write('Gintonic.install.admin', true);
                 Configure::dump('gintonic', 'default', ['Gintonic']);
@@ -304,58 +288,5 @@ class SettingsController extends AppController
     public function assets()
     {
         // assets view
-    }
-
-    /**
-     * Test database connection.
-     *
-     * @param type $dataSource name of data source.
-     * @return boolean True if database is connected, False else.
-     */
-    private function __databaseConnection($dataSource = 'default')
-    {
-        try {
-            $connection = ConnectionManager::get($dataSource);
-            $connected = $connection->connect();
-        } catch (MissingConnectionException $connectionError) {
-            $connected = false;
-        }
-        return $connected;
-    }
-
-    /**
-     * Check whether table is exists in database or not.
-     *
-     * @param string $tableName Name of the table to check.
-     * @return boolean True if table exists, False else.
-     */
-    private function __tableExists($tableName = 'users')
-    {
-        try {
-            $db = ConnectionManager::get('default');
-            $collection = $db->schemaCollection();
-            $tables = $collection->listTables();
-            if (in_array($tableName, $tables)) {
-                return true;
-            }
-        } catch (PDOException $connectionError) {
-            return false;
-        }
-        return false;
-    }
-
-    /**
-     * Check for admin account.
-     *
-     * @return boolean True if admin account exists, False else.
-     */
-    private function __adminRecordExists()
-    {
-        $conditions = ['Users.role' => 'admin'];
-        $this->loadModel('GintonicCMS.Users');
-        if ($this->Users->exists($conditions)) {
-            return true;
-        }
-        return false;
     }
 }
