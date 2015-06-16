@@ -61,5 +61,4 @@ class SetupComponent extends Component
         }
         return $connected;
     }
-
 }

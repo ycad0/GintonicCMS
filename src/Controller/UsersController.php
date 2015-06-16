@@ -18,12 +18,12 @@ use Cake\Event\Event;
 use GintonicCMS\Controller\AppController;
 
 /**
-* Users Controller
-*
-* Meant to handle the mechanics of logging users in, password management and
-* authentication. This base class is intended to stay as lean as possible while
-* being easily reusable from any application.
-*/
+ * Users Controller
+ *
+ * Meant to handle the mechanics of logging users in, password management and
+ * authentication. This base class is intended to stay as lean as possible while
+ * being easily reusable from any application.
+ */
 class UsersController extends AppController
 {
     /**

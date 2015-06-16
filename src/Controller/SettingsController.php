@@ -198,7 +198,6 @@ class SettingsController extends AppController
         }
 
         if ($this->request->is(['post', 'put'])) {
-
             $this->Setup->runMigration('Acl');
             $this->Setup->runMigration('GintonicCMS');
 
