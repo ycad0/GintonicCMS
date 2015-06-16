@@ -19,11 +19,11 @@ use Cake\Core\Configure;
 use Cake\Event\Event;
 
 /**
-* Application Controller
-*
-* Use this controller as the base class for your apps by inheriting it in your
-* application
-*/
+ * Application Controller
+ *
+ * Use this controller as the base class for your apps by inheriting it in your
+ * application
+ */
 class AppController extends Controller
 {
     /**
@@ -112,9 +112,9 @@ class AppController extends Controller
     }
 
     /**
-     * Authorization method. We can grant all permissions to everything 
+     * Authorization method. We can grant all permissions to everything
      * on the website by adding a user to the group named 'all'.
-     * 
+     *
      * @param array|null $user The user to check the authorization of.
      * @return bool True if $user is authorized, otherwise false
      * @link https://github.com/cakephp/acl
@@ -128,8 +128,10 @@ class AppController extends Controller
     }
 
     /**
-     * If the use is already identified via the cookie, we log him in 
-     * automatically. 
+     * If the use is already identified via the cookie, we log him in
+     * automatically.
+     *
+     * @return void
      */
     private function __autoLogin()
     {
