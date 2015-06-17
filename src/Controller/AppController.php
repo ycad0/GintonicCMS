@@ -27,7 +27,7 @@ use Cake\Event\Event;
 class AppController extends Controller
 {
     /**
-     * Base helpers that loads javascript via require and wraps forms with 
+     * Base helpers that loads javascript via require and wraps forms with
      * bootstrap markup.
      */
     public $helpers = [

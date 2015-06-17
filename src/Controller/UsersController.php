@@ -49,9 +49,9 @@ class UsersController extends AppController
     }
 
     /**
-     * Authorization method. We can grant all permissions to everything 
+     * Authorization method. We can grant all permissions to everything
      * on the website by adding a user to the group named 'all'.
-     * 
+     *
      * @param array|null $user The user to check the authorization of.
      * @return bool True if $user is authorized, otherwise false
      */
