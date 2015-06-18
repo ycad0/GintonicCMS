@@ -109,8 +109,7 @@ class UserTest extends TestCase
             'token_creation' => '2015-05-22 15:39:23'
         ]);
         $entity->updateToken();
-        $expected = date("Y-m-d H:i:s");
-        $this->assertEquals($expected, $entity->token_creation);
+        $this->assertTrue($entity->token_creation->wasWithinLast('1 seconds'));
     }
 
     /**

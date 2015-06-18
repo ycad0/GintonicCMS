@@ -155,7 +155,7 @@ class User extends Entity
     public function updateToken()
     {
         $this->token = md5(uniqid(rand(), true));
-        $this->token_creation = date("Y-m-d H:i:s");
+        $this->token_creation = Time::now();
     }
 
     /**
