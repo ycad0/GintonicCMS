@@ -25,10 +25,10 @@ class UsersFixture extends TestFixture
     public $records = [
         [
             'id' => 1,
-            'email' => 'hitesh@securemetasys.com',
+            'email' => 'blackhole@blackhole.io',
             'password' => '123456',
-            'first' => 'Test1',
-            'last' => 'Test1',
+            'first' => 'Philippe',
+            'last' => 'Lafrance',
             'verified' => 1,
             'token' => 'jhfkjd456d4sgdsg',
             'token_creation' => '2007-05-18 10:39:23',
@@ -37,7 +37,7 @@ class UsersFixture extends TestFixture
         ],
         [
             'id' => 2,
-            'email' => 'test2@gmail.com',
+            'email' => 'blackhole@blackhole.io',
             'password' => '123456',
             'first' => 'Test2',
             'last' => 'Test2',
@@ -49,7 +49,7 @@ class UsersFixture extends TestFixture
         ],
         [
             'id' => 3,
-            'email' => 'test3@gmail.com',
+            'email' => 'blackhole@blackhole.io',
             'password' => '123456',
             'first' => 'Test3',
             'last' => 'Test3',
@@ -61,7 +61,7 @@ class UsersFixture extends TestFixture
         ],
         [
             'id' => 4,
-            'email' => 'test4@gmail.com',
+            'email' => 'blackhole@blackhole.io',
             'password' => '123456',
             'first' => 'Test4',
             'last' => 'Test4',
@@ -73,7 +73,7 @@ class UsersFixture extends TestFixture
         ],
         [
             'id' => 5,
-            'email' => 'test@gmail.com',
+            'email' => 'blackhole@blackhole.io',
             'password' => '123456',
             'first' => 'Test5',
             'last' => 'Test5',

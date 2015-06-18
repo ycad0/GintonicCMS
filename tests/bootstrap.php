@@ -50,5 +50,12 @@ Cake\Datasource\ConnectionManager::config('test', [
 ]);
 
 Plugin::load('GintonicCMS', ['path' => ROOT]);
+
+if (!Configure::read('Acl.classname')) {
+    Configure::write('Acl.classname', 'DbAcl');
+}
+if (!Configure::read('Acl.database')) {
+    Configure::write('Acl.database', 'default');
+}
 Cake\Routing\DispatcherFactory::add('Routing');
 Cake\Routing\DispatcherFactory::add('ControllerFactory');

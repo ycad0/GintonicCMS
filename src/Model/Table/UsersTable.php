@@ -50,7 +50,7 @@ class UsersTable extends Table
                     'message' => __('This email is already registered')
                 ]
             ])
-            ->requirePresence('password')
+            ->requirePresence('password', 'create')
             ->notEmpty('password', ['message' => __('Password cannot be blank')]);
     }
 

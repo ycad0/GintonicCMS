@@ -1,6 +1,7 @@
 <?php
 namespace GintonicCMS\Test\TestCase\Controller;
 
+use Cake\Controller\ComponentRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 use GintonicCMS\Controller\UsersController;
 
@@ -16,7 +17,10 @@ class UsersControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.gintonic_c_m_s.users'
+        'plugin.gintonic_c_m_s.users',
+        'plugin.gintonic_c_m_s.acos',
+        'plugin.gintonic_c_m_s.aros',
+        'plugin.gintonic_c_m_s.aros_acos'
     ];
 
     /**
@@ -26,7 +30,18 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public function testBeforeFilter()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('/users/signin');
+        $this->assertResponseOk();
+
+        $this->get('/users/signup');
+        $this->assertResponseOk();
+
+        $this->get('/users/verify/1/jhfkjd456d4sgdsg');
+        $this->assertSession('alert-success', 'Flash.flash.params.class');
+
+        $this->get('/users/recover/1/jhfkjd456d4sgdsg');
+        $this->assertResponseOk();
+
     }
 
     /**
@@ -36,7 +51,19 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public function testIsAuthorized()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('/users/view');
+        $this->assertResponseCode(302);
+
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    'id' => 1
+                ]
+
+            ]
+        ]);
+        $this->get('/users/view');
+        $this->assertResponseOk();
     }
 
     /**
@@ -46,7 +73,22 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('/users/view');
+        $this->assertResponseCode(302);
+
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    'id' => 1
+                ]
+
+            ]
+        ]);
+        $this->get('/users/view');
+        $this->assertResponseOk();
+        $this->assertResponseNotEmpty();
+        $this->assertResponseContains('Philippe');
+        $this->assertResponseContains('Lafrance');
     }
 
     /**
@@ -56,7 +98,32 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public function testEdit()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    'id' => 1
+                ]
+
+            ]
+        ]);
+        $this->get('/users/edit');
+        $this->assertResponseOk();
+
+        $this->post('/users/edit', [
+            'email' => 'newmail@blackhole.io',
+            'pwd' => '123456',
+            'first' => 'Phil',
+            'last' => 'Laf'
+        ]);
+        $this->assertResponseCode(302);
+
+        $this->post('/users/edit', [
+            'email' => 'newmail@blackhole.io',
+            'pwd' => 'dummy',
+            'first' => 'Phil',
+            'last' => 'Laf'
+        ]);
+        $this->assertResponseCode(302);
     }
 
     /**
@@ -85,16 +152,6 @@ class UsersControllerTest extends IntegrationTestCase
      * @return void
      */
     public function testSignout()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test profile method
-     *
-     * @return void
-     */
-    public function testProfile()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

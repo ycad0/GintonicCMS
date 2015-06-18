@@ -27,7 +27,7 @@ use GintonicCMS\Controller\AppController;
 class UsersController extends AppController
 {
     /**
-     * Defines the methods that should be allowed for non logged-in users.
+     * Defines the methods that should be allowed for non signed-in users.
      *
      * @param Event $event An Event instance
      * @return void
@@ -49,8 +49,8 @@ class UsersController extends AppController
     }
 
     /**
-     * Authorization method. We can grant all permissions to everything
-     * on the website by adding a user to the group named 'all'.
+     * Authorization method. All methods below are available to logged
+     * in users
      *
      * @param array|null $user The user to check the authorization of.
      * @return bool True if $user is authorized, otherwise false
@@ -79,7 +79,8 @@ class UsersController extends AppController
     }
 
     /**
-     * Allows users to edit their own information
+     * Allows users to edit their own information. The password is only updated
+     * if it is changed from the default value, in this case: 'dummy'.
      *
      * @return void
      */
@@ -88,15 +89,20 @@ class UsersController extends AppController
         $id = $this->request->session()->read('Auth.User.id');
         $user = $this->Users->get($id);
         $user->accessible('password', true);
+
         if ($this->request->is(['post', 'put'])) {
+            if ($this->request->data['pwd'] != 'dummy') {
+                $this->request->data['password'] = $this->request->data['pwd'];
+            }
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {
-                $this->Flash->set(__('User has been updated'), [
+                $this->Flash->set(__('Account updated successfully'), [
                     'element' => 'GintonicCMS.alert',
                     'params' => ['class' => 'alert-success']
                 ]);
+                return $this->redirect($this->Auth->redirectUrl());
             } else {
-                $this->Flash->set(__('Error saving the user'), [
+                $this->Flash->set(__('Error updating the account'), [
                     'element' => 'GintonicCMS.alert',
                     'params' => ['class' => 'alert-danger']
                 ]);
@@ -176,7 +182,6 @@ class UsersController extends AppController
      */
     public function signout()
     {
-        $this->Cookie->forgetMe();
         $this->request->session()->destroy();
         $this->Flash->set(__('You are now signed out.'), [
             'element' => 'GintonicCMS.alert',
@@ -189,9 +194,9 @@ class UsersController extends AppController
     /**
      * TODO: blockquote
      */
-    public function verify($userId, $token)
+    public function verify($id, $token)
     {
-        $user = $this->Users->get($userId);
+        $user = $this->Users->get($id);
 
         if ($user->verified || $user->verify($token)) {
             $this->Users->save($user);
