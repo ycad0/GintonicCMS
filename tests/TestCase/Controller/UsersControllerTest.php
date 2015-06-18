@@ -143,6 +143,7 @@ class UsersControllerTest extends IntegrationTestCase
             'first' => 'Phil',
             'last' => 'Laf'
         ]);
+        $this->assertSession('alert-info', 'Flash.flash.params.class');
         $this->assertRedirect([
             'controller' => 'Users',
             'action' => 'view',
