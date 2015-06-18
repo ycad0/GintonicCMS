@@ -32,8 +32,9 @@ class ThreadsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Threads') ? [] : ['className' => 'GintonicCMS\Model\Table\ThreadsTable'];
-        $this->Threads = TableRegistry::get('Threads', $config);
+        $this->Threads = TableRegistry::get('Threads', [
+            'className' => 'GintonicCMS\Model\Table\ThreadsTable'
+        ]);
     }
 
     /**
@@ -44,7 +45,6 @@ class ThreadsTableTest extends TestCase
     public function tearDown()
     {
         unset($this->Threads);
-
         parent::tearDown();
     }
 
@@ -70,7 +70,9 @@ class ThreadsTableTest extends TestCase
      */
     public function testFindWithUsers()
     {
-        $users = [1];
+        $users = [
+            ['id' => 1]
+        ];
 
         $query = $this->Threads->find('withUsers', $users)->select(['id']);
         $this->assertInstanceOf('Cake\ORM\Query', $query);
@@ -139,15 +141,13 @@ class ThreadsTableTest extends TestCase
      */
     public function testFindWithUserCount()
     { 
-        $query = $this->Threads
-            ->find('withUserCount', ['count' => 2]);
+        $query = $this->Threads->find('withUserCount', ['count' => 2]);
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $result = $query->hydrate(false)->toArray();
         $expected = [
             ['id' => 1],
             ['id' => 3]
         ];
-
         $this->assertEquals($expected, $result);
     }
 
@@ -196,7 +196,6 @@ class ThreadsTableTest extends TestCase
     public function testFindDeleted()
     {
         $users = [];
-
         $query = $this->Threads->find('deleted', $users)->select('Messages.id');
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $result = $query->hydrate(false)->toArray();

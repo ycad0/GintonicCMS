@@ -12,8 +12,10 @@
  * @since         0.0.0
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace GintonicCMS\Controller;
 
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use GintonicCMS\Controller\AppController;
 
@@ -27,30 +29,47 @@ use GintonicCMS\Controller\AppController;
 class UsersController extends AppController
 {
     /**
-     * Defines the methods that should be allowed for non signed-in users.
+     * Setting up the cookie
+     *
+     * @return void
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->Cookie->config('path', '/');
+        $this->Cookie->config(['httpOnly' => true]);
+    }
+
+    /**
+     * Defines the methods that should be allowed for non authenticated users
+     * and the ones that shouldn't be accessed by authenticated users. Also
+     * define which actions should use the bare layout
      *
      * @param Event $event An Event instance
      * @return void
      */
     public function beforeFilter(Event $event)
     {
-        parent::beforeFilter($event);
-        $this->Auth->allow([
-            'signin',
-            'signup',
-            'verify',
-            'recover',
-        ]);
+        $this->Auth->allow(['signin', 'signup', 'verify', 'recover', 'sendRecovery']);
 
-        $this->Cookie->config('path', '/');
-        $this->Cookie->config([
-            'httpOnly' => true
-        ]);
+        // The following actions should not be available to authenticated users
+        $unAuthActions = ['signin', 'signup', 'recover'];
+        $unAuth = in_array($this->request->params['action'], $unAuthActions);
+        if ($this->Auth->user() && $unAuth) {
+            return $this->redirect($this->Auth->redirectUrl());
+        }
+
+        // Use bare layout for those actions
+        $bareActions = ['signin', 'signup', 'recover', 'sendRecovery'];
+        if (in_array($this->request->params['action'], $bareActions)) {
+            $this->layout = 'bare';
+        }
+
+        parent::beforeFilter($event);
     }
 
     /**
-     * Authorization method. All methods below are available to logged
-     * in users
+     * Authenticated users are allowed to access everything in this controller
      *
      * @param array|null $user The user to check the authorization of.
      * @return bool True if $user is authorized, otherwise false
@@ -81,14 +100,13 @@ class UsersController extends AppController
     /**
      * Allows users to edit their own information. The password is only updated
      * if it is changed from the default value, in this case: 'dummy'.
-     *
+     * 
      * @return void
      */
     public function edit()
     {
         $id = $this->request->session()->read('Auth.User.id');
-        $user = $this->Users->get($id);
-        $user->accessible('password', true);
+        $user = $this->Users->get($id)->accessible('password', true);
 
         if ($this->request->is(['post', 'put'])) {
             if ($this->request->data['pwd'] != 'dummy') {
@@ -101,42 +119,8 @@ class UsersController extends AppController
                     'params' => ['class' => 'alert-success']
                 ]);
                 return $this->redirect($this->Auth->redirectUrl());
-            } else {
-                $this->Flash->set(__('Error updating the account'), [
-                    'element' => 'GintonicCMS.alert',
-                    'params' => ['class' => 'alert-danger']
-                ]);
             }
-        }
-        $this->set(compact('user'));
-    }
-
-    /**
-     * TODO: blockquote
-     */
-    public function signup()
-    {
-        // TODO: move this condition into isAuthorized()
-        if ($this->Auth->user()) {
-            return $this->redirect($this->Auth->redirectUrl());
-        }
-
-        $this->render('GintonicCMS.signup', 'GintonicCMS.bare');
-        $user = $this->Users->newEntity()->accessible('password', true);
-        if ($this->request->is(['post', 'put'])) {
-            $user->updateToken();
-            $user = $this->Users->patchEntity($user, $this->request->data);
-
-            if ($this->Users->save($user)) {
-                $user->sendSignup();
-                $this->Flash->set(__('Please check your e-mail to validate your account'), [
-                    'element' => 'GintonicCMS.alert',
-                    'params' => ['class' => 'alert-warning']
-                ]);
-                $this->Auth->setUser($user->toArray());
-                return $this->redirect($this->Auth->redirectUrl());
-            }
-            $this->Flash->set(__('Error creating your account, please contact an administrator'), [
+            $this->Flash->set(__('Error updating the account'), [
                 'element' => 'GintonicCMS.alert',
                 'params' => ['class' => 'alert-danger']
             ]);
@@ -145,16 +129,39 @@ class UsersController extends AppController
     }
 
     /**
+     * Users registration
+     */
+    public function signup()
+    {
+        if ($this->request->is(['post', 'put'])) {
+            $user = $this->Users->newEntity()->accessible('password', true);
+            $user->updateToken();
+            $user = $this->Users->patchEntity($user, $this->request->data);
+
+            if ($this->Users->save($user)) {
+                $user->sendSignup();
+                $this->Flash->set(__('Please check your e-mail to validate your account'), [
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-info']
+                ]);
+                $this->Auth->setUser($user->toArray());
+                return $this->redirect($this->Auth->redirectUrl());
+            } else {
+                $this->loadComponent('GintonicCMS.Errors');
+                $this->Flash->set($this->Errors->toList($user), [
+                    'element' => 'GintonicCMS.alert',
+                    'params' => ['class' => 'alert-danger']
+                ]);
+                return;
+            }
+        }
+    }
+
+    /**
      * TODO: blockquote
      */
     public function signin()
     {
-        // TODO: move this condition into isAuthorized()
-        if ($this->Auth->user()) {
-            return $this->redirect($this->Auth->redirectUrl());
-        }
-
-        $this->render('GintonicCMS.signin', 'GintonicCMS.bare');
         if ($this->request->is(['post', 'put'])) {
             $user = $this->Auth->identify();
             if ($user) {
@@ -215,29 +222,6 @@ class UsersController extends AppController
 
     /**
      * TODO: blockquote
-     */
-    public function changePassword()
-    {
-        if ($this->request->is(['post', 'put'])) {
-            $userId = $this->request->session()->read('Auth.User.id');
-
-            if ($this->Users->changePassword($this->request->data, $userId)) {
-                $this->Flash->set(__('Password has been updated Successfully.'), [
-                    'element' => 'GintonicCMS.alert',
-                    'params' => ['class' => 'alert-success']
-                ]);
-                return $this->redirect($this->Auth->redirectUrl());
-            } else {
-                $this->Flash->set(__('Error occure while updating you password. Please try again.'), [
-                    'element' => 'GintonicCMS.alert',
-                    'params' => ['class' => 'alert-danger']
-                ]);
-            }
-        }
-    }
-
-    /**
-     * TODO: blockquote
      * This is where users end up from their
      */
     public function recover($userId, $token)
@@ -267,7 +251,6 @@ class UsersController extends AppController
             }
         }
         $this->set(compact('userId', 'token'));
-        $this->render('GintonicCMS.recover', 'GintonicCMS.bare');
     }
 
     /**
@@ -314,6 +297,5 @@ class UsersController extends AppController
                 }
             }
         }
-        $this->render('GintonicCMS.send_recovery', 'GintonicCMS.bare');
     }
 }

@@ -10,7 +10,6 @@ use GintonicCMS\Controller\UsersController;
  */
 class UsersControllerTest extends IntegrationTestCase
 {
-
     /**
      * Fixtures
      *
@@ -32,16 +31,19 @@ class UsersControllerTest extends IntegrationTestCase
     {
         $this->get('/users/signin');
         $this->assertResponseOk();
+        $this->assertLayout('bare');
 
         $this->get('/users/signup');
         $this->assertResponseOk();
+        $this->assertLayout('bare');
 
         $this->get('/users/verify/1/jhfkjd456d4sgdsg');
         $this->assertSession('alert-success', 'Flash.flash.params.class');
+        $this->assertLayout('bare');
 
         $this->get('/users/recover/1/jhfkjd456d4sgdsg');
         $this->assertResponseOk();
-
+        $this->assertLayout('bare');
     }
 
     /**
@@ -87,8 +89,7 @@ class UsersControllerTest extends IntegrationTestCase
         $this->get('/users/view');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
-        $this->assertResponseContains('Philippe');
-        $this->assertResponseContains('Lafrance');
+        $this->assertResponseContains('Philippe Lafrance');
     }
 
     /**
@@ -133,7 +134,27 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public function testSignup()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('/users/signup');
+        $this->assertResponseOk();
+
+        $this->post('/users/signup', [
+            'email' => 'newmail@blackhole.io',
+            'password' => '123456',
+            'first' => 'Phil',
+            'last' => 'Laf'
+        ]);
+        $this->assertSession('alert-info', 'Flash.flash.params.class');
+
+        $this->get('/users/signout');
+        $this->assertResponseCode(302);
+
+        $this->post('/users/signup', [
+            'email' => 'newmail@blackhole.io', // same email error
+            'password' => 'abababa',
+            'first' => 'Phil2',
+            'last' => 'Laf2'
+        ]);
+        $this->assertResponseOk(); // no redirect
     }
 
     /**
@@ -162,16 +183,6 @@ class UsersControllerTest extends IntegrationTestCase
      * @return void
      */
     public function testVerify()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test changePassword method
-     *
-     * @return void
-     */
-    public function testChangePassword()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

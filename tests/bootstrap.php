@@ -2,6 +2,7 @@
 // @codingStandardsIgnoreFile
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
+use Cake\Network\Email\Email;
 use Cake\Core\Plugin;
 use Cake\Datasource\ConnectionManager;
 use Cake\I18n\I18n;
@@ -51,13 +52,13 @@ Cake\Datasource\ConnectionManager::config('test', [
 
 Plugin::load('GintonicCMS', ['path' => ROOT]);
 
-if (!Configure::read('Acl.classname')) {
-    Configure::write('Acl.classname', 'DbAcl');
-}
-if (!Configure::read('Acl.database')) {
-    Configure::write('Acl.database', 'default');
-}
-Configure::write('Email.default.from', 'admin@blackhole.io');
+Configure::write('Acl.classname', 'DbAcl');
+Configure::write('Acl.database', 'default');
+Configure::load('email');
+Configure::load('app');
+Email::configTransport(Configure::consume('EmailTransport'));
+Email::config(Configure::consume('Email'));
+
 Configure::write('Gintonic.website.name', 'GintonicCMS');
 Cake\Routing\DispatcherFactory::add('Routing');
 Cake\Routing\DispatcherFactory::add('ControllerFactory');

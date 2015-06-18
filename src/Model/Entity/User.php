@@ -54,7 +54,7 @@ class User extends Entity
     protected function _getFullName()
     {
         if (isset($this->_properties['first']) && isset($this->_properties['last'])) {
-            return $this->_properties['first'] . '  ' . $this->_properties['last'];
+            return $this->_properties['first'] . ' ' . $this->_properties['last'];
         }
         return false;
     }
@@ -79,8 +79,8 @@ class User extends Entity
 
     /**
      * Send Recovery Email to given email id.
-     * For Example,
-     * $user = $this->Users->get($userId);
+     * For Example:
+     * $user = $this->Users->get($id);
      * $user->sendRecovery();
      *
      * @return boolean True if email is send else False.
@@ -92,18 +92,17 @@ class User extends Entity
             'userId' => $this->id,
             'token' => $this->token
         ]);
-        $email->template('GintonicCMS.forgot_password')
+        $email->template('GintonicCMS.sendRecovery')
             ->emailFormat('html')
             ->to($this->email)
-            ->from([Configure::read('admin_mail') => Configure::read('site_name')])
             ->subject('Forgot Password');
         return $email->send();
     }
 
     /**
      * Send Signup Email to given email id.
-     * For Example,
-     * $user = $this->Users->get($userId);
+     * For Example:
+     * $user = $this->Users->get($id);
      * $user->sendSignup();
      *
      * @return boolean True if email is send else False.
@@ -119,15 +118,14 @@ class User extends Entity
         $email->template('GintonicCMS.signup')
             ->emailFormat('html')
             ->to($this->email)
-            ->from(Configure::read('admin_mail'))
             ->subject('Account validation');
         return $email->send();
     }
 
     /**
      * Send Verification Email to given email id after successfull Signup of user.
-     * For Example,
-     * $user = $this->Users->get($userId);
+     * For Example:
+     * $user = $this->Users->get($id);
      * $user->sendVerification();
      *
      * @return boolean True if email is send else False.
@@ -137,18 +135,22 @@ class User extends Entity
         $email = new Email('default');
         $email->viewVars([
             'userId' => $this->id,
-            'token' => $this->token, 'userName' => $this->full_name
+            'token' => $this->token,
+            'userName' => $this->full_name
         ]);
         $email->template('GintonicCMS.resend_code')
             ->emailFormat('html')
             ->to($this->email)
-            ->from([Configure::read('admin_mail') => Configure::read('site_name')])
+            ->from([Configure::read('Email.default.from') => Configure::read('site_name')])
             ->subject('Account validation');
         return $email->send();
     }
 
     /**
-     * Update the Token when user send Varification mail again.
+     * The token is designed to expire after some amount of time. This
+     * method refreshes the token.
+     *
+     * @return void
      */
     public function updateToken()
     {
@@ -157,16 +159,16 @@ class User extends Entity
     }
 
     /**
-     * Verify the Token recieved in url while changing the password
-     * or validating the account.
+     * Mark the account as verified when a valid token is provided within 
+     * expiration date.
      *
-     * @param string $token unique token string.
-     * @return boolean return true if token is successfully verified else return false.
+     * @param string $token random token string.
+     * @return boolean return true if token is successfully verified
      */
-    public function verify($token)
+    public function verify($token, $expiration = '+1 day')
     {
         $time = new Time($this->token_creation);
-        if ($this->token == $token && $time->wasWithinLast('+1 day')) {
+        if ($this->token == $token && $time->wasWithinLast($expiration)) {
             $this->verified = true;
         }
         return $this->verified;

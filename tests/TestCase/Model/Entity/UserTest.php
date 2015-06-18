@@ -2,16 +2,15 @@
 
 namespace GintonicCMS\Test\TestCase\Model\Entity;
 
+use Cake\ORM\Entity;
 use Cake\TestSuite\TestCase;
 use GintonicCMS\Model\Entity\User;
-use Cake\ORM\Entity;
 
 /**
  * GintonicCMS\Model\Entity\User Test Case
  */
 class UserTest extends TestCase
 {
-
     /**
      * setUp method
      *
@@ -47,8 +46,8 @@ class UserTest extends TestCase
             'first' => 'Matt',
             'last' => 'Farrell',
         ]);
-        $expected = 'Matt  Farrell';
-        $this->assertEquals($expected, $entity->get('fullName'));
+        $expected = 'Matt Farrell';
+        $this->assertEquals($expected, $entity->fullName);
     }
     
     /**

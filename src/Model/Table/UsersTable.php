@@ -41,8 +41,7 @@ class UsersTable extends Table
     public function validationDefault(Validator $validator)
     {
         return $validator
-            ->notEmpty('email', __('A username is required'))
-            ->notEmpty('role', __('A role is required'))
+            ->notEmpty('email', __('An email address is required'))
             ->add('email', [
                 'unique' => [
                     'rule' => ['validateUnique'],
