@@ -138,7 +138,9 @@ class UsersController extends AppController
             $user->updateToken();
             $user = $this->Users->patchEntity($user, $this->request->data);
 
+            debug('a');
             if ($this->Users->save($user)) {
+                debug('b');
                 $user->sendSignup();
                 $this->Flash->set(__('Please check your e-mail to validate your account'), [
                     'element' => 'GintonicCMS.alert',
