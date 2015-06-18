@@ -275,6 +275,7 @@ class SettingsController extends AppController
             $newKey = hash('sha256', php_uname() . microtime(true));
             Configure::write('Gintonic.cookie.key', $newKey);
             Configure::write('Gintonic.install.config', true);
+            Configure::write('Gintonic.website.name', $this->request->data['name']);
             Configure::dump('gintonic', 'default', ['Gintonic']);
 
             return $this->redirect(['controller' => 'Pages', 'action' => 'home']);

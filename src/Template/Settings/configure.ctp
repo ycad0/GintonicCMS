@@ -2,6 +2,9 @@
     <div class="row">
         <h1>GintonicCMS Configuration</h1>
         <?= $this->Form->create('configure') ?>
+        <?= $this->Form->input('name', [
+            'label' => 'Website Name'
+        ]) ?>
         <?= $this->Form->input('email', [
             'label' => 'Admin Email'
         ]) ?>

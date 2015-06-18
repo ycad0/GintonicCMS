@@ -57,5 +57,7 @@ if (!Configure::read('Acl.classname')) {
 if (!Configure::read('Acl.database')) {
     Configure::write('Acl.database', 'default');
 }
+Configure::write('Email.default.from', 'admin@blackhole.io');
+Configure::write('Gintonic.website.name', 'GintonicCMS');
 Cake\Routing\DispatcherFactory::add('Routing');
 Cake\Routing\DispatcherFactory::add('ControllerFactory');
