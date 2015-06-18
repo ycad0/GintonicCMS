@@ -15,11 +15,13 @@
 namespace GintonicCMS\Model\Table;
 
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\ResultSet;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
+use GintonicCMS\Model\Entity\User;
 
 /**
  * Represents the Users Table
@@ -29,6 +31,10 @@ use Cake\Validation\Validator;
  */
 class UsersTable extends Table
 {
+    public function beforeSave(Event $event, User $user){
+        debug($user);
+        parent::beforeSave($event, $user, $options);
+    }
     /**
      * Validate user input while interaction with user.
      * validation may contain like username must not empty,
