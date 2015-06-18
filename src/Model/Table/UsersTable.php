@@ -31,10 +31,6 @@ use GintonicCMS\Model\Entity\User;
  */
 class UsersTable extends Table
 {
-    public function beforeSave(Event $event, User $user){
-        debug($user);
-        parent::beforeSave($event, $user, $options);
-    }
     /**
      * Validate user input while interaction with user.
      * validation may contain like username must not empty,
