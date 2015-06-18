@@ -3,8 +3,8 @@
     "description": "GintonicCMS plugin for CakePHP",
     "type": "cakephp-plugin",
     "keywords": ["cakephp", "bootstrap", "requirejs"],
-    "homepage": "http://cms.gintonicweb.com",
-    "license": "GPL 2.0",
+    "homepage": "http://gintoniccms.com",
+    "license": "MIT",
     "authors": [
         {
             "name": "Philippe Lafrance",
@@ -22,12 +22,12 @@
     },
     "require": {
         "php": ">=5.4",
-        "cakephp/cakephp": "~3.0"
+        "cakephp/cakephp": "~3.0",
+        "cakephp/acl": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
         "cakephp/cakephp-codesniffer": "2.*",
-        "cakephp/acl": "dev-master"
     },
     "autoload": {
         "psr-4": {
