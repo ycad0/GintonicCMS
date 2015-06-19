@@ -100,9 +100,4 @@ class UsersFixture extends TestFixture
             'modified' => '2010-04-18 15:50:00',
         ]
     ];
-        $validator
-            ->add('verified', 'valid', ['rule' => 'boolean'])
-            ->requirePresence('verified', 'create')
-            ->notEmpty('verified');
-            
 }
