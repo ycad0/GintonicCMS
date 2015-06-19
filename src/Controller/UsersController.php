@@ -133,10 +133,10 @@ class UsersController extends AppController
      */
     public function signup()
     {
+        $user = $this->Users->newEntity()->accessible('password', true);
         if ($this->request->is(['post', 'put'])) {
-            $user = $this->Users->newEntity()->accessible('password', true);
-            $user->updateToken();
             $user = $this->Users->patchEntity($user, $this->request->data);
+            $user->updateToken();
 
             if ($this->Users->save($user)) {
                 $user->sendSignup();

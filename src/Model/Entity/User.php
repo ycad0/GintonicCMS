@@ -16,16 +16,21 @@
 namespace GintonicCMS\Model\Entity;
 
 use Cake\Auth\DefaultPasswordHasher;
-use Cake\Core\Configure;
 use Cake\I18n\Time;
 use Cake\Network\Email\Email;
 use Cake\ORM\Entity;
 
 /**
- * Represents the User Entity.
+ * User Entity.
  */
 class User extends Entity
 {
+
+    /**
+     * Fields that can be mass assigned using newEntity() or patchEntity().
+     *
+     * @var array
+     */
     protected $_accessible = [
         'password' => false,
         'token' => false,
@@ -59,25 +64,6 @@ class User extends Entity
         }
         return false;
     }
-
-    /**
-     * Return Query of File for given user id.
-     * user id is taken as condition.
-     * For example,
-     * $user = $this->Users->get($userId);
-     * $user->_getFiles();
-     *
-     * @return Cake\ORM\Query $userFiles The amended query
-     */
-    protected function _getFiles()
-    {
-        $files = TableRegistry::get('Files');
-        $userFiles = $files->find('all')
-            ->where(['user_id' => $this->id])
-            ->all();
-        return $userFiles;
-    }
-
     /**
      * Send Recovery Email to given email id.
      * For Example:

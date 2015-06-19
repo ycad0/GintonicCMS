@@ -1,27 +1,43 @@
 <?php
-
 namespace GintonicCMS\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
 
+/**
+ * UsersFixture
+ *
+ */
 class UsersFixture extends TestFixture
 {
+
+    /**
+     * Fields
+     *
+     * @var array
+     */
+    // @codingStandardsIgnoreStart
     public $fields = [
-        'id' => ['type' => 'integer'],
-        'email' => ['type' => 'string', 'length' => 255],
-        'password' => ['type' => 'string', 'length' => 255],
-        'first' => ['type' => 'string', 'length' => 255],
-        'last' => ['type' => 'string', 'length' => 255],
-        'verified' => ['type' => 'integer'],
-        'token' => ['type' => 'string', 'length' => 255],
-        'token_creation' => ['type' => 'datetime'],
-        'created' => 'datetime',
-        'modified' => 'datetime',
+        'id' => ['type' => 'integer', 'length' => 10, 'autoIncrement' => true, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null],
+        'email' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'fixed' => null],
+        'password' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'fixed' => null],
+        'first' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'fixed' => null],
+        'last' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'fixed' => null],
+        'verified' => ['type' => 'boolean', 'length' => null, 'default' => 0, 'null' => false, 'comment' => null, 'precision' => null],
+        'token' => ['type' => 'string', 'length' => 32, 'default' => '0', 'null' => false, 'comment' => null, 'precision' => null, 'fixed' => null],
+        'token_creation' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null],
+        'created' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
+        'modified' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_constraints' => [
-            'primary' => ['type' => 'primary', 'columns' => ['id']]
-        ]
+            'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
+        ],
     ];
-    
+    // @codingStandardsIgnoreEnd
+
+    /**
+     * Records
+     *
+     * @var array
+     */
     public $records = [
         [
             'id' => 1,
@@ -84,5 +100,9 @@ class UsersFixture extends TestFixture
             'modified' => '2010-04-18 15:50:00',
         ]
     ];
-
+        $validator
+            ->add('verified', 'valid', ['rule' => 'boolean'])
+            ->requirePresence('verified', 'create')
+            ->notEmpty('verified');
+            
 }

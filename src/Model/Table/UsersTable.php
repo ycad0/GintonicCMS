@@ -14,86 +14,124 @@
  */
 namespace GintonicCMS\Model\Table;
 
-use Cake\Auth\DefaultPasswordHasher;
-use Cake\Event\Event;
 use Cake\ORM\Query;
-use Cake\ORM\ResultSet;
+use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 use GintonicCMS\Model\Entity\User;
 
 /**
- * Represents the Users Table
+ * Users Model
  *
- * A user is the most elementary unit of information necessary to manage
- * connections and permissions.
+ * @property \Cake\ORM\Association\HasMany $Albums
+ * @property \Cake\ORM\Association\HasMany $Files
+ * @property \Cake\ORM\Association\HasMany $MessageReadStatuses
+ * @property \Cake\ORM\Association\HasMany $Messages
+ * @property \Cake\ORM\Association\HasMany $Transactions
+ * @property \Cake\ORM\Association\BelongsToMany $Plans
+ * @property \Cake\ORM\Association\BelongsToMany $Threads
  */
 class UsersTable extends Table
 {
-    /**
-     * Validate user input while interaction with user.
-     * validation may contain like username must not empty,
-     * role of the user is require,
-     * email address must be valid and unique across the existing records.
-     *
-     * @param Cake\Validation\Validator $validator Instance of validator
-     * @return Cake\Validation\Validator Instance of validator
-     */
-    public function validationDefault(Validator $validator)
-    {
-        return $validator
-            ->notEmpty('email', __('An email address is required'))
-            ->add('email', [
-                'unique' => [
-                    'rule' => ['validateUnique'],
-                    'provider' => 'table',
-                    'message' => __('This email is already registered')
-                ]
-            ])
-            ->requirePresence('password', 'create')
-            ->notEmpty('password', ['message' => __('Password cannot be blank')]);
-    }
 
     /**
-     * TODO: Write Document.
-     */
-    public function validationChangePassword(Validator $validator)
-    {
-        return $validator
-            ->notEmpty('current_password', ['message' => __('Current Password is required')])
-            ->notEmpty('new_password', ['message' => __('New Password is required')]);
-    }
-
-    /**
-     * Initilize the Users Table.
-     * also set Relationship of this Table with other tables and add
-     * required behaviour for this Table.
+     * Initialize method
      *
-     * @param array $config configuration array for Table.
+     * @param array $config The configuration for the Table.
+     * @return void
      */
     public function initialize(array $config)
     {
-        parent::initialize($config);
-        $this->addBehavior('Timestamp', [
-            'events' => [
-                'Model.beforeSave' => [
-                    'created' => 'new',
-                    'modified' => 'always'
-                ]
-            ]
+        $this->table('users');
+        $this->displayField('id');
+        $this->primaryKey('id');
+        $this->addBehavior('Timestamp');
+        $this->hasMany('Albums', [
+            'foreignKey' => 'user_id',
+            'className' => 'GintonicCMS.Albums'
         ]);
-        $this->addAssociations([
-            'belongsToMany' => ['GintonicCMS.Threads'],
-            'hasMany' => [
-                'Acl.Aros' => [
-                    'conditions' => ['Aros.model' => 'Users'],
-                    'foreignKey' => 'foreign_key'
-                ]
-            ]
+        $this->hasMany('Files', [
+            'foreignKey' => 'user_id',
+            'className' => 'GintonicCMS.Files'
+        ]);
+        $this->hasMany('MessageReadStatuses', [
+            'foreignKey' => 'user_id',
+            'className' => 'GintonicCMS.MessageReadStatuses'
+        ]);
+        $this->hasMany('Messages', [
+            'foreignKey' => 'user_id',
+            'className' => 'GintonicCMS.Messages'
+        ]);
+        $this->hasMany('Transactions', [
+            'foreignKey' => 'user_id',
+            'className' => 'GintonicCMS.Transactions'
+        ]);
+        $this->belongsToMany('Plans', [
+            'foreignKey' => 'user_id',
+            'targetForeignKey' => 'plan_id',
+            'joinTable' => 'plans_users',
+            'className' => 'GintonicCMS.Plans'
+        ]);
+        $this->belongsToMany('Threads', [
+            'foreignKey' => 'user_id',
+            'targetForeignKey' => 'thread_id',
+            'joinTable' => 'threads_users',
+            'className' => 'GintonicCMS.Threads'
         ]);
     }
 
+    /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationDefault(Validator $validator)
+    {
+        $validator
+            ->add('id', 'valid', ['rule' => 'numeric'])
+            ->allowEmpty('id', 'create');
+            
+        $validator
+            ->add('email', 'valid', ['rule' => 'email'])
+            ->requirePresence('email', 'create')
+            ->notEmpty('email');
+            
+        $validator
+            ->requirePresence('password', 'create')
+            ->notEmpty('password');
+            
+        $validator
+            ->requirePresence('first', 'create')
+            ->notEmpty('first');
+            
+        $validator
+            ->requirePresence('last', 'create')
+            ->notEmpty('last');
+            
+        $validator
+            ->requirePresence('token', 'create')
+            ->notEmpty('token');
+            
+        $validator
+            ->requirePresence('token_creation', 'create')
+            ->notEmpty('token_creation');
+
+        return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->isUnique(['email']));
+        return $rules;
+    }
     /**
      * TODO: docblock
      */
@@ -124,27 +162,5 @@ class UsersTable extends Table
 
             return $row;
         });
-    }
-
-
-    /**
-     * Change the user password. its take new password and user Id
-     * as argument and return true if password change successfully else false.
-     *
-     * @param string $newPassword new password supplied by user.
-     * @param int $userId unique id of user.
-     * @return true|false return True if password change successfully else return false.
-     */
-    public function changePassword($passwordInfo, $userId)
-    {
-        $user = $this->get($userId);
-        $verify = (new DefaultPasswordHasher)
-            ->check($passwordInfo['current_password'], $user->password);
-        if ($verify) {
-            $user->password = $passwordInfo['new_password'];
-            $users = $this->patchEntity($user, $passwordInfo, ['validate' => 'changePassword']);
-            return $this->save($users);
-        }
-        return false;
     }
 }
