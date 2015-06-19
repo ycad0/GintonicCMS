@@ -100,7 +100,7 @@ class UsersController extends AppController
     /**
      * Allows users to edit their own information. The password is only updated
      * if it is changed from the default value, in this case: 'dummy'.
-     * 
+     *
      * @return void
      */
     public function edit()

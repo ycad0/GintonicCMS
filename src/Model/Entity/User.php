@@ -146,7 +146,7 @@ class User extends Entity
     }
 
     /**
-     * Mark the account as verified when a valid token is provided within 
+     * Mark the account as verified when a valid token is provided within
      * expiration date.
      *
      * @param string $token random token string.
