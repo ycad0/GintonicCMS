@@ -40,7 +40,6 @@ class UsersFixture extends TestFixture
      */
     public $records = [
         [
-            'id' => 1,
             'email' => 'blackhole@blackhole.io',
             'password' => '123456',
             'first' => 'Philippe',
@@ -52,7 +51,6 @@ class UsersFixture extends TestFixture
             'modified' => '2007-04-18 15:50:00',
         ],
         [
-            'id' => 2,
             'email' => 'blackhole@blackhole.io',
             'password' => '123456',
             'first' => 'Test2',
@@ -64,7 +62,6 @@ class UsersFixture extends TestFixture
             'modified' => '2008-09-18 15:50:00',
         ],
         [
-            'id' => 3,
             'email' => 'blackhole@blackhole.io',
             'password' => '123456',
             'first' => 'Test3',
@@ -76,7 +73,6 @@ class UsersFixture extends TestFixture
             'modified' => '2009-04-18 15:50:00',
         ],
         [
-            'id' => 4,
             'email' => 'blackhole@blackhole.io',
             'password' => '123456',
             'first' => 'Test4',
@@ -88,7 +84,6 @@ class UsersFixture extends TestFixture
             'modified' => '2010-04-18 15:50:00',
         ],
         [
-            'id' => 5,
             'email' => 'blackhole@blackhole.io',
             'password' => '123456',
             'first' => 'Test5',
