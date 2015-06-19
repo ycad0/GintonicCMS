@@ -135,9 +135,8 @@ class UsersController extends AppController
     {
         $user = $this->Users->newEntity()->accessible('password', true);
         if ($this->request->is(['post', 'put'])) {
-            $user = $this->Users->patchEntity($user, $this->request->data);
+            $this->Users->patchEntity($user, $this->request->data);
             $user->updateToken();
-
             if ($this->Users->save($user)) {
                 $user->sendSignup();
                 $this->Flash->set(__('Please check your e-mail to validate your account'), [

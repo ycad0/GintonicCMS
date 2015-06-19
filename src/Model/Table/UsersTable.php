@@ -109,14 +109,6 @@ class UsersTable extends Table
             ->requirePresence('last', 'create')
             ->notEmpty('last');
             
-        $validator
-            ->requirePresence('token', 'create')
-            ->notEmpty('token');
-            
-        $validator
-            ->requirePresence('token_creation', 'create')
-            ->notEmpty('token_creation');
-
         return $validator;
     }
 
