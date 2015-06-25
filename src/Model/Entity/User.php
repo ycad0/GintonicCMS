@@ -16,6 +16,7 @@
 namespace GintonicCMS\Model\Entity;
 
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\Core\Configure;
 use Cake\I18n\Time;
 use Cake\Network\Email\Email;
 use Cake\ORM\Entity;
@@ -78,7 +79,7 @@ class User extends Entity
             'userId' => $this->id,
             'token' => $this->token
         ]);
-        $email->template('GintonicCMS.sendRecovery')
+        $email->template('GintonicCMS.recovery')
             ->emailFormat('html')
             ->to($this->email)
             ->subject('Forgot Password');
@@ -91,12 +92,11 @@ class User extends Entity
      * $user = $this->Users->get($id);
      * $user->sendSignup();
      *
-     * @return boolean True if email is send else False.
+     * @return boolean True if email is send
      */
     public function sendSignup()
     {
-        $email = new Email();
-        $email->profile('default');
+        $email = new Email('default');
         $email->viewVars([
             'userId' => $this->id,
             'token' => $this->token
@@ -124,10 +124,9 @@ class User extends Entity
             'token' => $this->token,
             'userName' => $this->full_name
         ]);
-        $email->template('GintonicCMS.resend_code')
+        $email->template('GintonicCMS.verification')
             ->emailFormat('html')
             ->to($this->email)
-            ->from([Configure::read('Email.default.from') => Configure::read('site_name')])
             ->subject('Account validation');
         return $email->send();
     }

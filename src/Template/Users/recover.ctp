@@ -12,14 +12,14 @@ use Cake\Core\Configure;
                     'url'=>[
                         'controller'=>'Users',
                         'action'=>'recover',
-                        $userId,
+                        $id,
                         $token
                     ], 
                     'id' => 'UserLoginForm',
                     'novalidate' => 'novalidate'
                 ]);?>
                 <?= $this->Flash->render(); ?>
-                <?= $this->Form->input('new_password', [
+                <?= $this->Form->input('password', [
                     'label' => false,
                     'type'=>'password',
                     'class' => 'form-control',
@@ -35,7 +35,6 @@ use Cake\Core\Configure;
                     'placeholder' => 'Confirm Password',
                     'required',
                     'autofocus',
-                    'style'=>['margin-bottom:0px;','oninput'=>'checkPassword(this)']
                 ]);?>
                 <?= $this->Form->submit(
                     __('Reset Password'),
@@ -52,13 +51,3 @@ use Cake\Core\Configure;
         </div>
     </div>
 </div>
-<script language='javascript' type='text/javascript'>
-function checkPassword(input) {
-	if (input.value != document.getElementById('new_password').value) {
-		input.setCustomValidity('New Password and Confirm Password must be same');
-    } else {
-        // input is valid -- reset the error message
-        input.setCustomValidity('');
-   }
-}
-</script>

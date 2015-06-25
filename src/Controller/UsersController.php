@@ -133,8 +133,8 @@ class UsersController extends AppController
      */
     public function signup()
     {
-        $user = $this->Users->newEntity()->accessible('password', true);
         if ($this->request->is(['post', 'put'])) {
+            $user = $this->Users->newEntity()->accessible('password', true);
             $this->Users->patchEntity($user, $this->request->data);
             $user->updateToken();
             if ($this->Users->save($user)) {
@@ -157,7 +157,7 @@ class UsersController extends AppController
     }
 
     /**
-     * TODO: blockquote
+     * Authenticate users
      */
     public function signin()
     {
@@ -168,7 +168,7 @@ class UsersController extends AppController
                 if (isset($this->request->data['remember'])) {
                     $this->Cookie->write('User', $user);
                 }
-                if ($user->verified) {
+                if (!$user['verified']) {
                     $this->Flash->set(__('Login successful. Please validate your email address.'), [
                         'element' => 'GintonicCMS.alert',
                         'params' => ['class' => 'alert-warning']
@@ -184,7 +184,7 @@ class UsersController extends AppController
     }
 
     /**
-     * TODO: blockquote
+     * Un-authenticate users and remove data from session and cookie
      */
     public function signout()
     {
@@ -198,7 +198,11 @@ class UsersController extends AppController
     }
 
     /**
-     * TODO: blockquote
+     * Verify that an email address truly belongs to a given user. Users end
+     * up here by following a link they get via email.
+     *
+     * @param int $id The user id being verified
+     * @param string $token A secret token sent in the link
      */
     public function verify($id, $token)
     {
@@ -206,12 +210,12 @@ class UsersController extends AppController
 
         if ($user->verified || $user->verify($token)) {
             $this->Users->save($user);
-            $this->Flash->set(__('Email address has been successfuly validated.'), [
+            $this->Flash->set(__('Email address validated successfuly'), [
                 'element' => 'GintonicCMS.alert',
                 'params' => ['class' => 'alert-success']
             ]);
         } else {
-            $this->Flash->set(__('Error occure while validating you email. Please try again.'), [
+            $this->Flash->set(__('Error while validating email'), [
                 'element' => 'GintonicCMS.alert',
                 'params' => ['class' => 'alert-danger']
             ]);
@@ -220,40 +224,48 @@ class UsersController extends AppController
     }
 
     /**
-     * TODO: blockquote
-     * This is where users end up from their
+     * Allow users to reset their passwords without being logged in. Users end
+     * up here by following a link they get via email.
+     *
+     * @param int $id The user id being verified
+     * @param string $token A secret token sent in the link
      */
-    public function recover($userId, $token)
+    public function recover($id, $token)
     {
-        $user = $this->Users->get($userId);
+        $user = $this->Users->get($id)->accessible('password', true);
         if (!$user->verify($token)) {
-            $this->Flash->set(__('Recovery token is expired'), [
+            $this->Flash->set(__('Recovery token has expired'), [
                 'element' => 'GintonicCMS.alert',
                 'params' => ['class' => 'alert-danger']
             ]);
-            return $this->redirect($this->Auth->redirectUrl());
+            return $this->redirect([
+                'controller' => 'Users',
+                'action' => 'sendRecovery',
+                'plugin' => 'GintonicCMS'
+            ]);
         }
         if ($this->request->is(['post', 'put'])) {
-            $this->Users->save($user);
-            if ($this->Users->changePassword($this->request->data, $userId)) {
-                // TODO: sign users in
-                $this->Flash->set(__('Password has been updated Successfully.'), [
+            $user = $this->Users->patchEntity($user, $this->request->data);
+            if ($this->Users->save($user)) {
+                $this->Auth->setUser($user->toArray());
+                $this->Flash->set(__('Password has been updated successfully.'), [
                     'element' => 'GintonicCMS.alert',
                     'params' => ['class' => 'alert-success']
                 ]);
                 return $this->redirect($this->Auth->redirectUrl());
             } else {
-                $this->Flash->set(__('Error while reseting your password, Please try again.'), [
+                $this->Flash->set(__('Error while resetting password'), [
                     'element' => 'GintonicCMS.alert',
                     'params' => ['class' => 'alert-danger']
                 ]);
             }
         }
-        $this->set(compact('userId', 'token'));
+        $this->set(compact('id', 'token'));
     }
 
     /**
-     * TODO: Write comment
+     * If a user hasn't verified his email and has lost the initial verification
+     * mail he can request a new verification mail by visiting this action
      */
     public function sendVerification()
     {
@@ -270,7 +282,8 @@ class UsersController extends AppController
     }
 
     /**
-     * TODO: blockquote
+     * Allows users to request an e-mail for password recovery token and 
+     * instructions
      */
     public function sendRecovery()
     {
