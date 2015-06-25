@@ -20,9 +20,7 @@ class UnitConversionHelper extends HtmlHelper
         }
         
         switch ($fromUnit) {
-
             case 'cm':
-
                 return $this->__convertFromInch($value, $toUnit);
                 break;
 
@@ -42,9 +40,7 @@ class UnitConversionHelper extends HtmlHelper
         }
         
         switch ($fromUnit) {
-
             case 'kg':
-
                 return $this->__convertFromKg($value, $toUnit);
                 break;
 
@@ -87,7 +83,6 @@ class UnitConversionHelper extends HtmlHelper
         switch ($toUnit) {
 
             case 'feet':
-
                 $feet = intval($value / 12);
                 $inch = round($value % 12);
 
@@ -104,7 +99,6 @@ class UnitConversionHelper extends HtmlHelper
         switch ($toUnit) {
 
             case 'lbs':
-
                 return round($value * 2.2046, 2) . ' lbs';
                 break;
         }

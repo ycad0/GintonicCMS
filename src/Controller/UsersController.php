@@ -282,7 +282,7 @@ class UsersController extends AppController
     }
 
     /**
-     * Allows users to request an e-mail for password recovery token and 
+     * Allows users to request an e-mail for password recovery token and
      * instructions
      */
     public function sendRecovery()
