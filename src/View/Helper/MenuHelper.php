@@ -54,7 +54,8 @@ class MenuHelper extends Helper
      */
     public function li($title, $url = null, array $options = [])
     {
-        if (empty(array_diff_assoc($url, $this->request->params))) {
+        $urldiff = array_diff_assoc($url, $this->request->params);
+        if (empty($urldiff)) {
             if (isset($options['class'])) {
                 $options['class'] .= ' active';
             } else {
