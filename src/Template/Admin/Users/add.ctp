@@ -15,7 +15,7 @@
             <div class="box-header with-border">
                 <h3 class="box-title">Create User</h3>
             </div>
-            <?= $this->Form->create($user) ?>
+            <?= $this->Form->create() ?>
                 <div class="box-body">
                     <?= $this->Form->input('first', ['label' => 'First Name']) ?>
                     <?= $this->Form->input('last', ['label' => 'Last Name']) ?>
