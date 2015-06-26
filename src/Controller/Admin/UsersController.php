@@ -82,50 +82,35 @@ class UsersController extends AppController
     /**
      * TODO: blockquote
      */
-    public function edit($userId = 0)
+    public function edit($id)
     {
-        $user = $this->Users->find('usersDetails', ['Users.id' => $userId]);
+        $user = $this->Users->get($id)->accessible('password', true);
         if ($this->request->is(['post', 'put'])) {
+            if ($this->request->data['pwd'] != 'dummy') {
+                $this->request->data['password'] = $this->request->data['pwd'];
+            }
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {
-                $this->Flash->set(__('User has been updated.'), [
+                $this->Flash->set(__('Account updated successfully'), [
                     'element' => 'GintonicCMS.alert',
                     'params' => ['class' => 'alert-success']
                 ]);
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->set(__('Error saving the user'), [
+            $this->Flash->set(__('Error updating the account'), [
                 'element' => 'GintonicCMS.alert',
                 'params' => ['class' => 'alert-danger']
             ]);
         }
         $this->set(compact('user'));
-        $this->render('/Users/edit');
     }
 
     /**
      * TODO: blockquote
      */
-    public function delete($id = null)
+    public function delete($id)
     {
-        $user = $this->Auth->user();
-        
-        if (empty($user)) {
-            $this->Flash->set(__('You are not signed in.'), [
-                'element' => 'GintonicCMS.alert',
-                'params' => ['class' => 'alert-warning']
-            ]);
-            return $this->redirect($this->Auth->redirectUrl());
-        }
         $user = $this->Users->get($id);
-        
-        if (!$user) {
-            $this->Flash->set(__('Invalid user'), [
-                'element' => 'GintonicCMS.alert',
-                'params' => ['class' => 'alert-danger']
-            ]);
-            return $this->redirect($this->request->referer());
-        }
         if ($this->Users->delete($user)) {
             $this->Flash->set(__('Users deleted'), [
                 'element' => 'GintonicCMS.alert',
@@ -133,7 +118,7 @@ class UsersController extends AppController
             ]);
             return $this->redirect(['action' => 'index']);
         }
-        $this->Flash->set(__('Error deleting users'), [
+        $this->Flash->set(__('Error deleting user'), [
             'element' => 'GintonicCMS.alert',
             'params' => ['class' => 'alert-danger']
         ]);

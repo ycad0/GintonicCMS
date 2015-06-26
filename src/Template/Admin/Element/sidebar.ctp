@@ -41,6 +41,10 @@
                         '<i class="fa fa-circle-o"></i> Add',
                         ['controller' => 'Users', 'action' => 'add']
                     ) ?>
+                    <?= $this->Menu->li(
+                        '<i class="fa fa-circle-o"></i> Permissions',
+                        ['controller' => 'Users', 'action' => 'permissions']
+                    ) ?>
                 </ul>
             </li>
             <li class="treeview">

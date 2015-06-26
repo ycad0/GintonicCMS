@@ -18,12 +18,13 @@
             <div class="box-body table-responsive no-padding">
                 <table class="table table-hover"><tbody>
                 <tr>
-                    <th><?php echo $this->Paginator->sort('id'); ?></th>
-                    <th><?php echo $this->Paginator->sort('first',__('First Name')); ?></th>
-                    <th><?php echo $this->Paginator->sort('last',__('Last Name')); ?></th>
-                    <th><?php echo $this->Paginator->sort('role'); ?></th>
-                    <th><?php echo $this->Paginator->sort('email'); ?></th>
-                    <th><?php echo $this->Paginator->sort('modified',__('Last Updated')); ?></th>
+                    <th><?= $this->Paginator->sort('id'); ?></th>
+                    <th><?= $this->Paginator->sort('first',__('First Name')); ?></th>
+                    <th><?= $this->Paginator->sort('last',__('Last Name')); ?></th>
+                    <th><?= $this->Paginator->sort('role'); ?></th>
+                    <th><?= $this->Paginator->sort('email'); ?></th>
+                    <th><?= $this->Paginator->sort('modified',__('Last Updated')); ?></th>
+                    <th></th>
                 </tr>
                 <?php foreach ($users as $user) : ?>
                 <tr>
@@ -39,6 +40,20 @@
                     </td>
                     <td><?= $user->email ?></td>
                     <td><?= $user->modified ?></td>
+                    <td>
+                        <div class="pull-right">
+                            <?= $this->Html->link(
+                                '<button class="btn btn-primary"><i class="fa fa-pencil"></i></button>',
+                                ['controller' => 'Users', 'action' => 'edit', $user->id],
+                                ['escape' => false]
+                            )?>
+                            <?= $this->Html->link(
+                                '<button class="btn btn-primary"><i class="fa fa-times"></i></button>',
+                                ['controller' => 'Users', 'action' => 'delete', $user->id],
+                                ['escape' => false]
+                            )?>
+                        </div>
+                    </td>
                 </tr>
                 <?php endforeach ?>
                 </tbody></table>
