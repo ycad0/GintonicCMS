@@ -1,3 +1,4 @@
+<?php $this->loadHelper('GintonicCMS.Menu')?>
 <aside class="main-sidebar">
     <section class="sidebar">
         <div class="user-panel">
@@ -25,27 +26,21 @@
                     <span>Statistics</span>
                 </a>
             </li>
-            <li class="treeview">
+            <li class="treeview<?= $this->Menu->active(['controller' => 'Users'])?>">
                 <a href="#">
                     <i class="fa fa-users"></i>
                     <span>Users</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li>
-                        <?= $this->Html->link(
-                            '<i class="fa fa-circle-o"></i> Index',
-                            ['controller' => 'Users', 'action' => 'index'],
-                            ['escape' => false]
-                        ) ?>
-                    </li>
-                    <li>
-                        <?= $this->Html->link(
-                            '<i class="fa fa-circle-o"></i> Add',
-                            ['controller' => 'Users', 'action' => 'add'],
-                            ['escape' => false]
-                        ) ?>
-                    </li>
+                    <?= $this->Menu->li(
+                        '<i class="fa fa-circle-o"></i> Index',
+                        ['controller' => 'Users', 'action' => 'index']
+                    ) ?>
+                    <?= $this->Menu->li(
+                        '<i class="fa fa-circle-o"></i> Add',
+                        ['controller' => 'Users', 'action' => 'add']
+                    ) ?>
                 </ul>
             </li>
             <li class="treeview">

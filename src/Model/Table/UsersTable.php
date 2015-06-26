@@ -52,7 +52,7 @@ class UsersTable extends Table
             'foreignKey' => 'user_id',
             'className' => 'GintonicCMS.Messages'
         ]);
-        $this->hasMany( 'Acl.Aros', [
+        $this->hasMany('Acl.Aros', [
             'conditions' => ['Aros.model' => 'Users'],
             'foreignKey' => 'foreign_key'
         ]);

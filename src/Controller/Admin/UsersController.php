@@ -139,26 +139,4 @@ class UsersController extends AppController
         ]);
         return $this->redirect(['action' => 'index']);
     }
-    
-    /**
-     * TODO: write doccomment
-     */
-    public function profile()
-    {
-        $this->render('/Users/profile');
-    }
-    
-    /**
-     * TODO: write doccomment
-     */
-    public function signout()
-    {
-        $this->Cookie->forgetMe();
-        $this->request->session()->destroy();
-        $this->Flash->set(__('You are now signed out.'), [
-            'element' => 'GintonicCMS.alert',
-            'params' => ['class' => 'alert-info']
-        ]);
-        return $this->redirect($this->Auth->logout());
-    }
 }
