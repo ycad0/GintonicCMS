@@ -184,6 +184,7 @@ class SettingsController extends AppController
 
     /**
      * Create Admin account.
+     * if there is already one admin account in user table then it won't allow to create another account.
      */
     public function createAdmin()
     {
@@ -218,7 +219,7 @@ class SettingsController extends AppController
             $user = $this->Users->newEntity()->accessible('password', true);
             $user->password = $this->request->data['password'];
             $this->request->data['verified'] = 1;
-            $this->request->data['role'] = 'all';
+            $this->request->data['role'] = 'admin';
             $userInfo = $this->Users->patchEntity($user, $this->request->data);
 
             if ($this->Users->save($userInfo)) {
