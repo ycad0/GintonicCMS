@@ -9,27 +9,25 @@
  *
  * @copyright     Copyright (c) Philippe Lafrance (http://phillafrance.com)
  * @link          http://gintoniccms.com GintonicCMS Project
- * @since         0.0.0
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace GintonicCMS\Model\Table;
 
 use Cake\ORM\Query;
+use Cake\ORM\ResultSet;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 use GintonicCMS\Model\Entity\User;
 
 /**
  * Users Model
  *
- * @property \Cake\ORM\Association\HasMany $Albums
- * @property \Cake\ORM\Association\HasMany $Files
  * @property \Cake\ORM\Association\HasMany $MessageReadStatuses
  * @property \Cake\ORM\Association\HasMany $Messages
- * @property \Cake\ORM\Association\HasMany $Transactions
- * @property \Cake\ORM\Association\BelongsToMany $Plans
- * @property \Cake\ORM\Association\BelongsToMany $Threads
+ * @property \Cake\ORM\Association\HasMany $Aros
  */
 class UsersTable extends Table
 {
@@ -46,14 +44,6 @@ class UsersTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
         $this->addBehavior('Timestamp');
-        $this->hasMany('Albums', [
-            'foreignKey' => 'user_id',
-            'className' => 'GintonicCMS.Albums'
-        ]);
-        $this->hasMany('Files', [
-            'foreignKey' => 'user_id',
-            'className' => 'GintonicCMS.Files'
-        ]);
         $this->hasMany('MessageReadStatuses', [
             'foreignKey' => 'user_id',
             'className' => 'GintonicCMS.MessageReadStatuses'
@@ -62,21 +52,9 @@ class UsersTable extends Table
             'foreignKey' => 'user_id',
             'className' => 'GintonicCMS.Messages'
         ]);
-        $this->hasMany('Transactions', [
-            'foreignKey' => 'user_id',
-            'className' => 'GintonicCMS.Transactions'
-        ]);
-        $this->belongsToMany('Plans', [
-            'foreignKey' => 'user_id',
-            'targetForeignKey' => 'plan_id',
-            'joinTable' => 'plans_users',
-            'className' => 'GintonicCMS.Plans'
-        ]);
-        $this->belongsToMany('Threads', [
-            'foreignKey' => 'user_id',
-            'targetForeignKey' => 'thread_id',
-            'joinTable' => 'threads_users',
-            'className' => 'GintonicCMS.Threads'
+        $this->hasMany( 'Acl.Aros', [
+            'conditions' => ['Aros.model' => 'Users'],
+            'foreignKey' => 'foreign_key'
         ]);
     }
 
@@ -124,6 +102,7 @@ class UsersTable extends Table
         $rules->add($rules->isUnique(['email']));
         return $rules;
     }
+
     /**
      * TODO: docblock
      */
