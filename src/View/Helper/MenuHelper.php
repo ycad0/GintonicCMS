@@ -34,7 +34,8 @@ class MenuHelper extends Helper
      */
     public function active($url = null)
     {
-        if (empty(array_diff_assoc($url, $this->request->params))) {
+        $urldiff = array_diff_assoc($url, $this->request->params);
+        if (empty($urldiff)) {
             return ' active';
         }
         return '';
