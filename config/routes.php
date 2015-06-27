@@ -16,12 +16,6 @@ Router::scope('/', ['plugin' => 'GintonicCMS'], function ($routes) {
     $routes->connect('/messages', ['controller' => 'Messages']);
     $routes->connect('/messages/:action/*', ['controller' => 'Messages']);
 
-    $routes->connect('/payments', ['controller' => 'Payments']);
-    $routes->connect('/payments/:action/*', ['controller' => 'Payments']);
-    
-    $routes->connect('/plans', ['controller' => 'Plans', 'action'=>'index']);
-    $routes->connect('/plans/:action/*', ['controller' => 'Plans']);
-
 	$routes->connect('/settings/:action/*', ['controller' => 'Settings']);
 	
     $routes->fallbacks('InflectedRoute');
