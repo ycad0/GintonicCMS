@@ -2,7 +2,6 @@
     "name": "gintonicweb/gintonic-cms",
     "description": "GintonicCMS plugin for CakePHP",
     "type": "cakephp-plugin",
-    "keywords": ["cakephp", "bootstrap", "requirejs"],
     "homepage": "http://gintoniccms.com",
     "license": "MIT",
     "authors": [
@@ -24,7 +23,8 @@
         "php": ">=5.4",
         "cakephp/cakephp": "~3.0",
         "cakephp/acl": "dev-master",
-        "FriendsOfCake/crud": "~4.0" 
+        "FriendsOfCake/crud": "~4.0",
+        "gintonicweb/admin-lte": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
