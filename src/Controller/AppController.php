@@ -26,6 +26,7 @@ use Cake\Event\Event;
  */
 class AppController extends Controller
 {
+    use \Crud\Controller\ControllerTrait;
     /**
      * Base helpers that loads javascript via require and wraps forms with
      * bootstrap markup.
@@ -47,6 +48,15 @@ class AppController extends Controller
         $this->loadComponent('Flash');
         $this->loadComponent('Cookie');
         $this->loadComponent('RequestHandler');
+        $this->loadComponent('Crud.Crud', [
+            'actions' => [
+                'Crud.Index',
+                'Crud.Add',
+                'Crud.Edit',
+                'Crud.View',
+                'Crud.Delete'
+            ]
+        ]);
         $this->loadComponent('Auth', [
             'authorize' => 'Controller',
             'authenticate' => [

@@ -20,8 +20,6 @@ use Cake\Error\Debugger;
 use Cake\Network\Exception\NotFoundException;
 
 $this->helpers()->load('GintonicCMS.Require');
-$this->layout = 'GintonicCMS.default'; 
-
 ?>
 
 <div class="container">
