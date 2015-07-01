@@ -1,1 +1,0 @@
-define(["require","jquery","jqueryvalidate"],function(e){var t=e("jquery"),n=e("jqueryvalidate");jQuery("#UserResendVerificationForm").validate({rules:{email:{required:!0,email:!0}},messages:{email:{required:"Please enter Email Address",email:"Please enter valid Email Address"}}})});

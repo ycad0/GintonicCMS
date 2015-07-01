@@ -1,1 +1,0 @@
-define(["jquery"],function(e){return function(t,n){e("#upload-alert").html('<div class="alert alert-success"><a class="close" data-dismiss="alert">×</a><span>Upload successful</span></div>')}});

@@ -1,0 +1,25 @@
+{
+  "name": "AdminLte",
+  "version": "0.0.0",
+  "homepage": "https://github.com/gintonicweb/bootstrap",
+  "authors": [
+    "Phillaf <phil.laf@gmail.com>"
+  ],
+  "description": "GintonicCMS theme based on Bootstrap",
+  "main": [],
+  "dependencies": {
+    "bootstrap": "*"
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "config",
+    "src/.*",
+    "composer/.json",
+    "node_modules",
+    "tests"
+  ],
+  "devDependencies": {
+    "bootstrap": "*"
+  }
+}
