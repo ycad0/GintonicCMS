@@ -15,7 +15,7 @@ class RequireHelper extends Helper
     /**
      * TODO: doccomment
      */
-    public function load($url, $requireLib = 'GintonicCMS.config')
+    public function load($url, $requireLib = 'main')
     {
         if (strpos($url, '//') === false) {
             $url = $this->Url->assetUrl($url, ['pathPrefix' => Configure::read('App.jsBaseUrl')]);
