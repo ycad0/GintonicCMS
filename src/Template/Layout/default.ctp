@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <?php echo $this->Html->charset() ?>
+        <?= $this->Html->charset() ?>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        <?php echo $this->Html->meta('icon') ?>
+        <?= $this->Html->meta('icon') ?>
 
         <title>
-            <?php echo $this->fetch('title') ?>
+            <?= $this->fetch('title') ?>
         </title>
 
-        <?php echo $this->Html->css('GintonicCMS.default') ?>
+        <?= $this->Html->css('Bootstrap.default') ?>
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -22,15 +22,15 @@
     </head>
     <body>
 
-        <?php echo $this->element('GintonicCMS.Menus/top_menu')?>
+        <?= $this->element('GintonicCMS.Menus/top_menu')?>
 
         <div class="container">
             <div class="row">
-                <?php echo $this->Flash->render(); ?>
+                <?= $this->Flash->render(); ?>
             </div>
         </div>
 
-        <?php echo $this->fetch('content'); ?>	                    
+        <?= $this->fetch('content'); ?>	                    
 
         <footer class="footer">
           <div class="container">
@@ -38,10 +38,10 @@
           </div>
         </footer>
 
-        <?php //echo $this->Require->req('jquery');?>
-        <?php //echo $this->Require->req('bootstrap');?>
-        <?php echo $this->Require->req('admin_lte/test');?>
-        <?php echo $this->Require->load('main'); ?>
+        <?//= $this->Require->req('jquery');?>
+        <?//= $this->Require->req('bootstrap');?>
+        <?= $this->Require->req('admin-lte/test');?>
+        <?= $this->Require->load('main'); ?>
 
     </body>
 </html>

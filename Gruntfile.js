@@ -33,9 +33,16 @@ module.exports = function(grunt) {
             name: "main",
             include: "requireLib"
           }],
-          fileExclusionRegExp: /^.*\.(?!js$|jsx$)[^.]+$/,
+          noBuildTxt: true
         }
       }
+    },
+    copy: {
+      main: {
+        files: [
+          {expand: true, cwd: './assets/vendor/', src: ['**'], dest: 'webroot/vendor/'},
+        ],
+      },
     },
     concat: {
       options: {
@@ -105,6 +112,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-bower-requirejs');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-less');
 
   // Default task.
   grunt.registerTask('default', ['bowerRequirejs','requirejs']);

@@ -6,7 +6,7 @@
     "Philippe Lafrance <phil.laf@gmail.com>"
   ],
   "description": "GintonicCMS theme based on Bootstrap",
-  "main": [],
+  "main": ["webroot"],
   "dependencies": {
     "bootstrap": "*"
   },
