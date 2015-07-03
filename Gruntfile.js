@@ -16,7 +16,7 @@ module.exports = function(grunt) {
             transitive: true
         },
         target: {
-            rjsConfig: 'webroot/main.js'
+            rjsConfig: 'assets/js/main.js'
         }
     },
     requirejs: {
