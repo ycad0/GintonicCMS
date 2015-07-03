@@ -21,10 +21,9 @@
   ],
   "dependencies": {
     "react": "~0.13.3",
-    "jsx-requirejs-plugin": "~0.6.0",
-    "requirejs": "https://github.com/jrburke/requirejs.git#master",
+    "jsx-requirejs-plugin": "~0.6.0"
   },
   "devDependencies": {
-    "less": "~2.5.0",
+    "less": "~2.5.0"
   }
 }

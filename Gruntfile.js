@@ -22,12 +22,12 @@ module.exports = function(grunt) {
     requirejs: {
       compile: {
         options: {
-          appDir:"webroot",
+          appDir:"assets/js",
           baseUrl:"./",
           dir:"webroot/js",
           stubModules: ['jsx', 'text', 'JSXTransformer'],
           paths: {
-              requireLib: '../node_modules/requirejs/require',
+              requireLib: '../../node_modules/requirejs/require',
           },
           modules:[{
             name: "main",
