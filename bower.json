@@ -1,11 +1,11 @@
 {
-  "name": "AdminLte",
+  "name": "GintonicCMS-App",
   "version": "0.0.0",
-  "homepage": "https://github.com/gintonicweb/bootstrap",
+  "homepage": "http://gintoniccms.com",
   "authors": [
     "Philippe Lafrance <phil.laf@gmail.com>"
   ],
-  "description": "GintonicCMS theme based on Bootstrap",
+  "description": "A robust and extensible core for web applications",
   "main": ["webroot"],
   "license": "MIT",
   "ignore": [

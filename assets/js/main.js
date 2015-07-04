@@ -13,6 +13,9 @@ requirejs.config({
     shim: {
 
     },
+    jsx: {
+        fileExtension: '.jsx'
+    },
     packages: [
 
     ]

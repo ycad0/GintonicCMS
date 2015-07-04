@@ -1,4 +1,10 @@
 {
+  "name": "GintonicCMS-App",
+  "version": "0.0.0",
+  "description": "A robust and extensible core for web applications",
+  "homepage": "http://gintoniccms.com",
+  "author": "Philippe Lafrance <phil.laf@gmail.com>",
+  "license": "MIT",
   "engines": {
     "node": ">= 0.10.0"
   },
