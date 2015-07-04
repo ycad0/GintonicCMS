@@ -37,12 +37,9 @@
             <p class="text-muted">Powered by <a href="https://github.com/gintonicweb/GintonicCMS">GintonicCMS</a> from <a href="http://gintonicweb.com">Gintonic Web</a> </p>
           </div>
         </footer>
-
-        <?//= $this->Require->req('jquery');?>
-        <?//= $this->Require->req('bootstrap');?>
-        <?= $this->Require->req('admin-lte/test');?>
+        <?= $this->Require->req('jquery');?>
+        <?= $this->Require->req('bootstrap');?>
         <?= $this->Require->load('main'); ?>
-
     </body>
 </html>
 

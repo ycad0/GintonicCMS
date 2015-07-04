@@ -30,7 +30,7 @@ class RequireHelper extends Helper
             ['data-main' => $url]
         );
         $output .= "<script type='text/javascript'>";
-        $output .= "require(function () {";
+        $output .= "require(['main'], function () {";
         $output .= $modules;
         $output .= '});</script>';
 

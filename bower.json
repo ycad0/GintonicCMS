@@ -17,11 +17,9 @@
     "tests"
   ],
   "dependencies": {
+    "jquery": "*",
     "bootstrap": "*",
     "react": "~0.13.3",
     "jsx-requirejs-plugin": "~0.6.0"
-  },
-  "devDependencies": {
-    "less": "~2.5.0"
   }
 }

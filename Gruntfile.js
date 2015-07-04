@@ -116,6 +116,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
 
   // Default task.
-  grunt.registerTask('default', ['bowerRequirejs','requirejs']);
+  grunt.registerTask('default', ['bowerRequirejs','requirejs', 'copy']);
 
 };
