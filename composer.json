@@ -24,7 +24,8 @@
         "cakephp/cakephp": "~3.0",
         "cakephp/acl": "dev-master",
         "FriendsOfCake/crud": "~4.0",
-        "gintonicweb/admin-lte": "dev-master"
+        "gintonicweb/admin-theme": "dev-master",
+        "gintonicweb/twbs-theme": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
