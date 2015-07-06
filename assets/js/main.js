@@ -11,10 +11,12 @@ requirejs.config({
         jquery: "../vendor/jquery/dist/jquery"
     },
     shim: {
-
+        bootstrap: [
+            "jquery"
+        ]
     },
     jsx: {
-        fileExtension: '.jsx'
+        fileExtension: ".jsx"
     },
     packages: [
 

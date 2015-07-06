@@ -21,6 +21,8 @@ Router::scope('/', ['plugin' => 'GintonicCMS'], function ($routes) {
     $routes->fallbacks('InflectedRoute');
 
     $routes->prefix('admin', function ($routes) {
+        $routes->connect('/users', ['controller' => 'Users']);
+        $routes->connect('/users/:action/*', ['controller' => 'Users']);
         $routes->fallbacks('InflectedRoute');
     });
 });

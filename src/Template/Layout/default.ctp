@@ -38,6 +38,7 @@
           </div>
         </footer>
         <?= $this->Require->req('jquery');?>
+        <?= $this->Require->req('jquery');?>
         <?= $this->Require->req('bootstrap');?>
         <?= $this->Require->load('main'); ?>
     </body>

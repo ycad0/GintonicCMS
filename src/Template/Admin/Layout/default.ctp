@@ -5,7 +5,7 @@
     <title><?= $this->fetch('title') ?></title>
     <?= $this->Html->meta('icon') ?>
     <?= $this->fetch('meta') ?>
-    <?= $this->Html->css('GintonicCMS.admin') ?>
+    <?= $this->Html->css('AdminTheme.admin') ?>
 
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
@@ -32,10 +32,10 @@
       <?= $this->element('rightbar') ?>
     </div>
 
-    <?= $this->Require->req('lib/fastclick/fastclick'); ?>
-    <?= $this->Require->req('lib/admin-lte/app'); ?>
+    <?= $this->Require->req('admin/dist/js/app'); ?>
+    <?= $this->Require->req('admin/plugins/fastclick/fastclick'); ?>
     <?= $this->Require->req('jquery'); ?>
     <?= $this->Require->req('bootstrap'); ?>
-    <?= $this->Require->load('GintonicCMS.config'); ?>
+    <?= $this->Require->load('main'); ?>
   </body>
 </html>
