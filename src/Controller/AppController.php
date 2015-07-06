@@ -27,6 +27,8 @@ use Cake\Event\Event;
 class AppController extends Controller
 {
     use \Crud\Controller\ControllerTrait;
+
+    public $theme = 'TwbsTheme';
     /**
      * Base helpers that loads javascript via require and wraps forms with
      * bootstrap markup.
