@@ -15,25 +15,17 @@ class RequireHelper extends Helper
     /**
      * TODO: doccomment
      */
-    public function load($url, $requireLib = 'main')
+    public function load()
     {
-        if (strpos($url, '//') === false) {
-            $url = $this->Url->assetUrl($url, ['pathPrefix' => Configure::read('App.jsBaseUrl')]);
-        }
-
         $modules = '';
         if (!is_null($this->_View->get('requiredeps'))) {
             $modules = "require([" . implode(',', $this->_View->get('requiredeps')) . "]);";
         }
-        $output = $this->Html->script(
-            $requireLib,
-            ['data-main' => $url]
-        );
+        $output ='<script src="/js/main.js" data-main="js/main"></script>';
         $output .= "<script type='text/javascript'>";
         $output .= "require(['main'], function () {";
         $output .= $modules;
         $output .= '});</script>';
-
         return $output;
     }
 
