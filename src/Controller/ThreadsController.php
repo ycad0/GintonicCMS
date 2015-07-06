@@ -14,8 +14,8 @@
  */
 namespace GintonicCMS\Controller;
 
+use App\Controller\AppController;
 use Cake\Event\Event;
-use GintonicCMS\Controller\AppController;
 
 /**
  * Represents the Threads Controller

@@ -16,13 +16,13 @@
 
 namespace GintonicCMS\Controller;
 
+use App\Controller\AppController;
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
 use Cake\Core\Plugin;
 use Cake\Database\Exception\MissingConnectionException;
 use Cake\Datasource\ConnectionManager;
 use Cake\Event\Event;
-use GintonicCMS\Controller\AppController;
 use PDOException;
 
 /**
