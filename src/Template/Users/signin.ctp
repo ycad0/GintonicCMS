@@ -1,6 +1,3 @@
-<?php $this->Helpers()->load('GintonicCMS.Require') ?>
-<?= $this->Require->req('users/login_validation') ?>
-
 <div class="container topic">
     <div class="row">
         <div class="col-sm-6 col-md-4 col-md-offset-4 col-sm-offset-3">

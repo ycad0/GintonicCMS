@@ -12,7 +12,7 @@
             <?= $this->fetch('title') ?>
         </title>
 
-        <?php echo $this->Html->css('Bootstrap.bare') ?>
+        <?php echo $this->Html->css('TwbsTheme.bare') ?>
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
