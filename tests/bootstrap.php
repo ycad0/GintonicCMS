@@ -47,7 +47,7 @@ define('CAKE', CORE_PATH . 'src' . DS);
 require ROOT . '/vendor/autoload.php';
 require CORE_PATH . 'config/bootstrap.php';
 
-Cake\Core\Configure::write('App', ['namespace' => 'GintonicCMS\Test\App']);
+Cake\Core\Configure::write('App', ['namespace' => 'GintonicCMS\tests\App']);
 Configure::write('debug', true);
 
 $TMP = new \Cake\Filesystem\Folder(TMP);
