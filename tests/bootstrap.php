@@ -93,6 +93,15 @@ if (!getenv('db_dsn')) {
 
 Plugin::load('GintonicCMS', ['path' => ROOT]);
 
+if (function_exists('mb_internal_encoding')) {
+    $encoding = Configure::read('App.encoding');
+    if (!empty($encoding)) {
+        mb_internal_encoding($encoding);
+    }
+    if (!empty($encoding) && function_exists('mb_regex_encoding')) {
+        mb_regex_encoding($encoding);
+    }
+}
 Cake\Routing\DispatcherFactory::add('Routing');
 Cake\Routing\DispatcherFactory::add('ControllerFactory');
 
