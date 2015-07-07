@@ -14,10 +14,10 @@
  */
 namespace GintonicCMS\Controller\Admin;
 
-use GintonicCMS\Controller\AppController as GintonicAppController;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
+use GintonicCMS\Controller\AppController as GintonicAppController;
 
 /**
  * Application Controller

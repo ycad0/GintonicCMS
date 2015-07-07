@@ -21,7 +21,7 @@ class RequireHelper extends Helper
         if (!is_null($this->_View->get('requiredeps'))) {
             $modules = "require([" . implode(',', $this->_View->get('requiredeps')) . "]);";
         }
-        $output ='<script src="/js/main.js" data-main="js/main"></script>';
+        $output = '<script src="/js/main.js" data-main="js/main"></script>';
         $output .= "<script type='text/javascript'>";
         $output .= "require(['main'], function () {";
         $output .= $modules;
