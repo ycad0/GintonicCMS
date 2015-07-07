@@ -45,6 +45,8 @@ define('CAKE', CORE_PATH . 'src' . DS);
 
 require ROOT . '/vendor/autoload.php';
 require CORE_PATH . 'config/bootstrap.php';
+require APP . 'Controller/AppController.php';
+require APP . 'Controller/Admin/AppController.php';
 
 Cake\Core\Configure::write('App', ['namespace' => 'GintonicCMS\tests\App']);
 Configure::write('debug', true);
