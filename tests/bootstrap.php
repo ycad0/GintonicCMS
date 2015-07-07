@@ -7,10 +7,12 @@ use Cake\Core\Plugin;
 use Cake\Datasource\ConnectionManager;
 use Cake\I18n\I18n;
 require_once 'vendor/autoload.php';
+
 // Path constants to a few helpful things.
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
+
 define('ROOT', dirname(__DIR__) . DS);
 define('CAKE_CORE_INCLUDE_PATH', ROOT . 'vendor' . DS . 'cakephp' . DS . 'cakephp');
 define('CORE_PATH', ROOT . 'vendor' . DS . 'cakephp' . DS . 'cakephp' . DS);
@@ -24,11 +26,15 @@ define('TMP', sys_get_temp_dir() . DS);
 define('CONFIG', ROOT . 'tests' . DS . 'config' . DS);
 define('CACHE', TMP);
 define('LOGS', TMP);
+
 require_once CORE_PATH . 'config/bootstrap.php';
+
 date_default_timezone_set('UTC');
 mb_internal_encoding('UTF-8');
 Configure::write('debug', true);
+
 Cake\Core\Configure::write('App', ['namespace' => 'GintonicCMS\Test\App']);
+
 Cache::config([
     '_cake_core_' => [
         'engine' => 'File',
