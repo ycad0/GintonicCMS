@@ -27,5 +27,4 @@ use Cake\Event\Event;
  */
 class AppController extends GintonicAppController
 {
-    public $theme = 'AdminTheme';
 }
