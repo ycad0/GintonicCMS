@@ -14,7 +14,7 @@
  */
 namespace GintonicCMS\Test\App\Controller\Admin;
 
-use Cake\Controller\Controller
+use Cake\Controller\Controller;
 
 /**
  * Application Controller
