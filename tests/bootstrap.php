@@ -1,6 +1,13 @@
 <?php
 // @codingStandardsIgnoreFile
 
+use Cake\Cache\Cache;
+use Cake\Core\Configure;
+use Cake\Network\Email\Email;
+use Cake\Core\Plugin;
+use Cake\Datasource\ConnectionManager;
+use Cake\I18n\I18n;
+
 $findRoot = function () {
     $root = dirname(__DIR__);
     if (is_dir($root . '/vendor/cakephp/cakephp')) {
