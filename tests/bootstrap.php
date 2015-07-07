@@ -7,8 +7,8 @@ use Cake\Network\Email\Email;
 use Cake\Core\Plugin;
 use Cake\Datasource\ConnectionManager;
 use Cake\I18n\I18n;
-use GintonicCMS\Test\App\Controller;
-use GintonicCMS\Test\App\Controller\Admin;
+use GintonicCMS\tests\App\Controller;
+use GintonicCMS\tests\App\Controller\Admin;
 
 $findRoot = function () {
     $root = dirname(__DIR__);
