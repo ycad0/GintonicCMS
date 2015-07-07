@@ -62,7 +62,7 @@ Plugin::load('GintonicCMS', ['path' => ROOT]);
 Configure::write('Acl.classname', 'DbAcl');
 Configure::write('Acl.database', 'default');
 Configure::load('email');
-Configure::load('app');
+//Configure::load('app');
 Email::configTransport(Configure::consume('EmailTransport'));
 Email::config(Configure::consume('Email'));
 
