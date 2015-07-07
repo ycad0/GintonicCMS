@@ -15,9 +15,9 @@
 
 namespace GintonicCMS\Controller;
 
+use App\Controller\AppController;
 use Cake\Core\Configure;
 use Cake\Event\Event;
-use GintonicCMS\Controller\AppController;
 
 /**
  * Users Controller
