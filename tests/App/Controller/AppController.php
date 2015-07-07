@@ -15,7 +15,6 @@
 namespace App\Controller;
 
 use Cake\Controller\Controller;
-use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 
@@ -29,8 +28,6 @@ use Cake\Event\Event;
  */
 class AppController extends Controller
 {
-}
-<?php
     use \Crud\Controller\ControllerTrait;
 
     /**
