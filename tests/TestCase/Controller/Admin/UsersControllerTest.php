@@ -4,8 +4,6 @@ namespace GintonicCMS\Test\TestCase\Controller\Admin;
 use Cake\TestSuite\IntegrationTestCase;
 use GintonicCMS\Controller\Admin\UsersController;
 
-App::uses('AppController', 'Controller');
-
 /**
  * GintonicCMS\Controller\Admin\UsersController Test Case
  */
