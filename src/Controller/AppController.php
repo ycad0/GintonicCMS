@@ -28,6 +28,8 @@ class AppController extends Controller
 {
     use \Crud\Controller\ControllerTrait;
 
+    public $layout = 'GintonicCMS.default';
+
     /**
      * Base helpers that loads javascript via require and wraps forms with
      * bootstrap markup.
@@ -56,6 +58,9 @@ class AppController extends Controller
                 'Crud.Edit',
                 'Crud.View',
                 'Crud.Delete'
+            ],
+            'listeners' => [
+                'Crud.RelatedModels'
             ]
         ]);
         $this->loadComponent('Auth', [
