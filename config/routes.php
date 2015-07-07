@@ -1,5 +1,9 @@
 <?php
 
+namespace GintonicCMS\Test\App\Config;
+
+use Cake\Core\Configure;
+use Cake\Core\Plugin;
 use Cake\Routing\Router;
 
 Router::scope('/', ['plugin' => 'GintonicCMS'], function ($routes) {
