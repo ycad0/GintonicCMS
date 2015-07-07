@@ -5,6 +5,7 @@ use Cake\Controller\ComponentRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 use GintonicCMS\Controller\UsersController;
 
+App::uses('AppController', 'Controller');
 /**
  * GintonicCMS\Controller\UsersController Test Case
  */
