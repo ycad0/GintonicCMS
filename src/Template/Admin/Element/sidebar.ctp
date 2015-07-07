@@ -47,15 +47,6 @@
                     ) ?>
                 </ul>
             </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-gears"></i>
-                    <span>Config</span>
-                    <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                </ul>
-            </li>
             <?= $this->fetch('sidebar') ?>
         </ul>
     </section>
