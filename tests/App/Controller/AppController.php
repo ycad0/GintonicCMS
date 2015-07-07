@@ -18,8 +18,6 @@ use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 
-date_default_timezone_set('UTC');
-mb_internal_encoding('UTF-8')
 /**
  * Application Controller
  *
