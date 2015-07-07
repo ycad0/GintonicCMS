@@ -15,6 +15,7 @@
 namespace App\Controller\Admin;
 
 use Cake\Controller\Controller;
+use App\Controller\AppController as GintonicAppController;
 
 /**
  * Application Controller
@@ -24,6 +25,6 @@ use Cake\Controller\Controller;
  *
  * @link http://book.cakephp.org/3.0/en/controllers.html#the-app-controller
  */
-class AppController extends Controller
+class AppController extends GintonicAppController
 {
 }
