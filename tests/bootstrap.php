@@ -93,8 +93,8 @@ Plugin::load('GintonicCMS', ['path' => ROOT]);
 Cake\Routing\DispatcherFactory::add('Routing');
 Cake\Routing\DispatcherFactory::add('ControllerFactory');
 
-date_default_timezone_set('UTC');
-mb_internal_encoding('UTF-8');
+//date_default_timezone_set('UTC');
+//mb_internal_encoding('UTF-8');
 Cake\Datasource\ConnectionManager::config('test', [
     'url' => getenv('db_dsn'),
     'timezone' => 'UTC'
