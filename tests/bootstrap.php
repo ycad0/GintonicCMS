@@ -9,6 +9,9 @@ use Cake\Datasource\ConnectionManager;
 use Cake\I18n\I18n;
 use Cake\Core\App;
 
+date_default_timezone_set('UTC');
+mb_internal_encoding('UTF-8');
+
 $findRoot = function () {
     $root = dirname(__DIR__);
     if (is_dir($root . '/vendor/cakephp/cakephp')) {
@@ -93,8 +96,6 @@ Plugin::load('GintonicCMS', ['path' => ROOT]);
 Cake\Routing\DispatcherFactory::add('Routing');
 Cake\Routing\DispatcherFactory::add('ControllerFactory');
 
-//date_default_timezone_set('UTC');
-//mb_internal_encoding('UTF-8');
 Cake\Datasource\ConnectionManager::config('test', [
     'url' => getenv('db_dsn'),
     'timezone' => 'UTC'
