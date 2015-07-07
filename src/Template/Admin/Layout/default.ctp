@@ -19,17 +19,17 @@
   <body class="skin-blue sidebar-mini">
     <div class="wrapper">
 
-      <?= $this->element('navbar') ?>
-      <?= $this->element('sidebar') ?>
+      <?= $this->element('GintonicCMS.navbar') ?>
+      <?= $this->element('GintonicCMS.sidebar') ?>
       <div class="content-wrapper">
-        <?= $this->element('heading') ?>
+        <?= $this->element('GintonicCMS.heading') ?>
         <section class="content">
             <?php echo $this->Flash->render(); ?>
             <?= $this->fetch('content') ?>
         </section>
       </div>
-      <?= $this->element('footer') ?>
-      <?= $this->element('rightbar') ?>
+      <?= $this->element('GintonicCMS.footer') ?>
+      <?= $this->element('GintonicCMS.rightbar') ?>
     </div>
 
     <?= $this->Require->req('admin/dist/js/app'); ?>

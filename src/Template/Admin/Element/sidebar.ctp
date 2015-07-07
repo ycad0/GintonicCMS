@@ -56,6 +56,7 @@
                 <ul class="treeview-menu">
                 </ul>
             </li>
+            <?= $this->fetch('sidebar') ?>
         </ul>
     </section>
 </aside>

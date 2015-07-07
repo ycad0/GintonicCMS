@@ -2,7 +2,7 @@
 <?php $this->Helpers()->load('GintonicCMS.Require') ?>
 
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-md-12">
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">Users</h3>
@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <div class="box-body table-responsive no-padding">
+            <div class="box-body table-responsive">
                 <table class="table table-hover"><tbody>
                 <tr>
                     <th><?= $this->Paginator->sort('id'); ?></th>
