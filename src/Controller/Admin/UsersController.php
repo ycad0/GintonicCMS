@@ -3,7 +3,7 @@ namespace GintonicCMS\Controller\Admin;
 
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
-use App\Controller\Admin\AppController;
+use GintonicCMS\Controller\Admin\AppController;
 
 class UsersController extends AppController
 {
