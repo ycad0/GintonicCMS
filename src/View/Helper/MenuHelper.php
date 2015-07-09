@@ -68,4 +68,29 @@ class MenuHelper extends Helper
             'content' => $this->Html->link($title, $url, ['escape' => false])
         ]);
     }
+
+    /**
+     * TODO: doc comment
+     */
+    public function adminTree($controller, $icon)
+    {
+        return
+            '<li class="treeview' . $this->active(['controller' => $controller]) .'">
+                <a href="#">
+                    <i class="' . $icon . '"></i>
+                    <span>' . $controller. '</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">'.
+                    $this->li(
+                        '<i class="fa fa-angle-right"></i> Index',
+                        ['controller' => $controller, 'action' => 'index']
+                    ) . 
+                    $this->li(
+                        '<i class="fa fa-angle-right"></i> Add',
+                        ['controller' => 'Players', 'action' => 'add']
+                    ) . '
+                </ul>
+            </li>';
+    }
 }
