@@ -11,7 +11,9 @@
   "ignore": [
     "*",
     "!assets/",
-    "!assets/*"
+    "!assets/*",
+    "!webroot/",
+    "!webroot/*"
   ],
   "dependencies": {
     "jquery": "*",
