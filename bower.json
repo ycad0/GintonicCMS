@@ -11,7 +11,7 @@
   "ignore": [
     "**/.*",
     "config",
-    "src/.*",
+    "src",
     "composer/.json",
     "node_modules",
     "tests"
