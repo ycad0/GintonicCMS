@@ -24,6 +24,7 @@
         "cakephp/cakephp": "~3.0",
         "cakephp/acl": "dev-master",
         "FriendsOfCake/crud": "~4.0",
+        "stripe/stripe-php": "2.*",
         "gintonicweb/admin-theme": "dev-master",
         "gintonicweb/twbs-theme": "dev-master"
     },
