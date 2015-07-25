@@ -16,6 +16,12 @@ Router::scope('/', ['plugin' => 'GintonicCMS'], function ($routes) {
 
     $routes->connect('/users', ['controller' => 'Users']);
     $routes->connect('/users/:action/*', ['controller' => 'Users']);
+    
+    $routes->connect('/charges', ['controller' => 'Charges']);
+    $routes->connect('/charges/:action/*', ['controller' => 'Charges']);
+    
+    $routes->connect('/plans', ['controller' => 'Plans']);
+    $routes->connect('/plans/:action/*', ['controller' => 'Plans']);
 
     $routes->connect('/messages', ['controller' => 'Messages']);
     $routes->connect('/messages/:action/*', ['controller' => 'Messages']);
@@ -27,6 +33,8 @@ Router::scope('/', ['plugin' => 'GintonicCMS'], function ($routes) {
     $routes->prefix('admin', function ($routes) {
         $routes->connect('/users', ['controller' => 'Users']);
         $routes->connect('/users/:action/*', ['controller' => 'Users']);
+        $routes->connect('/plans', ['controller' => 'Plans']);
+        $routes->connect('/plans/:action/*', ['controller' => 'Plans']);
         $routes->fallbacks('InflectedRoute');
     });
 });

@@ -39,7 +39,7 @@
                 'limit' => null,
                 'null' => false,
             ])
-            ->addColumn('interval', 'text', [
+            ->addColumn('interval_type', 'text', [
                 'default' => null,
                 'limit' => null,
                 'null' => false,
@@ -218,12 +218,12 @@
              ->addColumn('refunded', 'boolean', [
                 'default' => false,
                 'limit' => null,
-                'null' => false,
+                'null' => true,
             ])
             ->addColumn('failure_message', 'text', [
                 'default' => null,
                 'limit' => null,
-                'null' => false,
+                'null' => true,
             ])
             ->addColumn('created', 'datetime', [
                 'default' => null,
