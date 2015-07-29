@@ -4,6 +4,7 @@ GintonicCMS
 /config/datasources.php
 /config/gintonic.php
 /assets/vendor/*
+/assets/tmp/*
 /webroot/vendor/*
 /node_modules/*
 
