@@ -12,7 +12,8 @@ requirejs.config({
         autobahn: "../vendor/autobahn/autobahn",
         classnames: "../vendor/classnames/index",
         "eonasdan-bootstrap-datetimepicker": "../vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min",
-        moment: "../vendor/moment/moment"
+        moment: "../vendor/moment/moment",
+        "bootstrap-tagsinput": "../vendor/bootstrap-tagsinput/dist/bootstrap-tagsinput"
     },
     shim: {
         bootstrap: [
@@ -22,6 +23,10 @@ requirejs.config({
             "jquery",
             "bootstrap",
             "moment"
+        ],
+        "bootstrap-tagsinput": [
+            "jquery",
+            "bootstrap"
         ]
     },
     jsx: {
