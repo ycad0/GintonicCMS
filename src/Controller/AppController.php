@@ -28,7 +28,6 @@ class AppController extends Controller
 {
     use \Crud\Controller\ControllerTrait;
 
-    public $layout = 'GintonicCMS.default';
     /**
      * Base helpers that loads javascript via require and wraps forms with
      * bootstrap markup.
@@ -48,8 +47,6 @@ class AppController extends Controller
      */
     public function initialize()
     {
-        $this->viewClass = 'CrudView\View\CrudView';
-
         $this->loadComponent('Acl.Acl');
         $this->loadComponent('Flash');
         $this->loadComponent('Cookie');
