@@ -47,7 +47,7 @@
                     ) ?>
                 </ul>
             </li>
-            <?= $this->Menu->adminTree('Plans', 'fa fa-at') ?>
+            <?= $this->Menu->adminTree('Plans', 'fa fa-map-o') ?>
             <?= $this->fetch('sidebar') ?>
         </ul>
     </section>
