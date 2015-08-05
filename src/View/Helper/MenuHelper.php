@@ -88,7 +88,7 @@ class MenuHelper extends Helper
                     ) .
                     $this->li(
                         '<i class="fa fa-angle-right"></i> Add',
-                        ['controller' => 'Players', 'action' => 'add']
+                        ['controller' => $controller, 'action' => 'add']
                     ) . '
                 </ul>
             </li>';
