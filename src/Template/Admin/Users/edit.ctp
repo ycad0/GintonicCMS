@@ -3,9 +3,9 @@
     'action' => 'index',
     'prefix' => 'admin'
 ])?>
-<?php $this->Html->addCrumb('Add', [
+<?php $this->Html->addCrumb('Edit', [
     'controller' => 'Users',
-    'action' => 'add',
+    'action' => 'edit',
     'prefix' => 'admin'
 ])?>
 
