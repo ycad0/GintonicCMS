@@ -6,7 +6,9 @@
     "Philippe Lafrance <phil.laf@gmail.com>"
   ],
   "description": "A robust and extensible core for web applications",
-  "main": ["webroot"],
+  "main": [
+    "webroot"
+  ],
   "license": "MIT",
   "ignore": [
     "*",
@@ -19,6 +21,8 @@
     "jquery": "*",
     "bootstrap": "*",
     "react": "~0.13.3",
-    "jsx-requirejs-plugin": "~0.6.0"
+    "jsx-requirejs-plugin": "~0.6.0",
+    "eonasdan-bootstrap-datetimepicker": "~4.15.35",
+    "bootstrap-tagsinput": "~0.5.0"
   }
 }
