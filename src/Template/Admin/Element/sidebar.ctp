@@ -26,28 +26,7 @@
                     <span>Statistics</span>
                 </a>
             </li>
-            <li class="treeview<?= $this->Menu->active(['controller' => 'Users'])?>">
-                <a href="#">
-                    <i class="fa fa-users"></i>
-                    <span>Users</span>
-                    <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    <?= $this->Menu->li(
-                        '<i class="fa fa-circle-o"></i> Index',
-                        ['controller' => 'Users', 'action' => 'index']
-                    ) ?>
-                    <?= $this->Menu->li(
-                        '<i class="fa fa-circle-o"></i> Add',
-                        ['controller' => 'Users', 'action' => 'add']
-                    ) ?>
-                    <?= $this->Menu->li(
-                        '<i class="fa fa-circle-o"></i> Permissions',
-                        ['controller' => 'Users', 'action' => 'permissions']
-                    ) ?>
-                </ul>
-            </li>
-            <?= $this->Menu->adminTree('Boobies', 'fa fa-map-o') ?>
+            <?= $this->Menu->adminTree('Users', ['Index', 'Add', 'Permissions'], 'fa fa-users') ?>
             <?= $this->fetch('sidebar') ?>
         </ul>
     </section>
