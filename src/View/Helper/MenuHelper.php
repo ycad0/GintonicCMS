@@ -70,10 +70,25 @@ class MenuHelper extends Helper
     }
 
     /**
-     * TODO: doc comment
+     * Allows to create an admin menu by creating <li> with class='treeview'
+     *
+     * @param string $controller The controller to which the links will point to.
+     * @param string|array|null $items The list menu action items
+     * @param string|null $icon The FontAwesome icon name.
+     * @return string An `<li />` element.
      */
-    public function adminTree($controller, $icon)
+    public function adminTree($controller, array $items = [], $icon = null)
     {
+        // Create menu items
+        $menuIems = '';
+        foreach ($items as $item) {
+            $menuIems = $menuIems . 
+                $this->li(
+                    '<i class="fa fa-angle-right"></i>' . $item,
+                    ['controller' => $controller, 'action' => strtolower($item)]
+                );
+        }
+
         return
             '<li class="treeview' . $this->active(['controller' => $controller]) . '">
                 <a href="#">
@@ -81,15 +96,8 @@ class MenuHelper extends Helper
                     <span>' . $controller . '</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
-                <ul class="treeview-menu">' .
-                    $this->li(
-                        '<i class="fa fa-angle-right"></i> Index',
-                        ['controller' => $controller, 'action' => 'index']
-                    ) .
-                    $this->li(
-                        '<i class="fa fa-angle-right"></i> Add',
-                        ['controller' => $controller, 'action' => 'add']
-                    ) . '
+                <ul class="treeview-menu">' . 
+                    $menuIems . '
                 </ul>
             </li>';
     }

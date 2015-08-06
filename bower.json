@@ -20,6 +20,10 @@
   "dependencies": {
     "jquery": "*",
     "bootstrap": "*",
+    "fontawesome": "~4.4.0",
+    "bootstrap": "~3.3.4",
+    "admin-lte": "~2.1.1",
+    "ionicons": "~2.0.1",
     "react": "~0.13.3",
     "jsx-requirejs-plugin": "~0.6.0",
     "eonasdan-bootstrap-datetimepicker": "~4.15.35",

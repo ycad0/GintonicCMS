@@ -13,7 +13,9 @@ requirejs.config({
         classnames: "../vendor/classnames/index",
         "eonasdan-bootstrap-datetimepicker": "../vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min",
         moment: "../vendor/moment/moment",
-        "bootstrap-tagsinput": "../vendor/bootstrap-tagsinput/dist/bootstrap-tagsinput"
+        "bootstrap-tagsinput": "../vendor/bootstrap-tagsinput/dist/bootstrap-tagsinput",
+        "admin-lte": "../vendor/admin-lte/dist/js/app",
+        ionicons: "../vendor/ionicons/fonts/*"
     },
     shim: {
         bootstrap: [
