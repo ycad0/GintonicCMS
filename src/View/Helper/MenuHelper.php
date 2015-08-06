@@ -82,7 +82,7 @@ class MenuHelper extends Helper
         // Create menu items
         $menuIems = '';
         foreach ($items as $item) {
-            $menuIems = $menuIems . 
+            $menuIems = $menuIems .
                 $this->li(
                     '<i class="fa fa-angle-right"></i>' . $item,
                     ['controller' => $controller, 'action' => strtolower($item)]
@@ -96,7 +96,7 @@ class MenuHelper extends Helper
                     <span>' . $controller . '</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
-                <ul class="treeview-menu">' . 
+                <ul class="treeview-menu">' .
                     $menuIems . '
                 </ul>
             </li>';

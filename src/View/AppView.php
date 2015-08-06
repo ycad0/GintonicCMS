@@ -13,11 +13,11 @@
  */
 namespace GintonicCMS\View;
 
-use Cake\View\View;
 use Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Utility\Inflector;
+use Cake\View\View;
 use CrudView\View\CrudView;
 
 /**

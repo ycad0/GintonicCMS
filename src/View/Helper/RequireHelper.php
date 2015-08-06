@@ -35,7 +35,7 @@ class RequireHelper extends Helper
     public function req($name)
     {
         if (!isset($this->_View->viewVars['requiredeps'])) {
-            $this->_View->viewVars['requiredeps'] = array();
+            $this->_View->viewVars['requiredeps'] = [];
         }
         array_push($this->_View->viewVars['requiredeps'], "'" . $name . "'");
         return;
