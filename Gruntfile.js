@@ -40,9 +40,39 @@ module.exports = function(grunt) {
     copy: {
       main: {
         files: [
-          {expand: true, cwd: './assets/vendor/', src: ['**'], dest: 'webroot/vendor/'},
+          {
+            expand: true,
+            cwd: './assets/vendor/',
+            src: ['**'],
+            dest: 'webroot/vendor/'
+          },
+          {
+            expand: true,
+            cwd: './assets/vendor/',
+            src: ['**/fonts/**'],
+            dest: 'webroot/fonts/',
+            flatten: true,
+            filter: "isFile"
+          },
         ],
       },
+    },
+    less: {
+      admin: {
+        options: {
+          paths: [
+            "assets/less",
+            "assets/vendor"
+          ],
+          compress: true,
+          optimization: 0
+        },
+        files: {
+          "webroot/css/admin.css": "assets/less/admin/admin.less",
+          "webroot/css/default.css": "assets/less/twbs/default.less",
+          "webroot/css/bare.css": "assets/less/twbs/bare.less"
+        }
+      }
     },
     concat: {
       options: {
@@ -91,6 +121,9 @@ module.exports = function(grunt) {
     qunit: {
       files: ['test/**/*.html']
     },
+    qunit: {
+      files: ['test/**/*.html']
+    },
     watch: {
       gruntfile: {
         files: '<%= jshint.gruntfile.src %>',
@@ -116,6 +149,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
 
   // Default task.
-  grunt.registerTask('default', ['bowerRequirejs','requirejs', 'copy']);
+  grunt.registerTask('default', ['bowerRequirejs','requirejs', 'copy', 'less']);
 
 };

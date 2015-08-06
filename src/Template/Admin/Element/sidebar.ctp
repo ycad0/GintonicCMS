@@ -47,6 +47,7 @@
                     ) ?>
                 </ul>
             </li>
+            <?= $this->Menu->adminTree('Boobies', 'fa fa-map-o') ?>
             <?= $this->fetch('sidebar') ?>
         </ul>
     </section>
