@@ -113,14 +113,13 @@ class ChargesController extends AppController
      *
      * @return void Redirects on successful test, renders view otherwise.
      */
-    public function test($plan_id = null)
+    public function plan($plan_id = null)
     {
         $charge = $this->Charges->newEntity();
         if ($this->request->is('post')) {
 
             $user = $this->Auth->user();
             $this->request->data['user_id'] = $user['id'];
-            
             $this->request->data['plan_id'] = $plan_id;
             
             debug($this->request->data);
@@ -129,13 +128,13 @@ class ChargesController extends AppController
             $chargeData = $charge->createPlanCharge($this->request->data);
             
             $charge = $this->Charges->patchEntity($charge, $chargeData);
-            //debug($charge);
-            if ($this->Charges->save($charge)) {
+            debug($charge);
+            /*if ($this->Charges->save($charge)) {
                 $this->Flash->success(__('The charge has been saved.'));
-                return $this->redirect(['action' => 'test']);
+                return $this->redirect(['action' => 'plan']);
             } else {
                 $this->Flash->error(__('The charge could not be saved. Please, try again.'));
-            }
+            }*/
         }
         $customers = $this->Charges->Customers->find('list', ['limit' => 200]);
         $this->set(compact('charge', 'customers'));

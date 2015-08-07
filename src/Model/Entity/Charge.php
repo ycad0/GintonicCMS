@@ -4,6 +4,7 @@ namespace GintonicCMS\Model\Entity;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use GintonicCMS\Model\Entity\Plan;
+use GintonicCMS\Model\Entity\Customer;
 
 /**
  * Charge Entity.
@@ -37,7 +38,7 @@ class Charge extends Entity
      * $charge = $this->Charge->createPlanCharge($data);
      * $charge->createPlanCharge();
      *
-     * @return boolean True if charge succeeded
+     * @return The full charge data array
      */
     public function createPlanCharge($data)
     {
@@ -74,6 +75,14 @@ class Charge extends Entity
             // The card has been declined
             debug("Declined!");
             $data['paid'] = 0;
+        }
+        
+        // The charge was successful, create customer and subscription entry
+        if ($data['paid'] == 0) {
+            $customer = TableRegistry::get('Customer')->newEntity([
+                'user_id' => 'New Article',
+                'created' => new DateTime('now')
+            ]);
         }
         
         return $data;

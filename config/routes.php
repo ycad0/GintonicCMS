@@ -22,6 +22,12 @@ Router::scope('/', ['plugin' => 'GintonicCMS'], function ($routes) {
     
     $routes->connect('/plans', ['controller' => 'Plans']);
     $routes->connect('/plans/:action/*', ['controller' => 'Plans']);
+    
+    $routes->connect('/customers', ['controller' => 'Customers']);
+    $routes->connect('/customers/:action/*', ['controller' => 'Customers']);
+    
+    $routes->connect('/subscriptions', ['controller' => 'Subscriptions']);
+    $routes->connect('/subscriptions/:action/*', ['controller' => 'Subscriptions']);
 
     $routes->connect('/messages', ['controller' => 'Messages']);
     $routes->connect('/messages/:action/*', ['controller' => 'Messages']);
