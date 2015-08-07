@@ -28,7 +28,8 @@
         "FriendsOfCake/bootstrap-ui": "~0.3",
         "FriendsOfCake/search": "dev-master",
         "gintonicweb/admin-theme": "dev-master",
-        "gintonicweb/twbs-theme": "dev-master"
+        "gintonicweb/twbs-theme": "dev-master",
+        "gintonicweb/payments": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
