@@ -1,5 +1,0 @@
-
-main.js
-----------------
-/var/www/cms/vendor/gintonicweb/gintonic-cms/node_modules/requirejs/require.js
-main.js
