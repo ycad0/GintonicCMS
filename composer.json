@@ -21,20 +21,20 @@
     },
     "require": {
         "php": ">=5.4",
-        "cakephp/cakephp": "~3.0",
         "cakephp/acl": "dev-master",
+        "cakephp/cakephp": "~3.0",
+        "FriendsOfCake/bootstrap-ui": "~0.3",
         "FriendsOfCake/crud": "~4.0",
         "FriendsOfCake/crud-view": "dev-master",
-        "FriendsOfCake/bootstrap-ui": "~0.3",
         "FriendsOfCake/search": "dev-master",
         "gintonicweb/admin-theme": "dev-master",
+        "gintonicweb/payments": "dev-master",
         "gintonicweb/twbs-theme": "dev-master",
-        "gintonicweb/payments": "dev-master"
+        "gintonicweb/users": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
-        "cakephp/cakephp-codesniffer": "2.*",
-        "friendsofcake/cakephp-test-utilities": "dev-master"
+        "cakephp/cakephp-codesniffer": "2.*"
     },
     "autoload": {
         "psr-4": {
