@@ -47,6 +47,7 @@ class AppController extends Controller
      */
     public function initialize()
     {
+        $this->viewClass = 'CrudView\View\CrudView';
         $this->loadComponent('Acl.Acl');
         $this->loadComponent('Flash');
         $this->loadComponent('Cookie');
