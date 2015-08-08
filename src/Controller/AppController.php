@@ -76,37 +76,30 @@ class AppController extends Controller
                     ]
                 ]
             ],
-            'flash' => [
-                'key' => 'auth',
-                'params' => [
-                    'plugin' => 'GintonicCMS',
-                    'class' => 'alert-danger'
-                ]
-            ],
             'loginAction' => [
                 'controller' => 'Users',
                 'action' => 'signin',
-                'plugin' => 'GintonicCMS',
+                'plugin' => 'Users',
                 'prefix' => false
             ],
             'loginRedirect' => [
                 'controller' => 'Users',
                 'action' => 'view',
-                'plugin' => 'GintonicCMS',
+                'plugin' => 'Users',
                 'prefix' => false
 
             ],
             'logoutRedirect' => [
                 'controller' => 'Pages',
                 'action' => 'home',
-                'plugin' => 'GintonicCMS',
+                'plugin' => 'Users',
                 'prefix' => false
 
             ],
             'unauthorizedRedirect' => [
                 'controller' => 'Users',
                 'action' => 'signin',
-                'plugin' => 'GintonicCMS',
+                'plugin' => 'Users',
                 'prefix' => false
 
             ]
