@@ -27,4 +27,9 @@ use GintonicCMS\Controller\AppController as GintonicAppController;
  */
 class AppController extends GintonicAppController
 {
+    public function initialize()
+    {
+        parent::initialize();
+        $this->getView()->theme('AdminTheme');
+    }
 }
