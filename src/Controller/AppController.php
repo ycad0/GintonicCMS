@@ -33,7 +33,7 @@ class AppController extends Controller
      * bootstrap markup.
      */
     public $helpers = [
-        'GintonicCMS.Require',
+        'Requirejs.Require',
         'Html' => ['className' => 'BootstrapUI.Html'],
         'Form' => ['className' => 'BootstrapUI.Form'],
         'Flash' => ['className' => 'BootstrapUI.Flash'],
@@ -47,7 +47,6 @@ class AppController extends Controller
      */
     public function initialize()
     {
-        $this->viewClass = 'CrudView\View\CrudView';
         $this->loadComponent('Acl.Acl');
         $this->loadComponent('Flash');
         $this->loadComponent('Cookie');
